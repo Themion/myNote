@@ -3,11 +3,14 @@ package themion.my_note.backend.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import themion.my_note.backend.domain.Member;
  
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
+
 
 @SpringBootTest
 @Transactional
@@ -16,11 +19,20 @@ public class MemberRepositoryTest {
     @Autowired MemberRepository repo;
 
     // @Commit으로 DB에 저장되는지 직접 확인
-    /* @Test
-    @org.springframework.test.annotation.Commit
+    @Test
+    @Commit
     public void createTest() {
-        repo.create(new Member("username123", "password123123123"));
-    } */
+        String username = "createTestUsername";
+        Member m1 = new Member(username, "createTestPassword"), m2 = new Member(username, "");
+        
+        repo.create(m1);
+        try {
+            repo.create(m2);
+            fail();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
 
     @Test
     void readTest() {
@@ -48,17 +60,12 @@ public class MemberRepositoryTest {
         // when
         repo.create(m);
         repo.updatePassword(username, passwordAfter);
+        repo.updateNickname(username, nicknameAfter);
         m_ = repo.read(username).get();
 
         // then
         assertThat(m_.getPassword()).isNotEqualTo(passwordBefore);
         assertThat(m_.getPassword()).isEqualTo(passwordAfter);
-        
-        // when
-        repo.updateNickname(username, nicknameAfter);
-        m_ = repo.read(username).get();
-        
-        // then
         assertThat(m_.getNickname()).isNotEqualTo(nicknameBefore);
         assertThat(m_.getNickname()).isEqualTo(nicknameAfter);
     }

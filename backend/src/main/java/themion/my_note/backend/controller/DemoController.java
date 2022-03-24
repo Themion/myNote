@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import themion.my_note.backend.domain.Member;
 
+// react와의 연결 테스트
 @RestController
 public class DemoController {
 
@@ -17,11 +18,6 @@ public class DemoController {
     @PostMapping("/")
     public Member postTest() {
         return new Member("post", "password");
-    }
-
-    @GetMapping("/home")
-    public String getHome(){
-        return "Hello World!";
     }
 
 }
