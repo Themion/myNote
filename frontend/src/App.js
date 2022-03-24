@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const url = "http://localhost:12345"
+import Login from "./member/Login"
+import SignUp from './member/SignUp'
 
-function App() {
+const url = "http://localhost:8080"
+
+/* function App() {
     const [text, setText] = useState("")
 
     useEffect(
@@ -17,6 +20,17 @@ function App() {
             username: {text}
         </div>
     );
+} */
+
+function App() {
+    return (
+        <div className="App container">
+            <div className="row justify-content-center">
+                <Login></Login>
+                <SignUp></SignUp>
+            </div>
+        </div>
+    )
 }
 
 export default App;
