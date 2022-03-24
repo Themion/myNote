@@ -1,0 +1,61 @@
+frontend
+    회원 CRUD - 로그인 안되면 이 페이지로
+        1. create -> 회원 가입 / 로그인
+            로그인 페이지로 이동 버튼
+            form - ID, 비밀번호
+                password 암호화 필수 -> crypto
+        2. read -> 회원정보 조회
+            노트 조회 페이지에서 접근해야 함
+            회원탈퇴 페이지로 이동 버튼?
+        3. update
+            nickname / password 수정
+        4. delete
+            회원조회 페이지에서 접근해야 함
+
+    노트 CRUD - 로그인 되면 이 페이지로
+        1. create
+            form - 제목(~50자), 내용(~1000자)
+        2. read -> 노트 목록 / 단일 노트(modal?)
+            기본적으로 조회 페이지
+            회원조회 페이지로 이동 버튼
+            조회 페이지 안에서 버튼 하나로 노트 작성하는 modal 생성
+        3. update -> 노트 수정
+            조회 페이지에서 노트를 눌렀을 때 노트 수정하는 modal 생성
+        4. delete -> 노트 삭제
+            노트 조회 / 수정 페이지에 삭제 버튼 추가
+
+backend - controller
+    회원 CRUD - service, repository
+        1. create -> 회원 가입 / 로그인
+            password 암호화 필수 -> spring-security
+        2. read -> 회원정보 조회
+            전체 회원을 조회할 일은 없음
+            단일 회원 조회만 구현 -> read(string username)
+        3. update
+            nickname / password 수정
+            email 추가 시 SMTP를 이용한 email 인증?
+        4. delete
+            회원 삭제 시 노트도 삭제해야 함 -> cascade?
+
+    노트 CRUD - service, repository
+        1. create
+        2. read -> 노트 목록 / 단일 노트
+        3. update -> 노트 수정
+        4. delete -> 노트 삭제
+
+DB
+    회원
+        username(varchar [3, 10])
+            PK
+        password(varchar [100?])
+        nickname
+        email
+            당장 구현하지 않고 노트 CRUD까지 구현한 뒤 고려
+
+    노트
+        id(long / bigint)
+            PK
+        username(varchar [3, 10])
+            FK
+        제목(~50자)
+        내용(~1000자)
