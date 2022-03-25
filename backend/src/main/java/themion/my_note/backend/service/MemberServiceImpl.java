@@ -36,6 +36,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public void changePassword(String username, String password) {
+        repo.updatePassword(username, password);
+    }
+
+    @Override
+    public void changeNickname(String username, String nickname) {
+        repo.updatePassword(username, nickname);
+    }
+
+    @Override
     public void leave(String username) {
         repo.delete(username);
     }

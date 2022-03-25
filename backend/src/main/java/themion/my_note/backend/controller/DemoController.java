@@ -10,7 +10,7 @@ import themion.my_note.backend.domain.Member;
 @RestController
 public class DemoController {
 
-    @GetMapping("/")
+    /* @GetMapping("/")
     public Member getTest() {
         return new Member("get", "password");
     }
@@ -18,6 +18,6 @@ public class DemoController {
     @PostMapping("/")
     public Member postTest() {
         return new Member("post", "password");
-    }
+    } */
 
 }
