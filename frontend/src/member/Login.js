@@ -45,7 +45,7 @@ function Login() {
             <div className="card-body">
                 <a className="float-end btn btn-outline-primary" href="/register">Sign Up</a>
                 <h4 className="card-title mb-4 mt-1">Sign In</h4>
-                <form name="login">
+                <form name="login" onSubmit={onSubmit}>
 
                     <div className="form-floating mb-3">
                         <input 

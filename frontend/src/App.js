@@ -11,22 +11,6 @@ import SignUp from './member/SignUp'
 
 import utils from "./utils/utils"
 
-/* function App() {
-    const [text, setText] = useState("")
-
-    useEffect(
-        () => {
-            axios.get(utils.url + '/').then(res => setText(res.data.username))
-        }, []
-    )
-
-    return (
-        <div className="App">
-            username: {text}
-        </div>
-    );
-} */
-
 function App() {
     return (
         <div className="App container">

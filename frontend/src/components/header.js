@@ -20,7 +20,7 @@
 
 function Header() {
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
             <div className="container-fluid">
 
                 {/* 홈 버튼 */}
@@ -37,13 +37,15 @@ function Header() {
                 <div className="collapse navbar-collapse" id="menu">
                     <div className="navbar-nav">
                         <a className="nav-link" href="#">User</a>
-                        <a className="nav-link dropdown-toggle" href="#" id="menu-memo" role="button" data-bs-toggle="dropdown">
-                            Memo
-                        </a>
-                        <ul className="dropdown-menu" aria-labelledby="menu-memo">
-                            <li><a className="dropdown-item" href="#">Create Memo</a></li>
-                            <li><a className="dropdown-item" href="#">Delete Memo</a></li>
-                        </ul>
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" href="#" id="menu-memo" role="button" data-bs-toggle="dropdown">
+                                Memo
+                            </a>
+                            <ul className="dropdown-menu">
+                                <li><a className="dropdown-item" href="#">Create Memo</a></li>
+                                <li><a className="dropdown-item" href="#">Delete Memo</a></li>
+                            </ul>
+                        </li>
                     </div>
                 </div>
                 {/* 메뉴 목록 */}

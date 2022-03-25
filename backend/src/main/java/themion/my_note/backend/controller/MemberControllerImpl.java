@@ -1,5 +1,7 @@
 package themion.my_note.backend.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,10 @@ import themion.my_note.backend.domain.Member;
 import themion.my_note.backend.service.MemberService;
 
 @RestController
-// @RequestMapping(value = "/member")
+@RequestMapping(value = "/member")
 public class MemberControllerImpl implements MemberController {
 
-    private final String match = "[a-zA-Z0-9|_]*";
+    private final String regex = "[a-zA-Z0-9|_]*";
     private final MemberService service;
 
     @Autowired
@@ -24,26 +26,34 @@ public class MemberControllerImpl implements MemberController {
     }
 
     @Override
-    @RequestMapping(value = "/member", method = RequestMethod.POST)
-    public String signUp(
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public Map<String, Boolean> signUp(
         @RequestParam("username") String username,
         @RequestParam("password") String password,
         @RequestParam("nickname") String nickname
     ) {
-        if (!username.matches(match)) return "username contains wierd character";
-        if (!password.matches(match)) return "password contains wierd character";
-        if (!nickname.matches(match)) return "nickname contains wierd character";
+        Map<String, Boolean> ret = new HashMap<String, Boolean>();
 
-        if (service.get(username).isPresent()) return "username alerady exists";
-        if (password.length() < 6 || password.length() > 30) return "length of password must be 6 to 30";
+        ret.put("usernameMatch", username.matches(regex));
+        ret.put("passwordMatch", password.matches(regex));
+        ret.put("nicknameMatch", nickname.matches(regex));
 
+        ret.put("isUsernamePresent", service.get(username).isPresent());
+        ret.put("passwordLength", password.length() >= 6 && password.length() <= 30);
+
+        
+        for (String key : ret.keySet()) if (!ret.get(key)) {
+            ret.put("ok", false);
+            return ret;
+        }
+        
         service.join(new Member(username, password, nickname));
-
-        return "";
+        ret.put("ok", true);
+        return ret;
     }
 
     @Override
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public Optional<Member> memberInfo(String username) {
         return service.get(username);
     }
@@ -51,24 +61,24 @@ public class MemberControllerImpl implements MemberController {
     @Override
     @RequestMapping(value = "/p", method = RequestMethod.PUT)
     public void changePassword(String username, String password) {
-        service.changePassword(username, password);
+        if (password.matches(regex)) service.changePassword(username, password);
     }
 
     @Override
     @RequestMapping(value = "/n", method = RequestMethod.PUT)
     public void changeNickname(String username, String nickname) {
-        service.changeNickname(username, nickname);
+        if (nickname.matches(regex)) service.changeNickname(username, nickname);
     }
 
     @Override
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @RequestMapping(value = "", method = RequestMethod.PUT)
     public void changeInfo(String username, String password, String nickname) {
-        if (password.matches(match)) service.changePassword(username, password);
-        if (nickname.matches(match)) service.changeNickname(username, nickname);
+        this.changePassword(username, password);
+        this.changeNickname(username, nickname);
     }
 
     @Override
-    @RequestMapping(value = "/", method = RequestMethod.DELETE)
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
     public void deleteMember(String username) {
         service.leave(username);
     }

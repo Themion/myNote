@@ -45,7 +45,9 @@ function SignUp() {
                 nickname: nickname
             },
             baseURL: utils.url
-        }).then(res => console.log(res.data))
+        }).then(res => {
+            if (res.ok) window.location.href = "/"
+        })
     }
 
     const onChange = (e) => {
@@ -55,7 +57,7 @@ function SignUp() {
     return (
         <div className={`card ` + styels.card}>
             <div className="card-body">
-                <a className="float-end btn btn-outline-primary" href="/register">Sign In</a>
+                <a className="float-end btn btn-outline-primary" href="/login">Log In</a>
                 <h4 className="card-title mb-4 mt-1">Sign Up</h4>
                 <form name="signup" onSubmit={onSubmit}>
 
