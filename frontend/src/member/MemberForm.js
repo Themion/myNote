@@ -5,7 +5,6 @@ import Input from './Input'
 import styles from './MemberForm.module.css'
 
 import utils from '../utils/utils'
-import { useEffect } from 'react'
 
 const MemberForm = (props) => {
 
@@ -33,8 +32,6 @@ const MemberForm = (props) => {
         })
     }
 
-    useEffect(() => {})
-
     const input_list = []
 
     props.inputs.forEach(input => {
@@ -50,7 +47,7 @@ const MemberForm = (props) => {
             <div className="card-body">
                 <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a>
                 <h4 className="card-title mb-4 mt-1">{props.name}</h4>
-                <form id="signup" onSubmit={onSubmit} className="needs-validation" noValidate>
+                <form onSubmit={onSubmit} className="needs-validation" noValidate>
                     {input_list}
                     <div className="form-floating mb-3">
                         <button className="btn btn-primary btn-block text-white" type="submit">Submit</button>
