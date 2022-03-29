@@ -6,8 +6,6 @@ import styles from './MemberForm.module.css'
 
 import utils from '../utils/utils'
 
-const bcrypt = require('bcryptjs')
-
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 
         return "비밀번호와 비밀번호 확인이 같지 않습니다. "
@@ -59,11 +57,10 @@ export const MemberForm = (props) => {
         const inputs = document.querySelectorAll(".card-body .form-control"), params = {};
         let is_valid = true
 
-        document.querySelector("form.needs-validation").classList.add("was-validated")
+        // document.querySelector("form.needs-validation").classList.add("was-validated")
 
         inputs.forEach(input => {
-            if (!input.classList.contains("no_send"))
-                params[input.name] = (input.name === "password") ? bcrypt.hashSync(input.value, 10) : input.value
+            if (!input.classList.contains("no_send")) params[input.name] = input.value
 
             is_valid = is_valid && !input.classList.contains("is-invalid")
         })
