@@ -5,40 +5,36 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import themion.my_note.backend.domain.Member;
-import themion.my_note.backend.service.MemberService;
+import themion.my_note.backend.domain.User;
+import themion.my_note.backend.service.UserService;
 
 @RestController
-@RequestMapping(value = "/member")
-public class MemberControllerImpl implements MemberController {
+@RequestMapping("/user")
+public class UserController {
 
     private final String regex = "[a-zA-Z0-9|_]*";
-    private final MemberService service;
-    private final PasswordEncoder encoder;
+    private final UserService service;
 
     @Autowired
-    public MemberControllerImpl(MemberService memberService, PasswordEncoder passwordEncoder) {
-        this.service = memberService;
-        this.encoder = passwordEncoder;
+    public UserController(UserService userService) {
+        this.service = userService;
     }
 
-    @Override
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public Map<String, String> signUp(@ModelAttribute Member member) {
+    public Map<String, String> signUp(@ModelAttribute User user) {
         Map<String, String> ret = new HashMap<String, String>();
 
-        if (member.getNickname().equals(""))
-            member.setNickname(member.getUsername());
+        if (user.getNickname().equals(""))
+            user.setNickname(user.getUsername());
 
-        String  username = member.getUsername(),
-                password = member.getPassword(),
-                nickname = member.getNickname();
+        String  username = user.getUsername(),
+                password = user.getPassword(),
+                nickname = user.getNickname();
         
         // ---------- 수정 필요 ----------
 
@@ -71,45 +67,37 @@ public class MemberControllerImpl implements MemberController {
             return ret;
         }
         // ---------- 수정 필요 ----------
-
-        // DB에 member를 저장하기 전에 password를 암호화
-        member.setPassword(encoder.encode(password));
         
-        // 받은 member에 문제가 없다면 member를 join
-        service.join(member);
+        // 받은 user에 문제가 없다면 user를 join
+        service.join(user);
 
         // return하여 join을 종료
         return ret;
     }
 
-    @Override
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Optional<Member> memberInfo(String username) {
+    public Optional<User> userInfo(String username) {
         return service.get(username);
     }
 
-    @Override
     @RequestMapping(value = "/p", method = RequestMethod.PUT)
     public void changePassword(String username, String password) {
         if (password.matches(regex)) service.changePassword(username, password);
     }
 
-    @Override
     @RequestMapping(value = "/n", method = RequestMethod.PUT)
     public void changeNickname(String username, String nickname) {
         if (nickname.matches(regex)) service.changeNickname(username, nickname);
     }
 
-    @Override
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public void changeInfo(String username, String password, String nickname) {
         this.changePassword(username, password);
         this.changeNickname(username, nickname);
     }
 
-    @Override
     @RequestMapping(value = "", method = RequestMethod.DELETE)
-    public void deleteMember(String username) {
+    public void deleteUser(String username) {
         service.leave(username);
     }
     

@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
-import themion.my_note.backend.domain.Member;
+import themion.my_note.backend.domain.User;
  
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -16,14 +16,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 @Transactional
 public class MemberRepositoryTest {
 
-    @Autowired MemberRepository repo;
+    @Autowired UserRepository repo;
 
     // @Commit으로 DB에 저장되는지 직접 확인
     @Test
     @Commit
     public void createTest() {
         String username = "createTestUsername";
-        Member m1 = new Member(username, "createTestPassword"), m2 = new Member(username, "");
+        User m1 = new User(username, "createTestPassword"), m2 = new User(username, "");
         
         repo.create(m1);
         try {
@@ -37,7 +37,7 @@ public class MemberRepositoryTest {
     @Test
     void readTest() {
         // given
-        Member m = new Member("readTestUsername", "readTestPassword");
+        User m = new User("readTestUsername", "readTestPassword");
         
         // when
         repo.create(m);
@@ -55,7 +55,7 @@ public class MemberRepositoryTest {
                passwordAfter = "password",
                nicknameBefore = "updateTestNickname",
                nicknameAfter = "nickname";
-        Member m = new Member(username, passwordBefore, nicknameBefore), m_;
+        User m = new User(username, passwordBefore, nicknameBefore), m_;
         
         // when
         repo.create(m);
@@ -74,7 +74,7 @@ public class MemberRepositoryTest {
     void deleteTest() {
         // given
         String username = "deleteTestUsername", password = "deleteTestPassword";
-        Member m = new Member(username, password);
+        User m = new User(username, password);
 
         // when
         repo.create(m);

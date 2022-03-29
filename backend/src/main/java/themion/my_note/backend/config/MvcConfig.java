@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import themion.my_note.backend.repository.JdbcMemberRepository;
-import themion.my_note.backend.repository.MemberRepository;
-import themion.my_note.backend.service.MemberService;
-import themion.my_note.backend.service.MemberServiceImpl;
+import themion.my_note.backend.repository.JdbcUserRepository;
+import themion.my_note.backend.repository.UserRepository;
+import themion.my_note.backend.service.UserService;
+import themion.my_note.backend.service.UserServiceImpl;
 
 // MVC 패턴 설정 관리
 @Configuration
@@ -23,12 +23,12 @@ public class MvcConfig {
     }
 
     @Bean
-    public MemberService memberService() {
-        return new MemberServiceImpl(memberRepository());
+    public UserService userService() {
+        return new UserServiceImpl(userRepository());
     }
 
     @Bean
-    public MemberRepository memberRepository() {
-        return new JdbcMemberRepository(dataSource);
+    public UserRepository userRepository() {
+        return new JdbcUserRepository(dataSource);
     }
 }

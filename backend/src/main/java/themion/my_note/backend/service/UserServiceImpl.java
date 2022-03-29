@@ -7,28 +7,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.security.core.userdetails.UserDetails;
 // import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import themion.my_note.backend.domain.Member;
-import themion.my_note.backend.repository.MemberRepository;
+import themion.my_note.backend.domain.User;
+import themion.my_note.backend.repository.UserRepository;
 
-public class MemberServiceImpl implements MemberService {
+public class UserServiceImpl implements UserService {
 
-    private final MemberRepository repo;
+    private final UserRepository repo;
 
     @Autowired
-    public MemberServiceImpl(MemberRepository memberRepository) {
-        this.repo = memberRepository;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.repo = userRepository;
     }
 
     @Override
-    public void join(Member member) {
-        repo.read(member.getUsername()).ifPresentOrElse(
+    public void join(User user) {
+        repo.read(user.getUsername()).ifPresentOrElse(
             username -> {},
-            () -> repo.create(member)
+            () -> repo.create(user)
         );
     }
 
     @Override
-    public Optional<Member> get(String username) {
+    public Optional<User> get(String username) {
         return repo.read(username);
     }
 
@@ -55,16 +55,16 @@ public class MemberServiceImpl implements MemberService {
 
     /* @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member;
-        Optional<Member> result = repo.read(username);
+        user user;
+        Optional<user> result = repo.read(username);
 
-        if (result.isEmpty()) throw new UsernameNotFoundException("Member Not Found : " + username);
-        member = result.get();
+        if (result.isEmpty()) throw new UsernameNotFoundException("user Not Found : " + username);
+        user = result.get();
 
         return User.builder()
-            .username(member.getUsername())
-            .password(member.getPassword())
-            .roles(member.getRole())
+            .username(user.getUsername())
+            .password(user.getPassword())
+            .roles(user.getRole())
             .build();
     } */
     
