@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,10 +20,12 @@ public class MemberControllerImpl implements MemberController {
 
     private final String regex = "[a-zA-Z0-9|_]*";
     private final MemberService service;
+    private final PasswordEncoder encoder;
 
     @Autowired
-    public MemberControllerImpl(MemberService memberService) {
+    public MemberControllerImpl(MemberService memberService, PasswordEncoder passwordEncoder) {
         this.service = memberService;
+        this.encoder = passwordEncoder;
     }
 
     @Override
@@ -68,6 +71,9 @@ public class MemberControllerImpl implements MemberController {
             return ret;
         }
         // ---------- 수정 필요 ----------
+
+        // DB에 member를 저장하기 전에 password를 암호화
+        member.setPassword(encoder.encode(password));
         
         // 받은 member에 문제가 없다면 member를 join
         service.join(member);

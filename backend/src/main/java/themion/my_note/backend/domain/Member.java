@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Member {
-    private String username, password, nickname, role;
+    private String username, password, nickname, role = "USER";
 
     public Member(String username, String password) {
         this(username, password, username, "USER");
