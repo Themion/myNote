@@ -2,9 +2,11 @@ package themion.my_note.backend.service;
 
 import java.util.Optional;
 
+// import org.springframework.security.core.userdetails.UserDetailsService;
+
 import themion.my_note.backend.domain.Member;
 
-public interface MemberService {
+public interface MemberService/*  extends UserDetailsService  */{
     // 회원을 DB에 추가
     public void join(Member member);
     // DB에서 username을 찾아 Optional 형태로 반환

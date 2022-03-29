@@ -2,19 +2,21 @@ package themion.my_note.backend.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 // 각 사용자의 정보
 // lombok을 이용해 간단하게 POJO를 구현
-@Data
 @AllArgsConstructor
-@RequiredArgsConstructor
+@Data
+@NoArgsConstructor
 public class Member {
-    String username, password, nickname;
+    private String username, password, nickname, role;
 
     public Member(String username, String password) {
-        this.username = username;
-        this.password = password;
-        this.nickname = username;
+        this(username, password, username, "USER");
+    }
+
+    public Member(String username, String password, String nickname) {
+        this(username, password, nickname, "USER");
     }
 }

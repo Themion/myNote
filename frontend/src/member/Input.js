@@ -2,13 +2,33 @@ import styles from './Input.module.css'
 
 import utils from '../utils/utils'
 
-const Input = (props) => {
+export const add_invalid_class = (target, text) => {
+    const feedback = target.parentElement.querySelector('.feedback')
+
+    target.classList.add(utils.class_invalid)
+    target.classList.remove(utils.class_valid)
+
+    feedback.classList.remove(styles.hidden)
+    feedback.innerHTML = text
+}
+
+export const add_valid_class = (target) => {
+    const feedback = target.parentElement.querySelector('.feedback')
+
+    target.classList.remove(utils.class_invalid)
+    target.classList.add(utils.class_valid)
+
+    feedback.classList.add(styles.hidden)
+    feedback.innerHTML = ""
+}
+
+export const Input = (props) => {
     const onChange = (target) => {
         const div = document.querySelector(`div.form-floating[name=${target.name}]`)
         const invalid = div.querySelector('div.invalid-feedback')
 
-        const isNotAsciiValue = !/^[a-zA-Z0-9_]*$/.test(target.value) ? "알파벳 대소문자와 숫자, 밑줄만 사용 가능합니다." : ""
-        const isRequiredAndEmpty = (props.required === true) && (target.value.length === 0) ? "필수 항목입니다." : "";
+        const isNotAsciiValue = !/^[a-zA-Z0-9_]*$/.test(target.value) ? "알파벳 대소문자와 숫자, 밑줄만 사용 가능합니다. " : ""
+        const isRequiredAndEmpty = (props.required === true) && (target.value.length === 0) ? "필수 항목입니다. " : "";
         const isCustomOnChangeFalse = (props.onChange !== undefined) ? props.onChange(target.value) : ""
 
         // console.log(props.for + ": isNotAsciiValue = " + isNotAsciiValue)
@@ -21,11 +41,7 @@ const Input = (props) => {
 
             invalid.classList.remove(styles.hidden)
             
-            invalid.innerHTML = isNotAsciiValue
-            if (invalid.innerHTML !== "") invalid.innerHTML += '\n'
-            invalid.innerHTML += isRequiredAndEmpty
-            if (invalid.innerHTML !== "") invalid.innerHTML += '\n'
-            invalid.innerHTML += isCustomOnChangeFalse
+            invalid.innerHTML = isNotAsciiValue + isRequiredAndEmpty + isCustomOnChangeFalse
         } else {
             target.classList.add(utils.class_valid)
             target.classList.remove(utils.class_invalid)
@@ -34,15 +50,20 @@ const Input = (props) => {
             invalid.innerHTML = ""
         }
     }
+    
+    let classList = ""
+    if (props.classList !== undefined)
+        props.classList.forEach(className => classList += ' ' + className)
 
     return (
         <div className="form-floating mb-3" name={props.for}>
             <input
-                className="form-control"
+                className={"form-control" + classList}
                 required={props.required}
                 name={props.for}
-                type={props.for.includes("password") ? "password" : "text"}
-                placeholder=" " 
+                type={props.type !== undefined ? props.type : "text"}
+                placeholder=' '
+                value={props.value}
                 onChange={(e) => {
                     onChange(e.target)
 
@@ -58,5 +79,3 @@ const Input = (props) => {
         </div>
     )
 }
-
-export default Input

@@ -26,8 +26,8 @@ public class JdbcMemberRepository implements MemberRepository {
     // member를 MEMBER 테이블에 삽입
     @Override
     public void create(Member member) {
-        String query = "insert into MEMBER(username, password, nickname) values(?, ?, ?)";
-        template.update(query, member.getUsername(), member.getPassword(), member.getNickname());
+        String query = "insert into MEMBER(username, password, nickname, role) values(?, ?, ?, ?)";
+        template.update(query, member.getUsername(), member.getPassword(), member.getNickname(), member.getRole());
     }
 
     // MEMBER에서 username을 가진 member를 찾아 Optional 형태로 반환
