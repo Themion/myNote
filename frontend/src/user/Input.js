@@ -23,6 +23,7 @@ export const add_valid_class = (target) => {
 }
 
 export const Input = (props) => {
+    // 추후 html의 validation으로 구조 바꿀 것
     const onChange = (target) => {
         const isNotAsciiValue = !/^[a-zA-Z0-9_]*$/.test(target.value) ? "알파벳 대소문자와 숫자, 밑줄만 사용 가능합니다. " : ""
         const isRequiredAndEmpty = (props.required === true) && (target.value.length === 0) ? "필수 항목입니다. " : "";
@@ -54,6 +55,7 @@ export const Input = (props) => {
                 type={props.type}
                 pattern={props.pattern}
                 placeholder=' '
+                value={props.value}
                 onChange={(e) => {
                     onChange(e.target)
 

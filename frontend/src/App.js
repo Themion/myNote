@@ -7,9 +7,17 @@ import {
     Navigate
 } from 'react-router-dom';
 
-import { SignUp, LogIn } from "./member/MemberForm"
+import { SignUp, LogIn } from "./user/UserForm"
 
 import utils from "./utils/utils"
+
+function Result() {
+    return (
+        <div>
+            Success
+        </div>
+    )
+}
 
 function App() {
     return (
@@ -18,6 +26,7 @@ function App() {
                 <Router><Routes>
                     <Route path="/login" element={<LogIn />}></Route>
                     <Route path="/signup" element={<SignUp />}></Route>
+                    <Route path="/" element={<Result />}></Route>
                     <Route path="*" element={<Navigate to="/login" />} />
                 </Routes></Router>
             </div>

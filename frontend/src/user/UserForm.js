@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import { Input, add_invalid_class, add_valid_class } from './Input'
 
-import styles from './MemberForm.module.css'
+import styles from './UserForm.module.css'
 
 import utils from '../utils/utils'
 
@@ -14,7 +14,7 @@ const passwordOnChange = (password) => {
 
 export const SignUp = () => {
     return (
-        <MemberForm name="Sign up" inputs={[{
+        <UserForm name="Sign up" inputs={[{
             for: "username"
         }, {
             for: "password",
@@ -28,33 +28,29 @@ export const SignUp = () => {
         }, {
             for: "nickname",
             required: false
-        }, {
-            for: "role",
-            value: "USER",
-            classList: [styles.hidden]
         }]} link={{ to: "/login", text: "Log in" }} 
-        url="/member" redirect="/login" />
+        url="/user" redirect="/login" />
     )
 }
 
 export const LogIn = () => {
     return (
-        <MemberForm name="Log in" inputs={[{
+        <UserForm name="Log in" inputs={[{
             for: "username"
         }, {
             for: "password",
             type: "password",
             onChange: passwordOnChange
         }]} link={{ to: "/signup", text: "Sign up" }} 
-        url="/member" />
+        url="/user" method="GET" />
     )
 }
 
-export const MemberForm = (props) => {
+export const UserForm = (props) => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        const inputs = document.querySelectorAll(".card-body .form-control"), params = {};
+        const inputs = document.querySelectorAll(".card-body .form-control"), params = {"nickname": "adags"};
         let is_valid = true
 
         // document.querySelector("form.needs-validation").classList.add("was-validated")
@@ -67,18 +63,19 @@ export const MemberForm = (props) => {
 
         if (is_valid) axios({
             url: props.url,
-            method: 'POST',
+            method: props.method,
             params: params,
             baseURL: utils.baseURL
         }, {withCredentials: true})
             .then(res => {
                 const data = res.data
+                console.log(data)
 
                 if (data.ok !== undefined) inputs.forEach(input => {
                     if (data[input.name] === undefined || data[input.name] === '') add_valid_class(input)
                     else add_invalid_class(input, data[input.name])
                 }) 
-                else window.location=props.redirect
+                // else window.location=props.redirect
             })
     }
 
@@ -96,7 +93,7 @@ export const MemberForm = (props) => {
             value={input.value} />)
     })
 
-    // MemberForm을 Return
+    // UserForm을 Return
     return (
         <div className={`card ` + styles.card}>
             <div className="card-body">
@@ -113,6 +110,7 @@ export const MemberForm = (props) => {
     )
 }
 
-MemberForm.defaultProps = {
-    redirect: '/'
+UserForm.defaultProps = {
+    redirect: '/',
+    method: 'POST'
 }
