@@ -36,14 +36,14 @@ function Header() {
                 {/* 메뉴 목록 */}
                 <div className="collapse navbar-collapse" id="menu">
                     <div className="navbar-nav">
-                        <a className="nav-link" href="#">User</a>
+                        <a className="nav-link" href="/user">User</a>
                         <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" href="#" id="menu-memo" role="button" data-bs-toggle="dropdown">
+                            <a className="nav-link dropdown-toggle" href="/memo" id="menu-memo" role="button" data-bs-toggle="dropdown">
                                 Memo
                             </a>
                             <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" href="#">Create Memo</a></li>
-                                <li><a className="dropdown-item" href="#">Delete Memo</a></li>
+                                <li><a className="dropdown-item" href="/memo">Create Memo</a></li>
+                                <li><a className="dropdown-item" href="/memo">Delete Memo</a></li>
                             </ul>
                         </li>
                     </div>
