@@ -6,6 +6,8 @@ import styles from './MemberForm.module.css'
 
 import utils from '../utils/utils'
 
+const bcrypt = require('bcryptjs')
+
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 
         return "비밀번호와 비밀번호 확인이 같지 않습니다. "
@@ -15,40 +17,38 @@ const passwordOnChange = (password) => {
 export const SignUp = () => {
     return (
         <MemberForm name="Sign up" inputs={[{
-            for: "username",
-            required: true
+            for: "username"
         }, {
             for: "password",
-            required: true,
             type: "password",
             onChange: passwordOnChange
         }, {
             for: "password_check",
-            required: true,
             type: "password",
             classList: ["no_send"],
             onChange: passwordOnChange
         }, {
-            for: "nickname"
+            for: "nickname",
+            required: false
         }, {
             for: "role",
             value: "USER",
             classList: [styles.hidden]
-        }]} link={{ to: "/login", text: "Log in" }} url="/member" />
+        }]} link={{ to: "/login", text: "Log in" }} 
+        url="/member" redirect="/login" />
     )
 }
 
 export const LogIn = () => {
     return (
         <MemberForm name="Log in" inputs={[{
-            for: "username",
-            required: true
+            for: "username"
         }, {
             for: "password",
-            required: true,
             type: "password",
             onChange: passwordOnChange
-        }]} link={{ to: "/signup", text: "Sign up" }} url="/member" />
+        }]} link={{ to: "/signup", text: "Sign up" }} 
+        url="/member" />
     )
 }
 
@@ -59,8 +59,12 @@ export const MemberForm = (props) => {
         const inputs = document.querySelectorAll(".card-body .form-control"), params = {};
         let is_valid = true
 
+        document.querySelector("form.needs-validation").classList.add("was-validated")
+
         inputs.forEach(input => {
-            if (!input.classList.contains("no_send")) params[input.name] = input.value
+            if (!input.classList.contains("no_send"))
+                params[input.name] = (input.name === "password") ? bcrypt.hashSync(input.value, 10) : input.value
+
             is_valid = is_valid && !input.classList.contains("is-invalid")
         })
 
@@ -76,7 +80,8 @@ export const MemberForm = (props) => {
                 if (data.ok !== undefined) inputs.forEach(input => {
                     if (data[input.name] === undefined || data[input.name] === '') add_valid_class(input)
                     else add_invalid_class(input, data[input.name])
-                })
+                }) 
+                else window.location=props.redirect
             })
     }
 
@@ -109,4 +114,8 @@ export const MemberForm = (props) => {
             </div>
         </div>
     )
+}
+
+MemberForm.defaultProps = {
+    redirect: '/'
 }
