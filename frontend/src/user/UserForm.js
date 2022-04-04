@@ -23,7 +23,6 @@ export const SignUp = () => {
         }, {
             for: "password_check",
             type: "password",
-            classList: ["no_send"],
             onChange: passwordOnChange
         }, {
             for: "nickname",
@@ -56,7 +55,7 @@ export const UserForm = (props) => {
         // document.querySelector("form.needs-validation").classList.add("was-validated")
 
         inputs.forEach(input => {
-            if (!input.classList.contains("no_send")) params[input.name] = input.value
+            params[input.name] = input.value
 
             is_valid = is_valid && !input.classList.contains("is-invalid")
         })

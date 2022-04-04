@@ -49,8 +49,8 @@ export const Input = (props) => {
             <input
                 className={"form-control" + classList}
                 required={props.required}
-                minLength='6'
-                maxLength='30'
+                minLength={props.minLength}
+                maxLength={props.maxLength}
                 name={props.for}
                 type={props.type}
                 pattern={props.pattern}
@@ -76,5 +76,7 @@ Input.defaultProps = {
     type: "text",
     pattern: "^[a-zA-Z0-9_]*$",
     required: true,
+    minLength: 6,
+    maxLength: 30,
     onChange: (text) => ""
 }
