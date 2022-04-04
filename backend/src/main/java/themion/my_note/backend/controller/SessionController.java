@@ -5,11 +5,12 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import themion.my_note.backend.domain.User;
+import themion.my_note.backend.dto.LogInDTO;
 import themion.my_note.backend.service.UserService;
 
 @RestController
@@ -23,11 +24,11 @@ public class SessionController {
         this.service = userService;
     }
 
-    public Map<String, String> logIn(@ModelAttribute User user) {
+    public Map<String, String> logIn(@RequestBody LogInDTO form) {
         Map<String, String> ret = new HashMap<String, String>();
-
-        String  username = user.getUsername(),
-                password = user.getPassword();
+        
+        String  username = form.getUsername(),
+                password = form.getPassword();
 
         ret.put("username", "");
         ret.put("password", "");

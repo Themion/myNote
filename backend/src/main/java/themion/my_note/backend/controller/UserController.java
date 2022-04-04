@@ -5,12 +5,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import themion.my_note.backend.domain.User;
+import themion.my_note.backend.dto.SignUpDTO;
 import themion.my_note.backend.service.UserService;
 
 @RestController
@@ -26,15 +27,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public Map<String, String> signUp(@ModelAttribute User user) {
+    public Map<String, String> signUp(@RequestBody SignUpDTO form) {
         Map<String, String> ret = new HashMap<String, String>();
 
-        if (user.getNickname().equals(""))
-            user.setNickname(user.getUsername());
+        if (form.getUsername() == null) form.setNickname(form.getUsername());
 
-        String  username = user.getUsername(),
-                password = user.getPassword(),
-                nickname = user.getNickname();
+        String  username = form.getUsername(),
+                password = form.getPassword(),
+                nickname = form.getNickname();
         
         // ---------- 수정 필요 ----------
 
@@ -69,7 +69,12 @@ public class UserController {
         // ---------- 수정 필요 ----------
         
         // 받은 user에 문제가 없다면 user를 join
-        service.join(user);
+        service.join(User.builder()
+            .username(username)
+            .password(password)
+            .nickname(nickname)
+            .build()
+        );
 
         // return하여 join을 종료
         return ret;

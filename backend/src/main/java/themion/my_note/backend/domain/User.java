@@ -1,12 +1,14 @@
 package themion.my_note.backend.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 // 각 사용자의 정보
 // lombok을 이용해 간단하게 POJO를 구현
 @AllArgsConstructor
+@Builder
 @Data
 @NoArgsConstructor
 public class User {
