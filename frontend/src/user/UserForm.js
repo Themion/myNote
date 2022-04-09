@@ -49,13 +49,13 @@ export const UserForm = (props) => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        const inputs = document.querySelectorAll(".card-body .form-control"), params = {"nickname": "adags"};
+        const inputs = document.querySelectorAll(".card-body .form-control"), data = {};
         let is_valid = true
 
         // document.querySelector("form.needs-validation").classList.add("was-validated")
 
         inputs.forEach(input => {
-            params[input.name] = input.value
+            data[input.name] = input.value
 
             is_valid = is_valid && !input.classList.contains("is-invalid")
         })
@@ -63,12 +63,11 @@ export const UserForm = (props) => {
         if (is_valid) axios({
             url: props.url,
             method: props.method,
-            params: params,
+            data: data,
             baseURL: utils.baseURL
         }, {withCredentials: true})
             .then(res => {
                 const data = res.data
-                console.log(data)
 
                 if (data.ok !== undefined) inputs.forEach(input => {
                     if (data[input.name] === undefined || data[input.name] === '') add_valid_class(input)
