@@ -1,14 +1,16 @@
 server:
-    port: 8443
-    ssl:
-        enabled: true
-        key-store: classpath:myNote.p12
-        key-store-password: myNoteHttps
-        key-store-type: PKCS12
-        key-alias: myNote
-
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: classpath:myNote.p12
+    key-store-password: myNoteHttps
+    key-store-type: PKCS12
+    key-alias: myNote
 spring:
-    datasource:
-        url: jdbc:h2:tcp://localhost/~/workspace/myNote/myNote
-        driver-class-name: org.h2.Driver
-        username: sa
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/workspace/myNote/myNote
+    driver-class-name: org.h2.Driver
+    username: sa
+jwt:
+  token-life-span: 86400000 # 1000 * 60 * 60 * 24
+  secret: TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQgY29uc2VjdGV0dXIgYWRpcGlzaWNpbmcgZWxpdC4gUXVpYSBmdWdpdCBudWxsYSBkdWNpbXVzIHV0IGRvbG9yZXMgZXhwbGljYWJvLCBvZGlvIGZ1Z2lhdCBkb2xvcmlidXMgZXJyb3IgbW9kaT8K
