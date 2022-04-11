@@ -30,10 +30,6 @@ public class JdbcUserRepository implements UserRepository {
     public void create(User user) {
         String userQuery = "insert into USER(username, password, nickname) values(?, ?, ?)";
         template.update(userQuery, user.getUsername(), user.getPassword(), user.getNickname());
-        // String userQuery = "insert into USER(username, password, nickname, enabled) values(?, ?, ?, ?)";
-        // template.update(userQuery, user.getUsername(), user.getPassword(), user.getNickname(), true);
-        // String roleQuery = "insert into USER_ROLE(username, role) values(?, ?)";
-        // template.update(roleQuery, user.getUsername(), "USER");
     }
 
     // user에서 username을 가진 user를 찾아 Optional 형태로 반환
@@ -78,7 +74,12 @@ public class JdbcUserRepository implements UserRepository {
             // 이 과정을 모든 entity에 반복하여 적절한 container에 저장
             @Override
             public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new User(rs.getString("username"), rs.getString("password"), rs.getString("nickname"));
+                return User.builder()
+                    .username(rs.getString("username"))
+                    .password(rs.getString("password"))
+                    .nickname(rs.getString("nickname"))
+                    .isAdmin(rs.getBoolean("is_admin"))
+                    .build();
             }
         };
     }

@@ -4,28 +4,29 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import themion.my_note.backend.domain.User;
 import themion.my_note.backend.dto.SignUpDTO;
 import themion.my_note.backend.service.UserService;
 
 @RestController
-@RequestMapping("/user")
+@RequiredArgsConstructor
+@RequestMapping("user")
 public class UserController {
 
     private final String regex = "[a-zA-Z0-9|_]*";
+    @NonNull
     private final UserService service;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.service = userService;
-    }
+    @NonNull
+    private final PasswordEncoder encoder;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public Map<String, String> signUp(@RequestBody @Validated SignUpDTO form) throws Exception {
@@ -81,7 +82,7 @@ public class UserController {
         // 받은 user에 문제가 없다면 user를 join
         service.join(User.builder()
             .username(username)
-            .password(password)
+            .password(encoder.encode(password))
             .nickname(nickname)
             .build()
         );
@@ -95,12 +96,12 @@ public class UserController {
         return service.get(username);
     }
 
-    @RequestMapping(value = "/p", method = RequestMethod.PUT)
+    @RequestMapping(value = "p", method = RequestMethod.PUT)
     public void changePassword(String username, String password) {
         if (password.matches(regex)) service.changePassword(username, password);
     }
 
-    @RequestMapping(value = "/n", method = RequestMethod.PUT)
+    @RequestMapping(value = "n", method = RequestMethod.PUT)
     public void changeNickname(String username, String nickname) {
         if (nickname.matches(regex)) service.changeNickname(username, nickname);
     }

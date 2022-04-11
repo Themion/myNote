@@ -22,7 +22,7 @@ public class MemberServiceTest {
     // joinTest -> getTest -> changeTest -> leaveTest 순으로 실행해야 함
 
     String username = "serviceTestUsername";
-    User m = new User(username, "password", "joinTest");
+    User m = new User(username, "password");
 
     // @Commit으로 DB에 저장되는지 직접 확인
     @Test 

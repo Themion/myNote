@@ -18,4 +18,5 @@ public class User {
     @NonNull
     private String username, password;
     private String nickname;
+    private Boolean isAdmin;
 }

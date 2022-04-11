@@ -55,7 +55,12 @@ public class MemberRepositoryTest {
                passwordAfter = "password",
                nicknameBefore = "updateTestNickname",
                nicknameAfter = "nickname";
-        User m = new User(username, passwordBefore, nicknameBefore), m_;
+        User m = User.builder()
+            .username(username)
+            .password(passwordBefore)
+            .nickname(nicknameBefore)
+            .build(), m_;
+        
         
         // when
         repo.create(m);
