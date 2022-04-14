@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import lombok.AllArgsConstructor;
 import themion.my_note.backend.repository.UserRepository;
@@ -16,6 +19,7 @@ import themion.my_note.backend.security.PasswordEncoder;
 import themion.my_note.backend.security.UserDetailsServiceImpl;
 import themion.my_note.backend.security.jwt.JwtAuthenticationFilter;
 import themion.my_note.backend.security.jwt.JwtAuthorizationFilter;
+import themion.my_note.backend.security.jwt.JwtUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf()
                 .disable()
+            .cors()
+                .configurationSource(corsConfigurationSource())
+                .and()
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -63,5 +70,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         return provider;
     }
-    
+
+    // Cross-Origin 허용
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        config.addExposedHeader(JwtUtils.HEADER);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+
 }
