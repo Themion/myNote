@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +16,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import themion.my_note.backend.domain.User;
 import themion.my_note.backend.dto.SignUpDTO;
-import themion.my_note.backend.security.UsernameAlreadyExistsException;
+import themion.my_note.backend.dto.validation.UsernameAlreadyExistsException;
 import themion.my_note.backend.service.UserService;
 
 @RestController
@@ -64,7 +65,7 @@ public class UserController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public User userInfo(String username) {
-        return service.get(username);
+        return service.get(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
     }
 
     @RequestMapping(value = "p", method = RequestMethod.PUT)
