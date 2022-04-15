@@ -1,12 +1,12 @@
 import styles from './Input.module.css'
 
-import utils from '../utils/utils'
+import { class_invalid, class_valid } from '../utils/utils'
 
 export const add_invalid_class = (target, text) => {
     const feedback = target.parentElement.querySelector('.feedback')
 
-    target.classList.add(utils.class_invalid)
-    target.classList.remove(utils.class_valid)
+    target.classList.add(class_invalid)
+    target.classList.remove(class_valid)
 
     feedback.classList.remove(styles.hidden)
     feedback.innerHTML = text
@@ -15,8 +15,8 @@ export const add_invalid_class = (target, text) => {
 export const add_valid_class = (target) => {
     const feedback = target.parentElement.querySelector('.feedback')
 
-    target.classList.remove(utils.class_invalid)
-    target.classList.add(utils.class_valid)
+    target.classList.remove(class_invalid)
+    target.classList.add(class_valid)
 
     feedback.classList.add(styles.hidden)
     feedback.innerHTML = ""

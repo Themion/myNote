@@ -1,24 +1,6 @@
-/* function Header_MVP() {
-    return (
-        <header>
-            <nav>
-                <a href="/">myNote</a>
-                <ul>
-                    <li><a href="/user">User</a></li>
-                    <li>
-                        <a href="#">Memo</a>
-                        <ul>
-                            <li>Create Memo</li>
-                            <li>Delete Memo</li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </header>
-    )
-} */
+import { getNickname } from "../utils/utils"
 
-function Header() {
+const Header = () => {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
             <div className="container-fluid">
@@ -36,7 +18,7 @@ function Header() {
                 {/* 메뉴 목록 */}
                 <div className="collapse navbar-collapse" id="menu">
                     <div className="navbar-nav">
-                        <a className="nav-link" href="/user">User</a>
+                        <a className="nav-link" href="/user">{getNickname()}</a>
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="/memo" id="menu-memo" role="button" data-bs-toggle="dropdown">
                                 Memo

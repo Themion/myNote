@@ -1,10 +1,8 @@
-import axios from 'axios'
-
 import { Input, add_invalid_class, add_valid_class } from './Input'
 
 import styles from './UserForm.module.css'
 
-import utils from '../utils/utils'
+import { localStorageAuth, send } from '../utils/utils'
 
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 
@@ -42,7 +40,8 @@ export const SignUp = () => {
 
 export const Login = () => {
     const onSubmit = (res) => {
-        window.localStorage.setItem("authorization", res.headers.authorization)
+        window.localStorage.setItem(localStorageAuth, res.headers.authorization)
+        window.onclose = Logout
         
         window.location.href = '/'
     }
@@ -65,7 +64,7 @@ export const Login = () => {
 }
 
 export const Logout = () => {
-    window.localStorage.setItem("authorization", undefined)
+    window.localStorage.removeItem(localStorageAuth)
     window.location.href = '/'
 }
 
@@ -84,24 +83,17 @@ export const UserForm = (props) => {
             is_valid = is_valid && !input.classList.contains("is-invalid")
         })
 
-        if (is_valid) {
-            const config = {
-                url: props.url,
-                method: props.method,
-                data: data,
-                baseURL: utils.baseURL
-            }
-            
-            axios(config).then(res => {
-                const data = res.data
+        const callback = (res) => {
+            const data = res.data
         
-                if (data.ok !== undefined) inputs.forEach(input => {
-                    if (data[input.name] === undefined || data[input.name] === '') add_valid_class(input)
-                    else add_invalid_class(input, data[input.name])
-                })
-                else props.onSubmit(res)
+            if (data.ok !== undefined) inputs.forEach(input => {
+                if (data[input.name] === undefined || data[input.name] === '') add_valid_class(input)
+                else add_invalid_class(input, data[input.name])
             })
+            else props.onSubmit(res)
         }
+
+        if (is_valid) send(props.url, props.method, data, callback)
     }
 
     const input_list = []
