@@ -13,36 +13,60 @@ const passwordOnChange = (password) => {
 }
 
 export const SignUp = () => {
+    const onSubmit = (res) => {
+        window.location.href = '/login'
+    }
+
     return (
-        <UserForm name="Sign up" inputs={[{
-            for: "username"
-        }, {
-            for: "password",
-            type: "password",
-            onChange: passwordOnChange
-        }, {
-            for: "password_check",
-            type: "password",
-            onChange: passwordOnChange
-        }, {
-            for: "nickname",
-            required: false
-        }]} link={{ to: "/login", text: "Log in" }} 
-        url="/user" redirect="/login" />
+        <UserForm 
+            name="Sign up" 
+            inputs={[{
+                    for: "username"
+                }, {
+                    for: "password",
+                    type: "password",
+                    onChange: passwordOnChange
+                }, {
+                    for: "password_check",
+                    type: "password",
+                    onChange: passwordOnChange
+                }, {
+                    for: "nickname",
+                    required: false
+            }]} 
+            link={{ to: "/login", text: "Log in" }} 
+            url="/user" 
+            onSubmit={onSubmit} />
     )
 }
 
-export const LogIn = () => {
+export const Login = () => {
+    const onSubmit = (res) => {
+        window.localStorage.setItem("authorization", res.headers.authorization)
+        
+        window.location.href = '/'
+    }
+
     return (
-        <UserForm name="Log in" inputs={[{
-            for: "username"
-        }, {
-            for: "password",
-            type: "password",
-            onChange: passwordOnChange
-        }]} link={{ to: "/signup", text: "Sign up" }} 
-        url="/user" method="GET" />
+        <UserForm 
+            name="Log in" 
+            inputs={[{
+                    for: "username"
+                }, {
+                    for: "password",
+                    type: "password",
+                    onChange: passwordOnChange
+            }]} 
+            link={{ to: "/signup", text: "Sign up" }} 
+            url="/login" 
+            method="POST"
+            onSubmit={onSubmit} />
     )
+}
+
+export const Logout = () => {
+    window.localStorage.setItem("authorization", undefined)
+    window.location.href = '/'
 }
 
 export const UserForm = (props) => {
@@ -60,21 +84,24 @@ export const UserForm = (props) => {
             is_valid = is_valid && !input.classList.contains("is-invalid")
         })
 
-        if (is_valid) axios({
-            url: props.url,
-            method: props.method,
-            data: data,
-            baseURL: utils.baseURL
-        }, {withCredentials: true})
-            .then(res => {
+        if (is_valid) {
+            const config = {
+                url: props.url,
+                method: props.method,
+                data: data,
+                baseURL: utils.baseURL
+            }
+            
+            axios(config).then(res => {
                 const data = res.data
-
+        
                 if (data.ok !== undefined) inputs.forEach(input => {
                     if (data[input.name] === undefined || data[input.name] === '') add_valid_class(input)
                     else add_invalid_class(input, data[input.name])
-                }) 
-                // else window.location=props.redirect
+                })
+                else props.onSubmit(res)
             })
+        }
     }
 
     const input_list = []
@@ -109,6 +136,5 @@ export const UserForm = (props) => {
 }
 
 UserForm.defaultProps = {
-    redirect: '/',
     method: 'POST'
 }

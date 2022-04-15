@@ -1,5 +1,4 @@
 // import { useState, useEffect } from 'react'
-import axios from 'axios';
 import {
     BrowserRouter as Router,
     Routes,
@@ -7,14 +6,12 @@ import {
     Navigate
 } from 'react-router-dom';
 
-import { SignUp, LogIn } from "./user/UserForm"
+import { SignUp, Login, Logout } from "./user/UserForm"
 
-import utils from "./utils/utils"
-
-function Result() {
+function Debug() {
     return (
         <div>
-            Success
+            {window.localStorage.getItem("authorization")}
         </div>
     )
 }
@@ -24,9 +21,10 @@ function App() {
         <div className="App container">
             <div className="row justify-content-center">
                 <Router><Routes>
-                    <Route path="/login" element={<LogIn />}></Route>
-                    <Route path="/signup" element={<SignUp />}></Route>
-                    <Route path="/" element={<Result />}></Route>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/logout" element={<Logout />} />
+                    <Route path="/" element={<Debug />} />
                     <Route path="*" element={<Navigate to="/login" />} />
                 </Routes></Router>
             </div>
