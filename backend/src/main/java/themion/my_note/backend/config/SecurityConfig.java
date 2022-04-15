@@ -16,7 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import lombok.AllArgsConstructor;
 import themion.my_note.backend.repository.UserRepository;
 import themion.my_note.backend.security.PasswordEncoder;
-import themion.my_note.backend.security.UserDetailsServiceImpl;
+import themion.my_note.backend.security.UserDetailsService;
 import themion.my_note.backend.security.jwt.JwtAuthenticationFilter;
 import themion.my_note.backend.security.jwt.JwtAuthorizationFilter;
 import themion.my_note.backend.security.jwt.JwtUtils;
@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserRepository repo;
     private final PasswordEncoder encoder;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

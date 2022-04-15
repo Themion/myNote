@@ -19,8 +19,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.AllArgsConstructor;
+import themion.my_note.backend.domain.User;
 import themion.my_note.backend.dto.LoginDTO;
-import themion.my_note.backend.security.UserDetailsImpl;
 
 @AllArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
@@ -54,11 +54,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         
         // Get UserDetails
-        UserDetailsImpl userDetails = (UserDetailsImpl) authResult.getPrincipal();
+        User user = (User) authResult.getPrincipal();
 
         // Create JWT Token
         String token = JWT.create()
-            .withSubject(userDetails.getUsername())
+            .withSubject(user.getUsername())
+            .withClaim("nickname", user.getNickname())
             .withExpiresAt(new Date(System.currentTimeMillis() + JwtUtils.TOKEN_LIFE_SPAN))
             .sign(JwtUtils.HMAC512());
 

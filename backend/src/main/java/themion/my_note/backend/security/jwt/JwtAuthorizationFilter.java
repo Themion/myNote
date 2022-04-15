@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import themion.my_note.backend.domain.User;
 import themion.my_note.backend.repository.UserRepository;
-import themion.my_note.backend.security.UserDetailsImpl;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     
@@ -62,8 +61,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             // If so, then get user details and create spring auth token using username, pass, authorities/roles
             if (username != null) {
                 User user = repo.read(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found"));
-                UserDetailsImpl userDetails = new UserDetailsImpl(user);
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username,null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username,null, user.getAuthorities());
 
                 return auth;
             }
