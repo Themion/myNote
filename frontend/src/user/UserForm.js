@@ -11,7 +11,7 @@ const passwordOnChange = (password) => {
 }
 
 export const SignUp = () => {
-    const onSubmit = (res) => {
+    const callback = (res) => {
         window.location.href = '/login'
     }
 
@@ -34,12 +34,12 @@ export const SignUp = () => {
             }]} 
             link={{ to: "/login", text: "Log in" }} 
             url="/user" 
-            onSubmit={onSubmit} />
+            callback={callback} />
     )
 }
 
 export const Login = () => {
-    const onSubmit = (res) => {
+    const callback = (res) => {
         window.localStorage.setItem(localStorageAuth, res.headers.authorization)
         window.onclose = Logout
         
@@ -59,7 +59,7 @@ export const Login = () => {
             link={{ to: "/signup", text: "Sign up" }} 
             url="/login" 
             method="POST"
-            onSubmit={onSubmit} />
+            callback={callback} />
     )
 }
 
@@ -83,17 +83,11 @@ export const UserForm = (props) => {
             is_valid = is_valid && !input.classList.contains("is-invalid")
         })
 
-        const callback = (res) => {
-            const data = res.data
-        
-            if (data.ok !== undefined) inputs.forEach(input => {
-                if (data[input.name] === undefined || data[input.name] === '') add_valid_class(input)
-                else add_invalid_class(input, data[input.name])
-            })
-            else props.onSubmit(res)
+        const fallback = (body) => {
+            console.log(body)
         }
 
-        if (is_valid) send(props.url, props.method, data, callback)
+        if (is_valid) send(props.url, props.method, data, props.callback, fallback)
     }
 
     const input_list = []

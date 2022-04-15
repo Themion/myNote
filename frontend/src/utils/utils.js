@@ -6,7 +6,7 @@ export const class_invalid = "is-invalid"
 export const baseURL = "https://localhost:8443"
 export const localStorageAuth = "authorization"
 
-export const send = (url, method, data, callback) => {
+export const send = (url, method, data, callback, fallback) => {
     const header = {}
 
     header[localStorageAuth] = window.localStorage.getItem(localStorageAuth)
@@ -19,7 +19,7 @@ export const send = (url, method, data, callback) => {
         baseURL: baseURL
     }
     
-    axios(config).then(res => callback(res))
+    axios(config).then(res => callback(res)).catch(err => fallback(err.response.body))
 }
 
 export const getNickname = () => {
