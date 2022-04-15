@@ -15,6 +15,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import themion.my_note.backend.domain.User;
 import themion.my_note.backend.dto.SignUpDTO;
+import themion.my_note.backend.security.UsernameAlreadyExistsException;
 import themion.my_note.backend.service.UserService;
 
 @RestController
@@ -34,9 +35,7 @@ public class UserController {
 
         if (form.getUsername() == null) form.setNickname(form.getUsername());
 
-        String  username = form.getUsername(),
-                password = form.getPassword(),
-                nickname = form.getNickname();
+        String username = form.getUsername();
         
         // ---------- 수정 필요 ----------
 
@@ -46,53 +45,25 @@ public class UserController {
         ret.put("password_check", "");
         ret.put("nickname", "");
 
-        // // username, password, nickname이 정규식을 따르는지 확인
-        if (!username.matches(regex)) 
-            ret.put("username", ret.get("username") + "알파벳 대소문자와 숫자, 밑줄만 사용 가능합니다. ");
-        if (!password.matches(regex)) 
-            ret.put("password", ret.get("password") + "알파벳 대소문자와 숫자, 밑줄만 사용 가능합니다. ");
-        if (!nickname.matches(regex)) 
-            ret.put("nickname", ret.get("nickname") + "알파벳 대소문자와 숫자, 밑줄만 사용 가능합니다. ");
-
-        // // 같은 username을 갖는 회원이 존재하는지 확인
-        if (service.get(username).isPresent()) {
-            throw new Exception("이미 존재하는 회원입니다.");
-        }
-        service.get(username).ifPresent(m -> {
-            ret.put("username", ret.get("username") + "이미 존재하는 회원입니다. ");
-            // throw new Exception("");
-        });
-
-        // // 비밀번호의 길이가 적절한지 확인
-        if (password.length() < 6 && password.length() > 30)
-            ret.put("password", ret.get("password") + "6자 이상 30자 이하여야 합니다. ");
-
-        // // 비밀번호와 비밀번호 확인이 같은지 확인
-        if (!password.equals(form.getPassword_check()))
-            ret.put("password_check", ret.get("password_check") + "비밀번호와 비밀번호 확인이 같지 않습니다. ");
-        
-        // // ret에서 빈 문자열이 아닌 값을 발견했다면
-        for (String key : ret.keySet()) if (ret.get(key) != "") {
-            // ret에 key로 ok를 갖는 non-null 값을 넣고 return
-            ret.put("ok", "no");
-            return ret;
-        }
-        // ---------- 수정 필요 ----------
-        
-        // 받은 user에 문제가 없다면 user를 join
-        service.join(User.builder()
-            .username(username)
-            .password(encoder.encode(password))
-            .nickname(nickname)
-            .build()
-        );
+        Optional.ofNullable(service.get(username)).ifPresentOrElse(
+            // 해당 username이 이미 존재한다면 exception 발생
+            (user) -> { throw new UsernameAlreadyExistsException("Username " + username + " alerady exists."); }, 
+            // 그렇지 않다면 해당하는 user를 만들어서 join
+            () -> service.join(User.builder()
+                .username(username)
+                .password(encoder.encode(form.getPassword()))
+                .nickname(form.getNickname())
+                .build()
+        ));
 
         // return하여 join을 종료
         return ret;
+        
+        // ---------- 수정 필요 ----------
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Optional<User> userInfo(String username) {
+    public User userInfo(String username) {
         return service.get(username);
     }
 
