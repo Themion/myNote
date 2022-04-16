@@ -9,7 +9,7 @@ export const Config = () => {
 
     return (
         <div>
-
+            {/* 사용자 비밀번호 / 닉네임 수정 및 사용자 탈퇴 */}
         </div>
     )
 }

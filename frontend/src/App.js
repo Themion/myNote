@@ -12,7 +12,7 @@ import { Config } from "./user/UserConfig"
 function Debug() {
     return (
         <div>
-            {window.localStorage.getItem("authorization")}
+            {window.localStorage.getItem("authorization") !== null}
         </div>
     )
 }
