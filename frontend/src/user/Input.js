@@ -2,14 +2,17 @@ import styles from './Input.module.css'
 
 import { class_invalid, class_valid } from '../utils/utils'
 
-export const add_invalid_class = (target, text) => {
+export const add_invalid_class = (target, logs) => {
     const feedback = target.parentElement.querySelector('.feedback')
 
     target.classList.add(class_invalid)
     target.classList.remove(class_valid)
 
     feedback.classList.remove(styles.hidden)
-    feedback.innerHTML = text
+    feedback.innerHTML = ""
+    logs.forEach(log => {
+        if (log !== "") feedback.innerHTML += `<p>${log}</p>`
+    })
 }
 
 export const add_valid_class = (target) => {
@@ -25,8 +28,8 @@ export const add_valid_class = (target) => {
 export const Input = (props) => {
     // 추후 html의 validation으로 구조 바꿀 것
     const onChange = (target) => {
-        const isNotAsciiValue = !/^[a-zA-Z0-9_]*$/.test(target.value) ? "알파벳 대소문자와 숫자, 밑줄만 사용 가능합니다. " : ""
-        const isRequiredAndEmpty = (props.required === true) && (target.value.length === 0) ? "필수 항목입니다. " : "";
+        const isNotAsciiValue = !/^[a-zA-Z0-9_]*$/.test(target.value) ? "알파벳 대소문자와 숫자, 밑줄만 사용 가능합니다." : ""
+        const isRequiredAndEmpty = (props.required === true) && (target.value.length === 0) ? "필수 항목입니다." : "";
         const isCustomOnChangeFalse = props.onChange(target.value)
 
         // console.log(props.for + ": isNotAsciiValue = " + isNotAsciiValue)
@@ -34,7 +37,7 @@ export const Input = (props) => {
         // console.log(props.for + ": isCustomOnChangeFalse = " + isCustomOnChangeFalse)
 
         if (isNotAsciiValue !== "" || isRequiredAndEmpty !== "" || isCustomOnChangeFalse !== "") {
-            add_invalid_class(target, isNotAsciiValue + isRequiredAndEmpty + isCustomOnChangeFalse)
+            add_invalid_class(target, [isNotAsciiValue, isRequiredAndEmpty, isCustomOnChangeFalse])
         } else {
             add_valid_class(target)
         }

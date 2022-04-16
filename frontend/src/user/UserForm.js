@@ -6,8 +6,8 @@ import { localStorageAuth, send } from '../utils/utils'
 
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 
-        return "비밀번호와 비밀번호 확인이 같지 않습니다. "
-    return (password.length < 6) || (password.length > 30) ? "6자 이상 30자 이하여야 합니다. " : ""
+        return "비밀번호와 비밀번호 확인이 같지 않습니다."
+    return (password.length < 6) || (password.length > 30) ? "6자 이상 30자 이하여야 합니다." : ""
 }
 
 export const SignUp = () => {
@@ -85,10 +85,10 @@ export const UserForm = (props) => {
 
         const fallback = (data) => {
             const logs = {}
-            inputs.forEach(input => logs[input.name] = "")
+            inputs.forEach(input => logs[input.name] = [])
 
             data.errors.forEach(err => {
-                logs[err.field] += err.defaultMessage
+                logs[err.field].push(err.defaultMessage)
             })
 
             inputs.forEach(input => {
