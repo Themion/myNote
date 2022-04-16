@@ -83,11 +83,22 @@ export const UserForm = (props) => {
             is_valid = is_valid && !input.classList.contains("is-invalid")
         })
 
-        const fallback = (body) => {
-            console.log(body)
+        const fallback = (data) => {
+            const logs = {}
+            inputs.forEach(input => logs[input.name] = "")
+
+            data.errors.forEach(err => {
+                logs[err.field] += err.defaultMessage
+            })
+
+            inputs.forEach(input => {
+                if (logs[input.name] === "") add_valid_class(input)
+                else add_invalid_class(input, logs[input.name])
+            }) 
         }
 
-        if (is_valid) send(props.url, props.method, data, props.callback, fallback)
+        if (is_valid)
+            send(props.url, props.method, data, props.callback, fallback)
     }
 
     const input_list = []

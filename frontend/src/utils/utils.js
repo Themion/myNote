@@ -19,7 +19,7 @@ export const send = (url, method, data, callback, fallback) => {
         baseURL: baseURL
     }
     
-    axios(config).then(res => callback(res)).catch(err => fallback(err.response.body))
+    axios(config).then(res => callback(res)).catch(err => fallback(err.response.data))
 }
 
 export const getNickname = () => {
