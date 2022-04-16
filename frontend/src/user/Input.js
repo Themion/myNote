@@ -2,45 +2,40 @@ import styles from './Input.module.css'
 
 import { class_invalid, class_valid } from '../utils/utils'
 
-export const add_invalid_class = (target, logs) => {
+export const validate = (target, logs) => {
     const feedback = target.parentElement.querySelector('.feedback')
-
-    target.classList.add(class_invalid)
-    target.classList.remove(class_valid)
-
-    feedback.classList.remove(styles.hidden)
     feedback.innerHTML = ""
-    logs.forEach(log => {
-        if (log !== "") feedback.innerHTML += `<p>${log}</p>`
-    })
-}
 
-export const add_valid_class = (target) => {
-    const feedback = target.parentElement.querySelector('.feedback')
+    if (logs.length === 0) {
+        target.classList.remove(class_invalid)
+        target.classList.add(class_valid)
 
-    target.classList.remove(class_invalid)
-    target.classList.add(class_valid)
+        feedback.classList.add(styles.hidden)
+    } else {
+        target.classList.add(class_invalid)
+        target.classList.remove(class_valid)
 
-    feedback.classList.add(styles.hidden)
-    feedback.innerHTML = ""
+        feedback.classList.remove(styles.hidden)
+
+        logs.forEach(log => {
+            if (log !== "") feedback.innerHTML += `<p>${log}</p>`
+        })
+    }
 }
 
 export const Input = (props) => {
     // 추후 html의 validation으로 구조 바꿀 것
     const onChange = (target) => {
-        const isNotAsciiValue = !/^[a-zA-Z0-9_]*$/.test(target.value) ? "알파벳 대소문자와 숫자, 밑줄만 사용 가능합니다." : ""
-        const isRequiredAndEmpty = (props.required === true) && (target.value.length === 0) ? "필수 항목입니다." : "";
-        const isCustomOnChangeFalse = props.onChange(target.value)
 
-        // console.log(props.for + ": isNotAsciiValue = " + isNotAsciiValue)
-        // console.log(props.for + ": isRequiredAndEmpty = " + isRequiredAndEmpty)
-        // console.log(props.for + ": isCustomOnChangeFalse = " + isCustomOnChangeFalse)
+        const logs = []
+        let customOnChange = props.onChange(target.value)
 
-        if (isNotAsciiValue !== "" || isRequiredAndEmpty !== "" || isCustomOnChangeFalse !== "") {
-            add_invalid_class(target, [isNotAsciiValue, isRequiredAndEmpty, isCustomOnChangeFalse])
-        } else {
-            add_valid_class(target)
-        }
+        if ((target.value !== "") && ((target.value.length < 6) || (target.value.length > 30))) logs.push("6자 이상 30자 이하여야 합니다.")
+        if (!/^[a-zA-Z0-9_]*$/.test(target.value)) logs.push("알파벳 대소문자와 숫자, 밑줄만 사용 가능합니다.")
+        if ((props.required === true) && (target.value.length === 0)) logs.push("필수 항목입니다.")
+        if (customOnChange !== "") logs.push(customOnChange)
+
+        validate(target, logs)
     }
     
     let classList = ""

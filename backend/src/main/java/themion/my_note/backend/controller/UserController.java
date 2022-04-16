@@ -2,7 +2,6 @@ package themion.my_note.backend.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,9 +33,11 @@ public class UserController {
     public Map<String, String> signUp(@RequestBody @Validated SignUpDTO form) throws Exception {
         Map<String, String> ret = new HashMap<String, String>();
 
-        if (form.getUsername() == null) form.setNickname(form.getUsername());
+        if (form.getNickname() == null) form.setNickname(form.getUsername());
 
         String username = form.getUsername();
+
+        System.out.println(form.getUsername());
         
         // ---------- 수정 필요 ----------
 
@@ -46,7 +47,7 @@ public class UserController {
         ret.put("password_check", "");
         ret.put("nickname", "");
 
-        Optional.ofNullable(service.get(username)).ifPresentOrElse(
+        service.get(username).ifPresentOrElse(
             // 해당 username이 이미 존재한다면 exception 발생
             (user) -> { throw new UsernameAlreadyExistsException("Username " + username + " alerady exists."); }, 
             // 그렇지 않다면 해당하는 user를 만들어서 join

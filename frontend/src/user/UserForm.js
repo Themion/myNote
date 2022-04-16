@@ -1,4 +1,4 @@
-import { Input, add_invalid_class, add_valid_class } from './Input'
+import { Input, validate } from './Input'
 
 import styles from './UserForm.module.css'
 
@@ -7,7 +7,7 @@ import { localStorageAuth, send } from '../utils/utils'
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 
         return "비밀번호와 비밀번호 확인이 같지 않습니다."
-    return (password.length < 6) || (password.length > 30) ? "6자 이상 30자 이하여야 합니다." : ""
+    return ""
 }
 
 export const SignUp = () => {
@@ -91,10 +91,7 @@ export const UserForm = (props) => {
                 logs[err.field].push(err.defaultMessage)
             })
 
-            inputs.forEach(input => {
-                if (logs[input.name] === "") add_valid_class(input)
-                else add_invalid_class(input, logs[input.name])
-            }) 
+            inputs.forEach(input => validate(input, logs[input.name])) 
         }
 
         if (is_valid)
