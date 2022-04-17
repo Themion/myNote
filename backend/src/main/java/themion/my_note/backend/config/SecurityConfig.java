@@ -38,22 +38,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .cors()
                 .configurationSource(corsConfigurationSource())
                 .and()
+            // /h2-console 사용
+            .headers()
+                .frameOptions()
+                    .disable()
+                .and()
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
             .addFilter(new JwtAuthenticationFilter(authenticationManager()))
             .addFilter(new JwtAuthorizationFilter(authenticationManager(), repo))
             .authorizeRequests()
+                .antMatchers("/h2-console/**").permitAll()
+
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
-                .antMatchers(HttpMethod.GET, "/user").hasRole("USER")
-                .antMatchers(HttpMethod.PUT, "/user").hasRole("USER")
-                .antMatchers(HttpMethod.DELETE, "/user").hasRole("USER")
+                .antMatchers("/user").hasRole("USER")
 
                 .antMatchers("/").permitAll()
                 .antMatchers("/test1").hasRole("USER")
                 .antMatchers("/test2").hasRole("ADMIN")
 
-                .anyRequest().permitAll();
+                .anyRequest().hasRole("ADMIN");
     }
 
     @Override
