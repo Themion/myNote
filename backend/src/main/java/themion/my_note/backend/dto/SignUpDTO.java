@@ -7,6 +7,7 @@ import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import themion.my_note.backend.dto.validation.UniqueUsername;
 
 class ErrorMsg {
     public static final String 
@@ -22,6 +23,7 @@ public class SignUpDTO {
     @NotBlank(message = ErrorMsg.notBlankMsg)
     @Size(min = 6, max = 30, message = ErrorMsg.sizeMsg)
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = ErrorMsg.patternMsg)
+    @UniqueUsername
     private String username;
 
     @NotBlank(message = ErrorMsg.notBlankMsg)

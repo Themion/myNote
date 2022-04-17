@@ -1,8 +1,5 @@
 package themion.my_note.backend.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +12,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import themion.my_note.backend.domain.User;
 import themion.my_note.backend.dto.SignUpDTO;
-import themion.my_note.backend.dto.validation.UsernameAlreadyExistsException;
 import themion.my_note.backend.service.UserService;
 
 @RestController
@@ -30,38 +26,16 @@ public class UserController {
     private final PasswordEncoder encoder;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public Map<String, String> signUp(@RequestBody @Validated SignUpDTO form) throws Exception {
-        Map<String, String> ret = new HashMap<String, String>();
+    public void signUp(@RequestBody @Validated SignUpDTO form) {
 
         if (form.getNickname() == null) form.setNickname(form.getUsername());
-
-        String username = form.getUsername();
-
-        System.out.println(form.getUsername());
         
-        // ---------- 수정 필요 ----------
-
-        // 사용할지도 모르는 값은 null을 제거
-        ret.put("username", "");
-        ret.put("password", "");
-        ret.put("password_check", "");
-        ret.put("nickname", "");
-
-        service.get(username).ifPresentOrElse(
-            // 해당 username이 이미 존재한다면 exception 발생
-            (user) -> { throw new UsernameAlreadyExistsException("Username " + username + " alerady exists."); }, 
-            // 그렇지 않다면 해당하는 user를 만들어서 join
-            () -> service.join(User.builder()
-                .username(username)
-                .password(encoder.encode(form.getPassword()))
-                .nickname(form.getNickname())
-                .build()
-        ));
-
-        // return하여 join을 종료
-        return ret;
-        
-        // ---------- 수정 필요 ----------
+        service.join(User.builder()
+            .username(form.getUsername())
+            .password(encoder.encode(form.getPassword()))
+            .nickname(form.getNickname())
+            .build()
+        );
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
