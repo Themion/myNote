@@ -43,17 +43,19 @@ export const UserForm = (props) => {
 
     // UserForm을 Return
     return (
-        <div className={`card ` + styles.card}>
-            <div className="card-body">
-                {props.alert}
-                <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a>
-                <h4 className="card-title mb-4 mt-1">{props.name}</h4>
-                <form onSubmit={onSubmit} className="needs-validation" noValidate>
-                    {input_list}
-                    <div className="form-floating mb-3">
-                        <button className="btn btn-primary btn-block text-white" type="submit">Submit</button>
-                    </div>
-                </form>
+        <div className="d-flex justify-content-center">
+            <div className={`card ` + styles.card}>
+                <div className="card-body">
+                    {props.alert}
+                    {/* <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a> */}
+                    <h4 className="card-title mb-4 mt-1">{props.name}</h4>
+                    <form onSubmit={onSubmit} className="needs-validation" noValidate>
+                        {input_list}
+                        <div className="form-floating mb-3">
+                            <button className="btn btn-primary btn-block text-white" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     )
