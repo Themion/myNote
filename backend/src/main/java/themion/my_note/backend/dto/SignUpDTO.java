@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import themion.my_note.backend.dto.validation.ErrorMsg;
 import themion.my_note.backend.dto.validation.UniqueUsername;
+import themion.my_note.backend.dto.validation.ValidationUtils;
 
 @AllArgsConstructor
 @Data
@@ -16,21 +17,21 @@ import themion.my_note.backend.dto.validation.UniqueUsername;
 public class SignUpDTO {
     @NotBlank(message = ErrorMsg.notBlankMsg)
     @Size(min = 6, max = 30, message = ErrorMsg.sizeMsg)
-    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = ErrorMsg.patternMsg)
+    @Pattern(regexp = ValidationUtils.REGEXP, message = ErrorMsg.patternMsg)
     @UniqueUsername
     private String username;
 
     @NotBlank(message = ErrorMsg.notBlankMsg)
     @Size(min = 6, max = 30, message = ErrorMsg.sizeMsg)
-    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = ErrorMsg.patternMsg)
+    @Pattern(regexp = ValidationUtils.REGEXP, message = ErrorMsg.patternMsg)
     private String password;
 
     @NotBlank(message = ErrorMsg.notBlankMsg)
     @Size(min = 6, max = 30, message = ErrorMsg.sizeMsg)
-    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = ErrorMsg.patternMsg)
+    @Pattern(regexp = ValidationUtils.REGEXP, message = ErrorMsg.patternMsg)
     private String password_check;
 
     @Size(min = 6, max = 30, message = ErrorMsg.sizeMsg)
-    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = ErrorMsg.patternMsg)
+    @Pattern(regexp = ValidationUtils.REGEXP, message = ErrorMsg.patternMsg)
     private String nickname;
 }
