@@ -21,7 +21,7 @@ const ChangePassword = () => {
         <UserForm 
             name="Change Password" 
             inputs={[{
-                for: "current password"
+                for: "current_password"
             }, {
                 for: "password",
                 type: "password",

@@ -1,5 +1,6 @@
 package themion.my_note.backend.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import themion.my_note.backend.domain.User;
+import themion.my_note.backend.dto.PasswordDTO;
 import themion.my_note.backend.dto.SignUpDTO;
 import themion.my_note.backend.service.UserService;
 
@@ -26,14 +28,14 @@ public class UserController {
     private final PasswordEncoder encoder;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public void signUp(@RequestBody @Validated SignUpDTO form) {
+    public void signUp(@RequestBody @Validated SignUpDTO dto) {
 
-        if (form.getNickname() == null) form.setNickname(form.getUsername());
+        if (dto.getNickname() == "") dto.setNickname(dto.getUsername());
         
         service.join(User.builder()
-            .username(form.getUsername())
-            .password(encoder.encode(form.getPassword()))
-            .nickname(form.getNickname())
+            .username(dto.getUsername())
+            .password(encoder.encode(dto.getPassword()))
+            .nickname(dto.getNickname())
             .build()
         );
     }
@@ -43,9 +45,12 @@ public class UserController {
         return service.get(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
     }
 
-    @RequestMapping(value = "p", method = RequestMethod.PUT)
-    public void changePassword(String username, String password) {
-        if (password.matches(regex)) service.changePassword(username, password);
+    @RequestMapping(value = "password", method = RequestMethod.PUT)
+    public void changePassword(
+        @RequestBody @Validated PasswordDTO dto,
+        @AuthenticationPrincipal String username
+    ) {
+        service.changePassword(username, encoder.encode(dto.getPassword()));
     }
 
     @RequestMapping(value = "n", method = RequestMethod.PUT)
@@ -55,7 +60,7 @@ public class UserController {
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public void changeInfo(String username, String password, String nickname) {
-        this.changePassword(username, password);
+        // this.changePassword(username, password);
         this.changeNickname(username, nickname);
     }
 
