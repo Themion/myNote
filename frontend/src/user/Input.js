@@ -63,7 +63,7 @@ export const Input = (props) => {
                     }
                 }} />
             <label htmlFor={props.for} className="form-label">
-                {props.for.replace('_', ' ')}
+                {props.for.replace('_', ' ') + (props.required && " (Optional)")}
             </label>
             <div className="feedback invalid-feedback"></div>
         </div>
