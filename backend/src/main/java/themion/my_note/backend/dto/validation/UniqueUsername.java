@@ -6,13 +6,43 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
+
+import org.springframework.stereotype.Component;
+
+import lombok.AllArgsConstructor;
+import themion.my_note.backend.repository.UserRepository;
 
 @Constraint(validatedBy = UniqueUsernameValidator.class)
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueUsername {
-    String message() default "이미 존재하는 사용자 이름입니다.";
+    String message() default ErrorMsg.duplicateUsername;
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+}
+
+@Component
+@AllArgsConstructor
+class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, String> {
+
+    private final UserRepository repo;
+
+    @Override
+    public boolean isValid(String username, ConstraintValidatorContext context) {
+
+        boolean result = repo.read(username).isPresent();
+
+        if (result) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(
+                context.getDefaultConstraintMessageTemplate()
+            ).addConstraintViolation();
+        }
+
+        return !result;
+    }
+    
 }
