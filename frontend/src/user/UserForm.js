@@ -26,6 +26,7 @@ export const UserForm = (props) => {
     }
 
     const input_list = []
+    let link = undefined
 
     // Input을 만들기 위한 값을 모두 넣은 뒤
     props.inputs.forEach(input => input_list.push(
@@ -41,13 +42,17 @@ export const UserForm = (props) => {
             value={input.value} />
     ))
 
+    if (props.link !== undefined) {
+        link = <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a>
+    }
+
     // UserForm을 Return
     return (
         <div className="d-flex justify-content-center">
             <div className={`card ` + styles.card}>
                 <div className="card-body">
                     {props.alert}
-                    {/* <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a> */}
+                    {link}
                     <h4 className="card-title mb-4 mt-1">{props.name}</h4>
                     <form onSubmit={onSubmit} className="needs-validation" noValidate>
                         {input_list}
