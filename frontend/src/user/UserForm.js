@@ -34,6 +34,8 @@ export const UserForm = (props) => {
             for={input.for} 
             type={input.type}
             required={input.required} 
+            minLength={input.minLength}
+            maxLength={input.maxLength}
             onChange={input.onChange}
             classList={input.classList}
             value={input.value} />
