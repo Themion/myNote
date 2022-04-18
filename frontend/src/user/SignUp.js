@@ -35,8 +35,7 @@ export const SignUp = () => {
                 for: "password",
                 type: "password",
                 minLength: 6,
-                maxLength: 30,
-                onChange: passwordOnChange
+                maxLength: 30
             }, {
                 for: "password_check",
                 type: "password",
