@@ -6,7 +6,8 @@ import {
     Navigate
 } from 'react-router-dom';
 
-import { SignUp, Login, Logout } from "./user/UserForm"
+import { Login, Logout } from "./user/Login"
+import { SignUp } from './user/SignUp';
 import { Config } from "./user/UserConfig"
 
 function Debug() {
