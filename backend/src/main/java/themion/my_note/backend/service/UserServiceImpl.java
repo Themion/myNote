@@ -33,12 +33,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void change(String username, Optional<String> password, Optional<String> nickname) {
-        password.ifPresent(val -> repo.updatePassword(username, val));
-        nickname.ifPresent(val -> repo.updateNickname(username, val));
-    }
-
-    @Override
     public void changePassword(String username, String password) {
         repo.updatePassword(username, password);
     }

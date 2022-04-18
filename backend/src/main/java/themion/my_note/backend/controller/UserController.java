@@ -1,7 +1,6 @@
 package themion.my_note.backend.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,11 +39,6 @@ public class UserController {
         );
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public User userInfo(String username) {
-        return service.get(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found"));
-    }
-
     @RequestMapping(value = "password", method = RequestMethod.PUT)
     public void changePassword(
         @RequestBody @Validated PasswordDTO dto,
@@ -56,12 +50,6 @@ public class UserController {
     @RequestMapping(value = "n", method = RequestMethod.PUT)
     public void changeNickname(String username, String nickname) {
         if (nickname.matches(regex)) service.changeNickname(username, nickname);
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.PUT)
-    public void changeInfo(String username, String password, String nickname) {
-        // this.changePassword(username, password);
-        this.changeNickname(username, nickname);
     }
 
     @RequestMapping(value = "", method = RequestMethod.DELETE)

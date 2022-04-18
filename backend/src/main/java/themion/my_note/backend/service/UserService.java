@@ -11,8 +11,6 @@ public interface UserService/*  extends UserDetailsService  */{
     public void join(User user);
     // DB에서 username을 찾아 Optional 형태로 반환
     public Optional<User> get(String username);
-    // DB에서 username의 password 혹은 nickname을 변경
-    public void change(String username, Optional<String> password, Optional<String> nickname);
     // DB에서 username의 password를 변경
     public void changePassword(String username, String password);
     // DB에서 username의 nickname을 변경

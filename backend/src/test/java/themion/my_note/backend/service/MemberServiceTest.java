@@ -10,8 +10,6 @@ import themion.my_note.backend.domain.User;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.Optional;
-
 @SpringBootTest
 @Transactional
 public class MemberServiceTest {
@@ -40,7 +38,9 @@ public class MemberServiceTest {
     @Commit
     void changeTest() {
         String pw = "changeTestPassword", nick = "changeTestNickname";
-        service.change(username, Optional.ofNullable(pw), Optional.ofNullable(nick));
+        service.changePassword(username, pw);
+        service.changeNickname(username, nick);
+
         User result = service.get(username).get();
 
         assertThat(result.getPassword()).isEqualTo(pw);
