@@ -26,14 +26,17 @@ export const validate = (target, logs) => {
 export const Input = (props) => {
     // 추후 html의 validation으로 구조 바꿀 것
     const onChange = (target) => {
-
         const logs = []
         let customOnChange = props.onChange(target.value)
 
-        if ((target.value !== "") && ((target.value.length < 6) || (target.value.length > 30))) logs.push("6자 이상 30자 이하여야 합니다.")
-        if (!/^[a-zA-Z0-9_]*$/.test(target.value)) logs.push("알파벳 대소문자와 숫자, 밑줄만 사용 가능합니다.")
-        if ((props.required === true) && (target.value.length === 0)) logs.push("필수 항목입니다.")
-        if (customOnChange !== "") logs.push(customOnChange)
+        if ((target.value !== "") && ((target.value.length < props.minLength) || (target.value.length > props.maxLength))) 
+            logs.push(props.minLength + "자 이상 " + props.maxLength + "자 이하여야 합니다.")
+        if (!props.pattern.test(target.value)) 
+            logs.push("알파벳 대소문자와 숫자, 밑줄만 사용 가능합니다.")
+        if ((props.required === true) && (target.value.length === 0)) 
+            logs.push("필수 항목입니다.")
+        if (customOnChange !== "") 
+            logs.push(customOnChange)
 
         validate(target, logs)
     }
@@ -46,11 +49,11 @@ export const Input = (props) => {
         <div className="form-floating mb-3" name={props.for}>
             <input
                 className={"form-control" + classList}
+                name={props.for}
+                type={props.type}
                 required={props.required}
                 minLength={props.minLength}
                 maxLength={props.maxLength}
-                name={props.for}
-                type={props.type}
                 pattern={props.pattern}
                 placeholder=' '
                 value={props.value}
@@ -63,7 +66,7 @@ export const Input = (props) => {
                     }
                 }} />
             <label htmlFor={props.for} className="form-label">
-                {props.for.replace('_', ' ') + (props.required && " (Optional)")}
+                {props.for.replace('_', ' ') + (props.required ? "" : " (Optional)")}
             </label>
             <div className="feedback invalid-feedback"></div>
         </div>
@@ -72,9 +75,7 @@ export const Input = (props) => {
 
 Input.defaultProps = {
     type: "text",
-    pattern: "^[a-zA-Z0-9_]*$",
+    pattern: /^[a-zA-Z0-9_]*$/,
     required: true,
-    minLength: 6,
-    maxLength: 30,
     onChange: (text) => ""
 }
