@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changeNickname(String username, String nickname) {
-        repo.updatePassword(username, nickname);
+        repo.updateNickname(username, nickname);
     }
 
     @Override

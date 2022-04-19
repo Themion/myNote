@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import themion.my_note.backend.domain.User;
+import themion.my_note.backend.dto.NicknameDTO;
 import themion.my_note.backend.dto.PasswordDTO;
 import themion.my_note.backend.dto.SignUpDTO;
 import themion.my_note.backend.service.UserService;
@@ -20,7 +21,6 @@ import themion.my_note.backend.service.UserService;
 @RequestMapping("user")
 public class UserController {
 
-    private final String regex = "[a-zA-Z0-9|_]*";
     @NonNull
     private final UserService service;
     @NonNull
@@ -47,13 +47,16 @@ public class UserController {
         service.changePassword(username, encoder.encode(dto.getPassword()));
     }
 
-    @RequestMapping(value = "n", method = RequestMethod.PUT)
-    public void changeNickname(String username, String nickname) {
-        if (nickname.matches(regex)) service.changeNickname(username, nickname);
+    @RequestMapping(value = "nickname", method = RequestMethod.PUT)
+    public void changeNickname(
+        @RequestBody @Validated NicknameDTO dto,
+        @AuthenticationPrincipal String username
+    ) {
+        service.changeNickname(username, dto.getNickname());
     }
 
     @RequestMapping(value = "", method = RequestMethod.DELETE)
-    public void deleteUser(String username) {
+    public void deleteUser(@AuthenticationPrincipal String username) {
         service.leave(username);
     }
     
