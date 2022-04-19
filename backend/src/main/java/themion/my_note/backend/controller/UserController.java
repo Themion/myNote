@@ -29,7 +29,7 @@ public class UserController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public void signUp(@RequestBody @Validated SignUpDTO dto) {
 
-        if (dto.getNickname() == "") dto.setNickname(dto.getUsername());
+        if (dto.getNickname() == null) dto.setNickname(dto.getUsername());
         
         service.join(User.builder()
             .username(dto.getUsername())
