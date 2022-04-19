@@ -7,14 +7,14 @@ export const baseURL = "https://localhost:8443"
 export const localStorageAuth = "authorization"
 
 export const send = (url, method, data, callback, fallback) => {
-    const header = {}
+    const headers = {}
 
-    header[localStorageAuth] = window.localStorage.getItem(localStorageAuth)
+    headers[localStorageAuth] = window.localStorage.getItem(localStorageAuth)
 
     const config = {
         url: url,
         method: method,
-        header: header,
+        headers: headers,
         data: data,
         baseURL: baseURL
     }

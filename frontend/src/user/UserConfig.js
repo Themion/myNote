@@ -9,11 +9,11 @@ const passwordOnChange = (password) => {
 }
 
 const ChangePassword = () => {
-    const callback = () => {
+    const callback = (res) => {
         window.location.href = '/user?passwordChange'
     }
 
-    const fallback = () => {
+    const fallback = (data) => {
         window.location.href = '/user?passwordChangeError'
     }
 
@@ -32,7 +32,7 @@ const ChangePassword = () => {
                 type: "password",
                 onChange: passwordOnChange
             }]} 
-            url="/user" 
+            url="/user/password" 
             method="PUT"
             callback={callback}
             fallback={fallback} />
@@ -40,11 +40,11 @@ const ChangePassword = () => {
 }
 
 const ChangeNickname = () => {
-    const callback = () => {
+    const callback = (res) => {
         window.location.href = '/user?nicknameChange'
     }
 
-    const fallback = () => {
+    const fallback = (data) => {
         window.location.href = '/user?nicknameChangeError'
     }
 
@@ -56,7 +56,7 @@ const ChangeNickname = () => {
             }, {
                 for: "nickname"
             }]} 
-            url="/user" 
+            url="/user/nickname" 
             method="PUT"
             callback={callback}
             fallback={fallback} />
