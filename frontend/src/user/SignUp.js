@@ -1,6 +1,7 @@
 import { validate } from './Input'
-
 import { UserForm } from './UserForm'
+
+import { localStorageAuth } from '../utils/utils'
 
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 
@@ -24,6 +25,10 @@ export const SignUp = () => {
         })
 
         inputs.forEach(input => validate(input, logs[input.name])) 
+    }
+    
+    if (window.localStorage.getItem(localStorageAuth) !== null) {
+        window.location.href = "/user"
     }
 
     return (

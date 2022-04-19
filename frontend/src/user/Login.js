@@ -13,6 +13,10 @@ export const Login = () => {
     const fallback = (data) => {
         window.location.href = '/login?error'
     }
+    
+    if (window.localStorage.getItem(localStorageAuth) !== null) {
+        window.location.href = "/user"
+    }
 
     return (
         <UserForm 
@@ -32,6 +36,10 @@ export const Login = () => {
 }
 
 export const Logout = () => {
+    if (window.localStorage.getItem(localStorageAuth) === null) {
+        window.location.href = "/login"
+    }
+
     window.localStorage.removeItem(localStorageAuth)
     window.location.href = '/'
 }
