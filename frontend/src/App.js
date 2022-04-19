@@ -8,7 +8,7 @@ import {
 
 import { Login, Logout } from "./user/Login"
 import { SignUp } from './user/SignUp';
-import { Config } from "./user/UserConfig"
+import { Config } from "./user/Config"
 
 function Debug() {
     return (
@@ -23,8 +23,8 @@ function App() {
         <div className="App container">
             <Router><Routes>
                 <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
                 <Route path="/logout" element={<Logout />} />
+                <Route path="/signup" element={<SignUp />} />
                 <Route path="/user" element={<Config />} />
                 <Route path="/" element={<Debug />} />
                 <Route path="*" element={<Navigate to="/login" />} />
