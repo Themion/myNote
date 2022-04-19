@@ -2,6 +2,7 @@ import { validate } from './Input'
 import { UserForm } from './UserForm'
 
 import { localStorageAuth } from '../utils/utils'
+import { SingleCard } from '../utils/Card'
 
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 
@@ -32,7 +33,8 @@ export const SignUp = () => {
     }
 
     return (
-        <UserForm 
+        <SingleCard content={
+            <UserForm 
             name="Sign up" 
             inputs={[{
                 for: "username"
@@ -53,5 +55,6 @@ export const SignUp = () => {
             url="/user" 
             callback={callback}
             fallback={fallback} />
+        } />
     )
 }

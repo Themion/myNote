@@ -30,3 +30,12 @@ export const getNickname = () => {
     
     return payload.nickname
 }
+
+export const Center = (props) => {
+    return (
+        <div className="d-flex justify-content-center mt-4">
+            {props.content}
+        </div>
+    )
+}
+

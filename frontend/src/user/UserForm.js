@@ -1,7 +1,5 @@
 import { Input } from './Input'
 
-import styles from './UserForm.module.css'
-
 import { send } from '../utils/utils'
 
 export const UserForm = (props) => {
@@ -30,7 +28,7 @@ export const UserForm = (props) => {
     }
 
     const input_list = []
-    let link = undefined
+    const link = props.link ? <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a> : undefined
 
     // Input을 만들기 위한 값을 모두 넣은 뒤
     props.inputs.forEach(input => input_list.push(
@@ -46,26 +44,18 @@ export const UserForm = (props) => {
             value={input.value} />
     ))
 
-    if (props.link !== undefined) {
-        link = <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a>
-    }
-
     // UserForm을 Return
     return (
-        <div className="d-flex justify-content-center">
-            <div className={`card ` + styles.card}>
-                <div className="card-body">
-                    {props.alert}
-                    {link}
-                    <h4 className="card-title mb-4 mt-1">{props.name}</h4>
-                    <form id={id} onSubmit={onSubmit} className="needs-validation" noValidate>
-                        {input_list}
-                        <div className="form-floating mb-3">
-                            <button className="btn btn-primary btn-block text-white" type="submit">Submit</button>
-                        </div>
-                    </form>
+        <div>
+            {props.alert}
+            {link}
+            <h4 className="card-title mb-4 mt-1">{props.name}</h4>
+            <form id={id} onSubmit={onSubmit} className="needs-validation" noValidate>
+                {input_list}
+                <div className="form-floating mb-3">
+                    <button className="btn btn-primary btn-block text-white" type="submit">Submit</button>
                 </div>
-            </div>
+            </form>
         </div>
     )
 }
