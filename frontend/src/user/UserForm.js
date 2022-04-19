@@ -5,10 +5,14 @@ import styles from './UserForm.module.css'
 import { send } from '../utils/utils'
 
 export const UserForm = (props) => {
+    const id = props.name.replace(' ', '_')
+
     const onSubmit = (e) => {
         e.preventDefault();
 
-        const inputs = document.querySelectorAll("form .form-control")
+        console.log(e)
+
+        const inputs = document.querySelectorAll(`form#${id} input.form-control`)
         const data = {};
         
         let is_valid = true
@@ -16,7 +20,7 @@ export const UserForm = (props) => {
         // document.querySelector("form.needs-validation").classList.add("was-validated")
 
         inputs.forEach(input => {
-            data[input.name] = input.value
+            data[input.name] = (input.required && (input.value !== "")) ? input.value : null
 
             is_valid = is_valid && !input.classList.contains("is-invalid")
         })
@@ -54,7 +58,7 @@ export const UserForm = (props) => {
                     {props.alert}
                     {link}
                     <h4 className="card-title mb-4 mt-1">{props.name}</h4>
-                    <form onSubmit={onSubmit} className="needs-validation" noValidate>
+                    <form id={id} onSubmit={onSubmit} className="needs-validation" noValidate>
                         {input_list}
                         <div className="form-floating mb-3">
                             <button className="btn btn-primary btn-block text-white" type="submit">Submit</button>
