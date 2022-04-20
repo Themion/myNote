@@ -1,7 +1,8 @@
 import { localStorageAuth, getNickname } from "../utils/utils"
 
+import { Input, validate } from "./Input"
 import { UserForm } from "./UserForm"
-import { Center } from "../utils/utils"
+import { Center, send } from "../utils/utils"
 import { Card } from "../utils/Card"
 import { Modal } from "../utils/Modal"
 
@@ -71,11 +72,42 @@ const ChangeNickname = () => {
 const DeleteUser = () => {
     const modalId = "deleteUser"
 
+    const callback = (res) => {
+        window.location.href = '/logout'
+    }
+
+    const fallback = (data) => {
+        const input = document.querySelector(`#${modalId} input`)
+        const logs =  []
+
+
+        data.errors.forEach(err => {
+            logs.push(err.defaultMessage)
+        })
+
+        validate(input, logs)
+    }
+
+    const onClick = () => {
+        const input = document.querySelector(`#${modalId} input`)
+        send('/user', 'DELETE', {password: input.value}, callback, fallback)
+    }
+
     return (
         <div>
             <h4 className="card-title mb-4 mt-1">회원 탈퇴</h4>
             <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={'#' + modalId}>회원탈퇴</button>
-            <Modal id={modalId}/>
+            <Modal 
+                id={modalId} 
+                title="Delete User" 
+                content={<div>
+                    <p>회원 탈퇴를 위해선 비밀번호를 입력해주세요.</p>
+                    <Input
+                        for="password"
+                        type="password" />
+                </div>}
+                btn="danger"
+                onClick={onClick} />
         </div>
     )
 }
@@ -85,15 +117,15 @@ export const Config = () => {
         window.location.href = "/login"
     }
 
-    return (
+    else return (
         <div>
             <h2>{getNickname()}</h2>
             <hr />
             <Center content={
                 <div className="row">
-                    <div className="col-sm-4"><Card content={<ChangePassword />} /></div>
-                    <div className="col-sm-4"><Card content={<ChangeNickname />} /></div>
-                    <div className="col-sm-4"><Card content={<DeleteUser />} /></div>
+                    <div className="col"><Card content={<ChangePassword />} /></div>
+                    <div className="col"><Card content={<ChangeNickname />} /></div>
+                    <div className="col"><Card content={<DeleteUser />} /></div>
                 </div>
             } />
         </div>

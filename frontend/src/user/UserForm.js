@@ -7,9 +7,6 @@ export const UserForm = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-
-        console.log(e)
-
         const inputs = document.querySelectorAll(`form#${id} input.form-control`)
         const data = {};
         
@@ -53,7 +50,7 @@ export const UserForm = (props) => {
             <form id={id} onSubmit={onSubmit} className="needs-validation" noValidate>
                 {input_list}
                 <div className="form-floating mb-3">
-                    <button className="btn btn-primary btn-block text-white" type="submit">Submit</button>
+                    <button className="btn btn-primary btn-block float-end" type="submit">Submit</button>
                 </div>
             </form>
         </div>
