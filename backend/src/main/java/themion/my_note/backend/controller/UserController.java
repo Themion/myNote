@@ -16,12 +16,12 @@ import themion.my_note.backend.dto.user.PasswordDTO;
 import themion.my_note.backend.dto.user.SignUpDTO;
 import themion.my_note.backend.service.UserService;
 
+@RequestMapping("user")
 @RestController
 @AllArgsConstructor
-@RequestMapping("user")
 public class UserController {
 
-    private final UserService service;
+    private final UserService userService;
     private final PasswordEncoder encoder;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -29,7 +29,7 @@ public class UserController {
 
         if (dto.getNickname() == null) dto.setNickname(dto.getUsername());
         
-        service.join(User.builder()
+        userService.join(User.builder()
             .username(dto.getUsername())
             .password(encoder.encode(dto.getPassword()))
             .nickname(dto.getNickname())
@@ -42,7 +42,7 @@ public class UserController {
         @RequestBody @Validated PasswordDTO dto,
         @AuthenticationPrincipal String username
     ) {
-        service.changePassword(username, encoder.encode(dto.getPassword()));
+        userService.changePassword(username, encoder.encode(dto.getPassword()));
     }
 
     @RequestMapping(value = "nickname", method = RequestMethod.PUT)
@@ -50,7 +50,7 @@ public class UserController {
         @RequestBody @Validated NicknameDTO dto,
         @AuthenticationPrincipal String username
     ) {
-        service.changeNickname(username, dto.getNickname());
+        userService.changeNickname(username, dto.getNickname());
     }
 
     @RequestMapping(value = "", method = RequestMethod.DELETE)
@@ -58,7 +58,7 @@ public class UserController {
         @RequestBody @Validated DeleteDTO dto,
         @AuthenticationPrincipal String username
     ) {
-        service.leave(username);
+        userService.leave(username);
     }
     
 }

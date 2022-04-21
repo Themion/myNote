@@ -2,49 +2,45 @@ package themion.my_note.backend.service;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.security.core.userdetails.User;
 // import org.springframework.security.core.userdetails.UserDetails;
 // import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import lombok.AllArgsConstructor;
 import themion.my_note.backend.domain.User;
 import themion.my_note.backend.repository.UserRepository;
 
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repo;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.repo = userRepository;
-    }
-
     @Override
     public void join(User user) {
-        repo.read(user.getUsername()).ifPresentOrElse(
+        repo.findByUsername(user.getUsername()).ifPresentOrElse(
             username -> {},
-            () -> repo.create(user)
+            () -> repo.save(user)
         );
     }
 
     @Override
     public Optional<User> get(String username) {
-        return repo.read(username);
+        return repo.findByUsername(username);
     }
 
     @Override
     public void changePassword(String username, String password) {
-        repo.updatePassword(username, password);
+        repo.updatePasswordByUsername(username, password);
     }
 
     @Override
     public void changeNickname(String username, String nickname) {
-        repo.updateNickname(username, nickname);
+        repo.updateNicknameByUsername(username, nickname);
     }
 
     @Override
     public void leave(String username) {
-        repo.delete(username);
+        repo.deleteByUsername(username);
     }
 
     /* @Override

@@ -2,14 +2,16 @@ package themion.my_note.backend.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.transaction.annotation.Transactional;
 
 import themion.my_note.backend.domain.User;
@@ -25,48 +27,6 @@ public class JdbcUserRepository implements UserRepository {
         template = new JdbcTemplate(dataSource);
     }
 
-    // user를 user 테이블에 삽입
-    @Override
-    public void create(User user) {
-        String userQuery = "insert into USER(username, password, nickname) values(?, ?, ?)";
-        template.update(userQuery, user.getUsername(), user.getPassword(), user.getNickname());
-    }
-
-    // user에서 username을 가진 user를 찾아 Optional 형태로 반환
-    @Override
-    public Optional<User> read(String username) {
-        String query = "select * from user where username = ?";
-        try {
-            // DB에서 query를 실행한 결과를 Optional로 묶어 반환
-            return Optional.ofNullable(template.queryForObject(query, mapper(), username));
-        // query 결과가 존재하지 않는다면 EmptyResultDataAccessException 발생
-        } catch (EmptyResultDataAccessException e) {
-            // 결과가 존재하지 않으므로 빈 Optional을 반환
-            return Optional.empty();
-        }
-    }
-
-    // username을 가진 user의 password를 갱신
-    @Override
-    public void updatePassword(String username, String password) {
-        String query = "update user set password = ? where username = ?";
-        template.update(query, password, username);
-    }
-    
-    // username을 가진 user의 nickname을 갱신
-    @Override
-    public void updateNickname(String username, String nickname) {
-        String query = "update user set nickname = ? where username = ?";
-        template.update(query, nickname, username);
-    }
-
-    // username을 지닌 user를 삭제
-    @Override
-    public void delete(String username) {
-        String query = "delete from user where username = ?";
-        template.update(query, username);
-    }
-
     // H2 DB의 record를 user 객체로 mapping
     private RowMapper<User> mapper() {
         return new RowMapper<User>() {
@@ -75,6 +35,7 @@ public class JdbcUserRepository implements UserRepository {
             @Override
             public User mapRow(ResultSet rs, int rowNum) throws SQLException {
                 return User.builder()
+                    .id(rs.getLong("id"))
                     .username(rs.getString("username"))
                     .password(rs.getString("password"))
                     .nickname(rs.getString("nickname"))
@@ -82,6 +43,54 @@ public class JdbcUserRepository implements UserRepository {
                     .build();
             }
         };
+    }
+
+    // user를 user 테이블에 삽입
+    @Override
+    public void save(User user) {
+        // String userQuery = "insert into USER(username, password, nickname) values(?, ?, ?)";
+        // template.update(userQuery, user.getUsername(), user.getPassword(), user.getNickname());
+        SimpleJdbcInsert insert = new SimpleJdbcInsert(template);
+        insert.withTableName("user").usingGeneratedKeyColumns("id");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("username", user.getUsername());
+        params.put("password", user.getPassword());
+        params.put("nickname", user.getNickname());
+        params.put("is_admin", user.getIsAdmin());
+
+        System.out.println(user.toString());
+        
+        Number id = insert.executeAndReturnKey(params);
+        user.setId(id.longValue());
+    }
+
+    // user에서 username을 가진 user를 찾아 Optional 형태로 반환
+    @Override
+    public Optional<User> findByUsername(String username) {
+        String query = "select * from user where username = ?";
+        return template.query(query, mapper(), username).stream().findAny();
+    }
+
+    // username을 가진 user의 password를 갱신
+    @Override
+    public void updatePasswordByUsername(String username, String password) {
+        String query = "update user set password = ? where username = ?";
+        template.update(query, password, username);
+    }
+    
+    // username을 가진 user의 nickname을 갱신
+    @Override
+    public void updateNicknameByUsername(String username, String nickname) {
+        String query = "update user set nickname = ? where username = ?";
+        template.update(query, nickname, username);
+    }
+
+    // username을 지닌 user를 삭제
+    @Override
+    public void deleteByUsername(String username) {
+        String query = "delete from user where username = ?";
+        template.update(query, username);
     }
 
 }
