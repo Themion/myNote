@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import themion.my_note.backend.domain.User;
 import themion.my_note.backend.dto.DeleteUserDTO;
 import themion.my_note.backend.dto.NicknameDTO;
@@ -18,13 +17,11 @@ import themion.my_note.backend.dto.SignUpDTO;
 import themion.my_note.backend.service.UserService;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("user")
 public class UserController {
 
-    @NonNull
     private final UserService service;
-    @NonNull
     private final PasswordEncoder encoder;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
