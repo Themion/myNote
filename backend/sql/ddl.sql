@@ -1,4 +1,5 @@
 drop table if exists user CASCADE; 
+drop table if exists memo CASCADE; 
 
 create table user
 (
@@ -10,11 +11,15 @@ create table user
     primary key (id)
 );
 
-/* 
-create table user
+create table memo
 (
-    username    varchar(20)     not null,
-    password    varchar(255)    not null,
-    nickname    varchar(20)     not null,
-    primary key (username)
-); */
+    id          bigint          auto_increment,
+    user_id     bigint          not null,
+    title       varchar(255)    not null,
+    memo        varchar(1000),
+    primary key (id),
+    foreign key (user_id) 
+        references user(id)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+)
