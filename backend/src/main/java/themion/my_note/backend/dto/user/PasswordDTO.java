@@ -1,4 +1,4 @@
-package themion.my_note.backend.dto;
+package themion.my_note.backend.dto.user;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;

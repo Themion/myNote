@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import lombok.AllArgsConstructor;
 import themion.my_note.backend.domain.User;
-import themion.my_note.backend.dto.LoginDTO;
+import themion.my_note.backend.dto.user.LoginDTO;
 
 @AllArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{

@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import themion.my_note.backend.domain.User;
-import themion.my_note.backend.dto.DeleteUserDTO;
-import themion.my_note.backend.dto.NicknameDTO;
-import themion.my_note.backend.dto.PasswordDTO;
-import themion.my_note.backend.dto.SignUpDTO;
+import themion.my_note.backend.dto.user.DeleteDTO;
+import themion.my_note.backend.dto.user.NicknameDTO;
+import themion.my_note.backend.dto.user.PasswordDTO;
+import themion.my_note.backend.dto.user.SignUpDTO;
 import themion.my_note.backend.service.UserService;
 
 @RestController
@@ -55,7 +55,7 @@ public class UserController {
 
     @RequestMapping(value = "", method = RequestMethod.DELETE)
     public void deleteUser(
-        @RequestBody @Validated DeleteUserDTO dto,
+        @RequestBody @Validated DeleteDTO dto,
         @AuthenticationPrincipal String username
     ) {
         service.leave(username);
