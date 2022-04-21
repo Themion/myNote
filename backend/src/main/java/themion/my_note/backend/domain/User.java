@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class User implements UserDetails{
 
+    private Long id;
     @NonNull
     private String username, password;
     private String nickname;
@@ -56,6 +57,12 @@ public class User implements UserDetails{
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public static UserBuilder builder() {
+        UserBuilder builder = new UserBuilder();
+        builder.isAdmin(false);
+        return builder;
     }
     
 }
