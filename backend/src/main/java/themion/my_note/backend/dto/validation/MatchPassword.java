@@ -13,7 +13,6 @@ import javax.validation.Payload;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
@@ -25,7 +24,7 @@ import themion.my_note.backend.service.UserService;
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MatchPassword {
-    String message() default ErrorMsg.wrongPassword;
+    String message() default CustomError.wrongPasswordMsg;
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
@@ -54,7 +53,7 @@ class MatchPasswordValidator implements ConstraintValidator<MatchPassword, Strin
 
         String username = (String) authentication.getPrincipal();
         User user = service.get(username).orElseThrow(() -> {
-            throw new UsernameNotFoundException("Username" + username + "not found");
+            throw CustomError.noUsername(username);
         });
 
         if (!encoder.matches(password, user.getPassword())) {

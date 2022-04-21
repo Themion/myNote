@@ -19,7 +19,7 @@ import themion.my_note.backend.service.UserService;
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueUsername {
-    String message() default ErrorMsg.duplicateUsername;
+    String message() default CustomError.duplicateUsernameMsg;
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

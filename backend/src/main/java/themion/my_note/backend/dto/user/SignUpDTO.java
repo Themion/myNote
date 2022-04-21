@@ -7,7 +7,7 @@ import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import themion.my_note.backend.dto.validation.ErrorMsg;
+import themion.my_note.backend.dto.validation.CustomError;
 import themion.my_note.backend.dto.validation.UniqueUsername;
 import themion.my_note.backend.dto.validation.ValidationUtils;
 
@@ -15,23 +15,23 @@ import themion.my_note.backend.dto.validation.ValidationUtils;
 @Data
 @NoArgsConstructor
 public class SignUpDTO {
-    @NotBlank(message = ErrorMsg.notBlankMsg)
-    @Size(min = 6, max = 30, message = ErrorMsg.sizeMsg)
-    @Pattern(regexp = ValidationUtils.REGEXP, message = ErrorMsg.patternMsg)
+    @NotBlank(message = CustomError.notBlankMsg)
+    @Size(min = 6, max = 30, message = CustomError.sizeMsg)
+    @Pattern(regexp = ValidationUtils.REGEXP, message = CustomError.patternMsg)
     @UniqueUsername
     private String username;
 
-    @NotBlank(message = ErrorMsg.notBlankMsg)
-    @Size(min = 6, max = 30, message = ErrorMsg.sizeMsg)
-    @Pattern(regexp = ValidationUtils.REGEXP, message = ErrorMsg.patternMsg)
+    @NotBlank(message = CustomError.notBlankMsg)
+    @Size(min = 6, max = 30, message = CustomError.sizeMsg)
+    @Pattern(regexp = ValidationUtils.REGEXP, message = CustomError.patternMsg)
     private String password;
 
-    @NotBlank(message = ErrorMsg.notBlankMsg)
-    @Size(min = 6, max = 30, message = ErrorMsg.sizeMsg)
-    @Pattern(regexp = ValidationUtils.REGEXP, message = ErrorMsg.patternMsg)
+    @NotBlank(message = CustomError.notBlankMsg)
+    @Size(min = 6, max = 30, message = CustomError.sizeMsg)
+    @Pattern(regexp = ValidationUtils.REGEXP, message = CustomError.patternMsg)
     private String password_check;
 
-    @Size(min = 6, max = 30, message = ErrorMsg.sizeMsg)
-    @Pattern(regexp = ValidationUtils.REGEXP, message = ErrorMsg.patternMsg)
+    @Size(min = 6, max = 30, message = CustomError.sizeMsg)
+    @Pattern(regexp = ValidationUtils.REGEXP, message = CustomError.patternMsg)
     private String nickname;
 }

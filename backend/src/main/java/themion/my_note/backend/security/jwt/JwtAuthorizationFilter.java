@@ -13,10 +13,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import themion.my_note.backend.domain.User;
+import themion.my_note.backend.dto.validation.CustomError;
 import themion.my_note.backend.repository.UserRepository;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
@@ -45,7 +45,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 
-    private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) throws UsernameNotFoundException {
+    private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
 
         // Get token from header
         String token = request.getHeader(JwtUtils.HEADER).replace(JwtUtils.PREFIX, "");
@@ -60,7 +60,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             // Search in the DB if we find the user by token subject (username)
             // If so, then get user details and create spring auth token using username, pass, authorities/roles
             if (username != null) {
-                User user = repo.read(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found"));
+                User user = repo.findByUsername(username).orElseThrow(() -> CustomError.noUsername(username));
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username,null, user.getAuthorities());
 
                 return auth;
