@@ -21,3 +21,22 @@ export const SingleCard = (props) => {
         } />
     )
 }
+
+export const CardList = (props) => {
+    const cardList = [];
+    props.contents.forEach(content => {
+        cardList.push(
+            <div className="col">
+                <Card key={content.key} content={content} />
+            </div>
+        )
+    });
+
+    return (
+        <Center content={
+            <div className='row'>
+                {cardList}
+            </div>
+        } />
+    )
+}

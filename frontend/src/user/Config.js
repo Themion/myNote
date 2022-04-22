@@ -2,8 +2,8 @@ import { localStorageAuth, getNickname } from "../utils/utils"
 
 import { Input, validate } from "./Input"
 import { UserForm } from "./UserForm"
-import { Center, send } from "../utils/utils"
-import { Card } from "../utils/Card"
+import { send } from "../utils/utils"
+import { CardList } from "../utils/Card"
 import { Modal } from "../utils/Modal"
 
 const passwordOnChange = (password) => {
@@ -121,13 +121,7 @@ export const Config = () => {
         <div>
             <h2>{getNickname()}</h2>
             <hr />
-            <Center content={
-                <div className="row">
-                    <div className="col"><Card content={<ChangePassword />} /></div>
-                    <div className="col"><Card content={<ChangeNickname />} /></div>
-                    <div className="col"><Card content={<DeleteUser />} /></div>
-                </div>
-            } />
+            <CardList contents={[<ChangePassword />, <ChangeNickname />, <DeleteUser />]} />
         </div>
     )
 }
