@@ -14,4 +14,11 @@ public class Memo {
     private Long userid;
     private String title;
     private String memo;
+
+    public static MemoBuilder builder() {
+        MemoBuilder builder = new MemoBuilder();
+        builder.title("");
+        builder.memo("");
+        return builder;
+    }
 }
