@@ -45,15 +45,20 @@ class MatchPasswordValidator implements ConstraintValidator<MatchPassword, Strin
         if (authentication == null) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                "Session not found."
+                CustomError.wrongSessionMsg
             ).addConstraintViolation();
 
             return false;
         }
 
         String username = (String) authentication.getPrincipal();
-        User user = service.get(username).orElseThrow(() -> {
-            throw CustomError.noUsername(username);
+        User user = service.get(username).orElseGet(() -> {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(
+                CustomError.wrongUsername(username)
+            ).addConstraintViolation();
+
+            return User.builder().id(-1L).build();
         });
 
         if (!encoder.matches(password, user.getPassword())) {
