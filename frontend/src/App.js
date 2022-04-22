@@ -9,14 +9,7 @@ import {
 import { Login, Logout } from "./user/Login"
 import { SignUp } from './user/SignUp';
 import { Config } from "./user/Config"
-
-function Debug() {
-    return (
-        <div>
-            {window.localStorage.getItem("authorization") !== null}
-        </div>
-    )
-}
+import { MemoList } from './memo/MemoList';
 
 function App() {
     return (
@@ -26,7 +19,7 @@ function App() {
                 <Route path="/logout" element={<Logout />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/user" element={<Config />} />
-                <Route path="/" element={<Debug />} />
+                <Route path="/" element={<MemoList />} />
                 <Route path="*" element={<Navigate to="/login" />} />
             </Routes></Router>
         </div>
