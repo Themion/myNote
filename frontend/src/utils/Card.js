@@ -4,7 +4,7 @@ import { Center } from './utils'
 
 export const Card = (props) => {
     return (
-        <div className={`m-4 card ` + styles.card}>
+        <div className={`mt-4 mx-1 card ` + styles.card}>
             <div className="card-body">
                 {props.content}
             </div>
