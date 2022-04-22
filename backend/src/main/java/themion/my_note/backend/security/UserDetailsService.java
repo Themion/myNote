@@ -5,18 +5,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
-import themion.my_note.backend.dto.validation.CustomError;
-import themion.my_note.backend.repository.UserRepository;
+import themion.my_note.backend.service.UserService;
 
 @Component
 @AllArgsConstructor
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService{
 
-    private UserRepository repo;
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.repo.findByUsername(username).orElseThrow(() -> CustomError.noUsername(username));
+        return this.userService.get(username);
     }
     
 }

@@ -14,19 +14,19 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import lombok.AllArgsConstructor;
-import themion.my_note.backend.repository.UserRepository;
 import themion.my_note.backend.security.PasswordEncoder;
 import themion.my_note.backend.security.UserDetailsService;
 import themion.my_note.backend.security.jwt.JwtAuthenticationFilter;
 import themion.my_note.backend.security.jwt.JwtAuthorizationFilter;
 import themion.my_note.backend.security.jwt.JwtUtils;
+import themion.my_note.backend.service.UserService;
 
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserRepository repo;
+    private final UserService userService;
     private final PasswordEncoder encoder;
     private final UserDetailsService userDetailsService;
 
@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
             .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-            .addFilter(new JwtAuthorizationFilter(authenticationManager(), repo))
+            .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService))
             .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
 

@@ -1,6 +1,6 @@
 package themion.my_note.backend.service;
 
-import java.util.Optional;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 // import org.springframework.security.core.userdetails.User;
 // import org.springframework.security.core.userdetails.UserDetails;
@@ -24,8 +24,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> get(String username) {
-        return repo.findByUsername(username);
+    public User get(String username) {
+        return repo.findByUsername(username).orElseThrow(() -> noUsername(username));
     }
 
     @Override
@@ -41,6 +41,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void leave(String username) {
         repo.deleteByUsername(username);
+    }
+
+    public static UsernameNotFoundException noUsername(String username) {
+        return new UsernameNotFoundException("존재하지 않는 사용자 이름입니다: " + username);
     }
 
     /* @Override

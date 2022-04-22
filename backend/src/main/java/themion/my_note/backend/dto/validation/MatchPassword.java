@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 import themion.my_note.backend.domain.User;
+import themion.my_note.backend.repository.UserRepository;
 import themion.my_note.backend.security.PasswordEncoder;
 import themion.my_note.backend.service.UserService;
 
@@ -33,7 +34,7 @@ public @interface MatchPassword {
 @AllArgsConstructor
 class MatchPasswordValidator implements ConstraintValidator<MatchPassword, String> {
 
-    private final UserService service;
+    private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
     @Override
@@ -52,10 +53,10 @@ class MatchPasswordValidator implements ConstraintValidator<MatchPassword, Strin
         }
 
         String username = (String) authentication.getPrincipal();
-        User user = service.get(username).orElseGet(() -> {
+        User user = userRepository.findByUsername(username).orElseGet(() -> {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
-                CustomError.wrongUsername(username)
+                UserService.noUsernameMsg(username)
             ).addConstraintViolation();
 
             return User.builder().id(-1L).build();

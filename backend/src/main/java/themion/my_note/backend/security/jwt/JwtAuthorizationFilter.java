@@ -16,16 +16,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import themion.my_note.backend.domain.User;
-import themion.my_note.backend.dto.validation.CustomError;
-import themion.my_note.backend.repository.UserRepository;
+import themion.my_note.backend.service.UserService;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     
-    private final UserRepository repo;
+    private final UserService userService;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserService userService) {
         super(authenticationManager);
-        this.repo = userRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -60,7 +59,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             // Search in the DB if we find the user by token subject (username)
             // If so, then get user details and create spring auth token using username, pass, authorities/roles
             if (username != null) {
-                User user = repo.findByUsername(username).orElseThrow(() -> CustomError.noUsername(username));
+                User user = userService.get(username);
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username,null, user.getAuthorities());
 
                 return auth;

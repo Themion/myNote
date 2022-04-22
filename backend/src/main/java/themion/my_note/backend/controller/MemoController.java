@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import themion.my_note.backend.domain.Memo;
 import themion.my_note.backend.domain.User;
 import themion.my_note.backend.dto.memo.WriteDTO;
-import themion.my_note.backend.dto.validation.CustomError;
 import themion.my_note.backend.service.MemoService;
 import themion.my_note.backend.service.UserService;
 
@@ -26,7 +25,7 @@ public class MemoController {
     private final MemoService memoService;
 
     private Long getUserId(String username) {
-        User user = userService.get(username).orElseThrow(() -> CustomError.noUsername(username));
+        User user = userService.get(username);
         return user.getId();
     }
 

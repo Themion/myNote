@@ -58,8 +58,6 @@ public class JdbcUserRepository implements UserRepository {
         params.put("password", user.getPassword());
         params.put("nickname", user.getNickname());
         params.put("is_admin", user.getIsAdmin());
-
-        System.out.println(user.toString());
         
         Number id = insert.executeAndReturnKey(params);
         user.setId(id.longValue());

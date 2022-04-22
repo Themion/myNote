@@ -13,7 +13,7 @@ import javax.validation.Payload;
 import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
-import themion.my_note.backend.service.UserService;
+import themion.my_note.backend.repository.UserRepository;
 
 @Constraint(validatedBy = UniqueUsernameValidator.class)
 @Target({ElementType.METHOD, ElementType.FIELD})
@@ -28,21 +28,21 @@ public @interface UniqueUsername {
 @AllArgsConstructor
 class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, String> {
 
-    private final UserService service;
+    private final UserRepository userRepository;
 
     @Override
     public boolean isValid(String username, ConstraintValidatorContext context) {
 
-        boolean result = service.get(username).isPresent();
+        boolean result = userRepository.findByUsername(username).isEmpty();
 
-        if (result) {
+        if (!result) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(
                 context.getDefaultConstraintMessageTemplate()
             ).addConstraintViolation();
         }
 
-        return !result;
+        return result;
     }
     
 }
