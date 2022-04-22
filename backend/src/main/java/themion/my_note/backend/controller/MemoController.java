@@ -64,4 +64,20 @@ public class MemoController {
         
         return memo;
     }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public void edit(
+        @PathVariable Long id,
+        @RequestBody WriteDTO writeDTO,
+        @AuthenticationPrincipal String username
+    ) {
+        memoService.write(
+            Memo.builder()
+            .id(id)
+            .userid(getUserId(username))
+            .title(writeDTO.getTitle())
+            .memo(writeDTO.getMemo())
+            .build()
+        );
+    }
 }

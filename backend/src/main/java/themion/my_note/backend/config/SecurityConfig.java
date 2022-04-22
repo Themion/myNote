@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/memo").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/memo").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/memo/{id}").access("@securityUtils.ifUserHasMemo(authentication,#id)")
-                .antMatchers(HttpMethod.PUT, "/memo/**").hasRole("USER")
+                .antMatchers(HttpMethod.PUT, "/memo/{id}").access("@securityUtils.ifUserHasMemo(authentication,#id)")
 
                 .antMatchers("/").permitAll()
                 .antMatchers("/test1").hasRole("USER")
