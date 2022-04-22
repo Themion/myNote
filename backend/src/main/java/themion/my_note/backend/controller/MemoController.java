@@ -1,6 +1,9 @@
 package themion.my_note.backend.controller;
 
+import java.util.List;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,5 +42,27 @@ public class MemoController {
                 .memo(writeDTO.getMemo())
                 .build()
         );
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public List<Memo> getMemoList(
+        @AuthenticationPrincipal String username
+    ) {
+        return memoService.get(getUserId(username));
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    public Memo getMemo(
+        @PathVariable Long id,
+        @AuthenticationPrincipal String username
+    ) {
+        Memo memo = memoService.read(id).orElse(
+            Memo.builder()
+                .userid(getUserId(username))
+                .id(id)
+                .build()
+        );
+        
+        return memo;
     }
 }
