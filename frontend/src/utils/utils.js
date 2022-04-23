@@ -33,7 +33,7 @@ export const getNickname = () => {
 
 export const Center = (props) => {
     return (
-        <div className="d-flex justify-content-center mt-4">
+        <div className="d-flex justify-content-center">
             {props.content}
         </div>
     )
@@ -43,7 +43,7 @@ export const List = (props) => {
     const list = []
 
     props.contents.forEach(content => {
-        list.push(<div key={content.key} className="align-self-start">{content}</div>)
+        list.push(<div key={content.key} className="mt-4 mx-2 align-self-start">{content}</div>)
     });
     
     return <div className="d-flex flex-wrap">{list}</div>

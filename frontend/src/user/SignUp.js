@@ -2,7 +2,6 @@ import { validate } from './Input'
 import { UserForm } from './UserForm'
 
 import { localStorageAuth } from '../utils/utils'
-import { SingleCard } from '../utils/Card'
 
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 
@@ -32,29 +31,25 @@ export const SignUp = () => {
         window.location.href = "/user"
     }
 
-    return (
-        <SingleCard content={
-            <UserForm 
-            name="Sign up" 
-            inputs={[{
-                for: "username"
-            }, {
-                for: "password",
-                type: "password",
-                minLength: 6,
-                maxLength: 30
-            }, {
-                for: "password_check",
-                type: "password",
-                onChange: passwordOnChange
-            }, {
-                for: "nickname",
-                required: false
-            }]} 
-            link={{ to: "/login", text: "Log in" }} 
-            url="/user" 
-            callback={callback}
-            fallback={fallback} />
-        } />
-    )
+    return <UserForm
+        name="Sign up"
+        inputs={[{
+            for: "username"
+        }, {
+            for: "password",
+            type: "password",
+            minLength: 6,
+            maxLength: 30
+        }, {
+            for: "password_check",
+            type: "password",
+            onChange: passwordOnChange
+        }, {
+            for: "nickname",
+            required: false
+        }]}
+        link={{ to: "/login", text: "Log in" }}
+        url="/user"
+        callback={callback}
+        fallback={fallback} />
 }

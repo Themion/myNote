@@ -1,6 +1,8 @@
 import { Input } from './Input'
 
-import { send } from '../utils/utils'
+import { send, Center } from '../utils/utils'
+
+import { Card } from '../utils/Card'
 
 export const UserForm = (props) => {
     const id = props.name.replace(' ', '_')
@@ -9,7 +11,7 @@ export const UserForm = (props) => {
         e.preventDefault();
         const inputs = document.querySelectorAll(`form#${id} input.form-control`)
         const data = {};
-        
+
         let is_valid = true
 
         // document.querySelector("form.needs-validation").classList.add("was-validated")
@@ -25,15 +27,14 @@ export const UserForm = (props) => {
     }
 
     const input_list = []
-    const link = props.link ? <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a> : undefined
 
     // Input을 만들기 위한 값을 모두 넣은 뒤
     props.inputs.forEach(input => input_list.push(
-        <Input 
-            key={input.for} 
-            for={input.for} 
+        <Input
+            key={input.for}
+            for={input.for}
             type={input.type}
-            required={input.required} 
+            required={input.required}
             minLength={input.minLength}
             maxLength={input.maxLength}
             onChange={input.onChange}
@@ -43,17 +44,19 @@ export const UserForm = (props) => {
 
     // UserForm을 Return
     return (
-        <div>
-            {props.alert}
-            {link}
-            <h4 className="card-title mb-4 mt-1">{props.name}</h4>
-            <form id={id} onSubmit={onSubmit} className="needs-validation" noValidate>
-                {input_list}
-                <div className="form-floating mb-3">
-                    <button className="btn btn-primary btn-block float-end" type="submit">Submit</button>
-                </div>
-            </form>
-        </div>
+        <Center content={
+            <Card
+            title={props.name}
+            link={props.link}
+            body={
+                <form id={id} onSubmit={onSubmit} className="needs-validation" noValidate>
+                    {input_list}
+                    <div className="form-floating mb-3">
+                        <button className="btn btn-primary btn-block float-end" type="submit">Submit</button>
+                    </div>
+                </form>
+            } />
+        } />
     )
 }
 

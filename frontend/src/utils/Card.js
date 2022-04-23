@@ -1,42 +1,30 @@
 import styles from './Card.module.css'
 
-import { Center } from './utils'
+const CardHeader = (props) => {
+    return (props.header ? <div className='card-header'>{props.header}</div> : null)
+}
 
-export const Card = (props) => {
+const CardBody = (props) => {
+    const link = props.link ? <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a> : null
     return (
-        <div className={`mt-4 mx-1 card ` + styles.card}>
-            <div className="card-body">
-                {props.content}
-            </div>
+        <div className="card-body">
+            {link}
+            <h5 className='card-title mb-4 mt-1'>{props.title}</h5>
+            <p className='card-paragraph'>{props.body}</p>
         </div>
     )
 }
 
-export const SingleCard = (props) => {
+export const Card = (props) => {
+    const bg = " bg-" + props.bg
     return (
-        <Center content={
-            <Card content={
-                props.content
-            } />
-        } />
+        <div className={`card` + bg + ' ' + styles.card}>
+            <CardHeader header={props.header} />
+            <CardBody title={props.title} link={props.link} body={props.body} />
+        </div>
     )
 }
 
-export const CardList = (props) => {
-    const cardList = [];
-    props.contents.forEach(content => {
-        cardList.push(
-            <div className="col">
-                <Card key={content.key} content={content} />
-            </div>
-        )
-    });
-
-    return (
-        <Center content={
-            <div className='row'>
-                {cardList}
-            </div>
-        } />
-    )
+Card.defaultProps = {
+    bg: 'light'
 }

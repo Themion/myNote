@@ -2,9 +2,9 @@ import { localStorageAuth, getNickname } from "../utils/utils"
 
 import { Input, validate } from "./Input"
 import { UserForm } from "./UserForm"
-import { send } from "../utils/utils"
-import { CardList } from "../utils/Card"
+import { send, List, Center } from "../utils/utils"
 import { Modal } from "../utils/Modal"
+import { Card } from "../utils/Card"
 
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 
@@ -93,23 +93,29 @@ const DeleteUser = () => {
         send('/user', 'DELETE', {password: input.value}, callback, fallback)
     }
 
-    return (
+    const body = 
         <div>
-            <h4 className="card-title mb-4 mt-1">회원 탈퇴</h4>
-            <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={'#' + modalId}>회원탈퇴</button>
-            <Modal 
-                id={modalId} 
-                title="Delete User" 
-                content={<div>
-                    <p>회원 탈퇴를 위해선 비밀번호를 입력해주세요.</p>
-                    <Input
-                        for="password"
-                        type="password" />
-                </div>}
+            <button 
+                type="button" 
+                className="btn btn-danger" 
+                data-bs-toggle="modal" 
+                data-bs-target={'#' + modalId}>
+                회원탈퇴
+            </button>
+            <Modal
+                id={modalId}
+                title="Delete User"
+                content={
+                    <div>
+                        <p>회원 탈퇴를 위해선 비밀번호를 입력해주세요.</p>
+                        <Input for="password" type="password" />
+                    </div>
+                }
                 btn="danger"
                 onClick={onClick} />
         </div>
-    )
+
+    return <Card title="Delete User" body={body} />
 }
 
 export const Config = () => {
@@ -121,7 +127,7 @@ export const Config = () => {
         <div>
             <h2>{getNickname()}</h2>
             <hr />
-            <CardList contents={[<ChangePassword />, <ChangeNickname />, <DeleteUser />]} />
+            <Center content={<List contents={[<ChangePassword />, <ChangeNickname />, <DeleteUser />]} />} />
         </div>
     )
 }
