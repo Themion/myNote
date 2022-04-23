@@ -39,3 +39,16 @@ export const Center = (props) => {
     )
 }
 
+export const List = (props) => {
+    const list = []
+
+    props.contents.forEach(content => {
+        list.push(<div key={content.key} className="align-self-start">{content}</div>)
+    });
+    
+    return <div className="d-flex flex-wrap">{list}</div>
+}
+
+List.defaultProps = {
+    type: "list"
+}
