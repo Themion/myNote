@@ -16,9 +16,13 @@ const CardBody = (props) => {
 }
 
 export const Card = (props) => {
-    const bg = " bg-" + props.bg
+    const classList = ["bg-" + props.bg, styles.card, props.style]
+    let className = "card"
+
+    classList.forEach(classItem => {className += ' ' + classItem})
+
     return (
-        <div className={`card` + bg + ' ' + styles.card}>
+        <div className={className}>
             <CardHeader header={props.header} />
             <CardBody title={props.title} link={props.link} body={props.body} />
         </div>
