@@ -6,11 +6,12 @@ const CardHeader = (props) => {
 
 const CardBody = (props) => {
     const link = props.link ? <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a> : null
+    const title = props.title ? <h5 className='card-title mb-4 mt-1'>{props.title}</h5> : null
     return (
         <div className="card-body">
             {link}
-            <h5 className='card-title mb-4 mt-1'>{props.title}</h5>
-            <p className='card-paragraph'>{props.body}</p>
+            {title}
+            {props.body}
         </div>
     )
 }
@@ -30,5 +31,5 @@ export const Card = (props) => {
 }
 
 Card.defaultProps = {
-    bg: 'light'
+    bg: 'light',
 }
