@@ -4,13 +4,44 @@ import { Modal } from "../utils/Modal"
 
 import styles from './Memo.module.css'
 
+const titleId = (modalId) => modalId + '-title'
+const memoId = (modalId) => modalId + '-memo'
+
+const callback = (res) => {
+    window.location.reload()
+}
+
+const fallback = (data) => {
+    console.log(data)
+}
+
 export const Memo = (props) => {
     const bg = props.bg !== undefined ? props.bg : 'light'
+
+    const onClick = () => {
+        const url = '/memo' + (props.memoId === 'create' ? '' : `/${props.memoId}`)
+        const method = props.memoId === 'create' ? 'POST' : 'PUT'
+
+        const title = document.getElementById(titleId(modalId)).value
+        const memo = document.getElementById(memoId(modalId)).value
+
+        send(url, method, {title: title, memo: memo}, callback, fallback)
+    }
+
+    const modalId = "memo-" + props.memoId
+    const modal = <Modal 
+        id={modalId} 
+        key={modalId} 
+        width="lg"
+        title={<input id={titleId(modalId)}></input>}
+        content={<textarea id={memoId(modalId)}></textarea>}
+        onClick={onClick}/>
 
     return (
         <Card 
             style={props.style}
             bg={bg}
+            modal={modal}
             title={props.title} 
             body={props.memo} />
     )
@@ -21,6 +52,7 @@ export const CreateMemo = () => {
         <Memo
             style={styles['create-memo']}
             bg="secondary"
+            memoId="create"
             memo={<Center
                 vertical="center"
                 style={styles['create-memo']}

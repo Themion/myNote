@@ -29,9 +29,10 @@ const Footer = (props) => {
 }
 
 export const Modal = (props) => {
+    const width = "modal-" + props.width 
     return (
         <div className="modal fade" id={props.id} tabIndex="-1" aria-hidden="true">
-            <div className="modal-dialog">
+            <div className={`modal-dialog ${width}`}>
                 <div className="modal-content">
                     <Header title={props.title} />
                     <Body content={props.content}/>
@@ -40,4 +41,8 @@ export const Modal = (props) => {
             </div>
         </div>
     )
+}
+
+Modal.defaultProps = {
+    width: "md"
 }

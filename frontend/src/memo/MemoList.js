@@ -15,6 +15,7 @@ export const MemoList = (props) => {
             list.push(
                 <Memo 
                     key={item.id} 
+                    memoId={item.id} 
                     title={item.title} 
                     memo={item.memo}/>
             )
