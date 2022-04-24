@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react"
 
 import { send, List } from "../utils/utils"
-import { Memo } from "./Memo"
-import { CreateMemo } from "./CreateMemo"
+import { Memo, CreateMemo } from "./Memo"
 
 import { localStorageAuth } from "../utils/utils"
 
@@ -13,7 +12,12 @@ export const MemoList = (props) => {
         const list = [<CreateMemo />]
     
         res.data.forEach(item => {
-            list.push(<Memo key={item.id} title={item.title} memo={item.memo}/>)
+            list.push(
+                <Memo 
+                    key={item.id} 
+                    title={item.title} 
+                    memo={item.memo}/>
+            )
         })
         
         setMemoList(<List alignSelf="stretch" contents={list} />)
