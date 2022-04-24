@@ -15,12 +15,16 @@ const fallback = (data) => {
     console.log(data)
 }
 
+const ifCreateOrElse = (memoid, ifCreate, ifElse) => {
+    return (memoId === "create") ? ifCreate : ifElse
+}
+
 export const Memo = (props) => {
     const bg = props.bg !== undefined ? props.bg : 'light'
 
     const onClick = () => {
-        const url = '/memo' + (props.memoId === 'create' ? '' : `/${props.memoId}`)
-        const method = props.memoId === 'create' ? 'POST' : 'PUT'
+        const url = '/memo' + ifCreateOrElse(props.memoId, '', `/${props.memoId}`)
+        const method = ifCreateOrElse(props.memoId, 'POST', 'PUT')
 
         const title = document.getElementById(titleId(modalId)).value
         const memo = document.getElementById(memoId(modalId)).value
@@ -33,8 +37,8 @@ export const Memo = (props) => {
         id={modalId} 
         key={modalId} 
         width="lg"
-        title={<input id={titleId(modalId)}></input>}
-        content={<textarea id={memoId(modalId)}></textarea>}
+        title={<input id={titleId(modalId)} defaultValue={ifCreateOrElse(props.memoId, "", props.title)}></input>}
+        content={<textarea id={memoId(modalId)} defaultValue={ifCreateOrElse(props.memoId, "", props.memo)}></textarea>}
         onClick={onClick}/>
 
     return (
