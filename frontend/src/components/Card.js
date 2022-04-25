@@ -8,9 +8,8 @@ const CardBody = (props) => {
     const link = props.link ? <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a> : null
     const title = props.title ? <h5 className='card-title mb-4 mt-1'>{props.title}</h5> : null
 
-    const modal = props.modal !== undefined ? props.modal : null
-    const dataBsToggle = modal !== null ? "modal" : undefined
-    const dataBsTarget = modal !== null ? ('#' + modal.key) : undefined
+    const dataBsToggle = props.modal !== undefined ? "modal" : undefined
+    const dataBsTarget = props.modal !== undefined ? ('#' + props.modal.key) : undefined
 
     return (
         <div 
@@ -26,7 +25,7 @@ const CardBody = (props) => {
 
 export const Card = (props) => {
 
-    const modal = props.modal !== undefined ? props.modal : null
+    const modal = props.modal
 
     const classList = ["bg-" + props.bg, styles.card, props.style]
     let className = "card"

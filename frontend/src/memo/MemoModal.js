@@ -5,6 +5,7 @@ import styles from './MemoModal.module.css'
 
 const titleId = (id) => id + '-title'
 const memoId = (id) => id + '-memo'
+const footerId = (id) => id + '-footer'
 const ifCreateOrElse = (id, ifCreate, ifElse) => {
     return (id === "create") ? ifCreate : ifElse
 }
@@ -16,8 +17,26 @@ const MemoModalInput = (props) => {
 }
 
 const MemoModalTextArea = (props) => {
+    const onChange = (e) => {
+        const footer = document.getElementById(footerId(props.id))
+        footer.innerHTML = e.target.value.length + '/1000'
+    }
     return (
-        <textarea className={styles['textarea']} id={memoId(props.id)} placeholder="memo" defaultValue={props.memo}></textarea>
+        <textarea 
+            className={styles['textarea']} 
+            id={memoId(props.id)} 
+            maxLength={1000}
+            placeholder="memo" 
+            onChange={onChange}
+            defaultValue={props.memo}></textarea>
+    )
+}
+
+const MemoModalFooter = (props) => {
+    return (
+        <div id={footerId(props.id)}>
+            {props.memo.length}/1000
+        </div>
     )
 }
 
@@ -76,7 +95,8 @@ export const MemoModal = (props) => {
             style={styles['memo-modal']}
             title={<MemoModalInput id={modalId} title={props.title} />}
             content={<MemoModalTextArea id={modalId} memo={memo} />}
-            btn={btn} />
+            btn={btn}
+            footer={<MemoModalFooter id={modalId} memo={memo} />} />
     )
 }
 

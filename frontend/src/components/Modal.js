@@ -41,6 +41,7 @@ const Footer = (props) => {
 
     return (
         <div className="modal-footer">
+            {props.footer}
             {btn}
         </div>
     )
@@ -55,7 +56,7 @@ export const Modal = (props) => {
                 <div className={`modal-content ${props.style}`}>
                     <Header title={props.title} />
                     <Body content={props.content}/>
-                    <Footer btn={props.btn} onClick={props.onClick} />
+                    <Footer btn={props.btn} onClick={props.onClick} footer={props.footer} />
                 </div>
             </div>
         </div>
