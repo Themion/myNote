@@ -9,5 +9,6 @@ public interface MemoService {
     public void write(Memo memo);
     public Optional<Memo> read(Long id);
     public List<Memo> get(Long userId);
+    public boolean isBelongTo(Long id, Long userId);
     public void remove(Long id);
 }
