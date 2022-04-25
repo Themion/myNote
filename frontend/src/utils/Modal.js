@@ -1,7 +1,9 @@
+import styles from './Modal.module.css'
+
 const Header = (props) => {
     return (
         <div className="modal-header">
-            <h5 className="modal-title">{props.title}</h5>
+            <h5 className={`modal-title ${styles['modal-title']}`}>{props.title}</h5>
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
     )
@@ -9,7 +11,7 @@ const Header = (props) => {
 
 const Body = (props) => {
     return (
-        <div className="modal-body">
+        <div className={`modal-body ${props.style}`}>
             {props.content}
         </div>
     )
@@ -29,11 +31,12 @@ const Footer = (props) => {
 }
 
 export const Modal = (props) => {
-    const width = "modal-" + props.width 
+    const width = "modal-" + props.width
+
     return (
-        <div className="modal fade" id={props.id} tabIndex="-1" aria-hidden="true">
-            <div className={`modal-dialog ${width}`}>
-                <div className="modal-content">
+        <div className={`modal fade ${props.style}`} id={props.id} tabIndex="-1" aria-hidden="true">
+            <div className={`modal-dialog ${width} ${props.style}`}>
+                <div className={`modal-content ${props.style}`}>
                     <Header title={props.title} />
                     <Body content={props.content}/>
                     <Footer btn={props.btn} onClick={props.onClick} />
@@ -44,5 +47,6 @@ export const Modal = (props) => {
 }
 
 Modal.defaultProps = {
-    width: "md"
+    width: "md",
+    style: ""
 }
