@@ -80,4 +80,9 @@ public class MemoController {
             .build()
         );
     }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Long id) {
+        memoService.remove(id);
+    }
 }

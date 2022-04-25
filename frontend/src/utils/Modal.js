@@ -17,15 +17,33 @@ const Body = (props) => {
     )
 }
 
+const Button = (props) => {
+    const color = `btn-${props.color ? props.color : "primary"}`
+    return (
+        <button
+            type="button"
+            className={`btn ${color}`}
+            onClick={props.onClick}>{props.text}</button>
+    )
+}
+
+Button.defaultProps = {
+    color: "primary",
+    text: "Submit"
+}
+
 const Footer = (props) => {
-    const btn = `btn-${props.btn ? props.btn : "primary"}`
+    // const btn = `btn-${props.btn ? props.btn : "primary"}`
+
+    const btn = []
+    let key=1
+    props.btn.forEach(item => {
+        btn.push(<Button key={key++} color={item.color} text={item.text} onClick={item.onClick}/>)
+    })
 
     return (
         <div className="modal-footer">
-            <button 
-                type="button" 
-                className={`btn ${btn}`}
-                onClick={props.onClick}>Submit</button>
+            {btn}
         </div>
     )
 }

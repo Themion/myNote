@@ -72,25 +72,27 @@ const ChangeNickname = () => {
 const DeleteUser = () => {
     const modalId = "deleteUser"
 
-    const callback = (res) => {
-        window.location.href = '/logout'
-    }
-
-    const fallback = (data) => {
-        const input = document.querySelector(`#${modalId} input`)
-        const logs =  []
-
-
-        data.errors.forEach(err => {
-            logs.push(err.defaultMessage)
-        })
-
-        validate(input, logs)
-    }
-
     const onClick = () => {
-        const input = document.querySelector(`#${modalId} input`)
-        send('/user', 'DELETE', {password: input.value}, callback, fallback)
+        const callback = (res) => {
+            window.location.href = '/logout'
+        }
+    
+        const fallback = (data) => {
+            const input = document.querySelector(`#${modalId} input`)
+            const logs =  []
+    
+    
+            data.errors.forEach(err => {
+                logs.push(err.defaultMessage)
+            })
+    
+            validate(input, logs)
+        }
+
+        if (window.confirm("정말로 탈퇴하시겠습니까?")) {
+            const input = document.querySelector(`#${modalId} input`)
+            send('/user', 'DELETE', {password: input.value}, callback, fallback)
+        }
     }
 
     const body = 
@@ -111,8 +113,7 @@ const DeleteUser = () => {
                         <Input for="password" type="password" />
                     </div>
                 }
-                btn="danger"
-                onClick={onClick} />
+                btn={[{color: "danger", onClick: onClick}]} />
         </div>
 
     return <Card title="Delete User" body={body} />

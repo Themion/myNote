@@ -18,7 +18,6 @@ const MemoModalInput = (props) => {
 
 const MemoModalTextArea = (props) => {
     const defaultValue = ifCreateOrElse(props.id, "", props.memo)
-    console.log(defaultValue)
     return (
         <textarea className={styles['textarea']} id={memoId(props.id)} defaultValue={defaultValue}></textarea>
     )
@@ -27,15 +26,15 @@ const MemoModalTextArea = (props) => {
 export const MemoModal = (props) => {
     const modalId = "memo-" + props.id
 
-    const callback = (res) => {
-        window.location.reload()
-    }
-    
-    const fallback = (data) => {
-        console.log(data)
-    }
+    const onSubmitClick = () => {
+        const callback = (res) => {
+            window.location.reload()
+        }
+        
+        const fallback = (data) => {
+            console.log(data)
+        }
 
-    const onClick = () => {
         const url = '/memo' + ifCreateOrElse(props.id, '', `/${props.id}`)
         const method = ifCreateOrElse(props.id, 'POST', 'PUT')
 
@@ -45,6 +44,27 @@ export const MemoModal = (props) => {
         send(url, method, { title: title, memo: memo }, callback, fallback)
     }
 
+    const onDeleteClick = () => {
+        const callback = (res) => {
+            window.location.reload()
+        }
+        
+        const fallback = (data) => {
+            console.log(data)
+        }
+
+        if (window.confirm("정말로 메모를 삭제하시겠습니까?")) 
+            send(`/memo/${props.id}`, "DELETE", {}, callback, fallback)
+    }
+
+    const btn = [{
+        text: "Delete",
+        color: "warning",
+        onClick: onDeleteClick
+    }, {
+        onClick: onSubmitClick
+    }]
+
     return (
         <Modal
             id={modalId}
@@ -53,6 +73,6 @@ export const MemoModal = (props) => {
             style={styles['memo-modal']}
             title={<MemoModalInput id={modalId} title={props.title}/>}
             content={<MemoModalTextArea id={modalId} memo={props.memo}/>}
-            onClick={onClick} />
+            btn={btn} />
     )
 }
