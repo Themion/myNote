@@ -2,9 +2,11 @@ import { localStorageAuth, getNickname } from "../utils/utils"
 
 import { Input, validate } from "./Input"
 import { UserForm } from "./UserForm"
-import { send, List, Center } from "../utils/utils"
+import { send } from "../utils/utils"
 import { Modal } from "../utils/Modal"
 import { Card } from "../utils/Card"
+import { List } from "../components/List"
+import { Center } from "../components/Center"
 
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 

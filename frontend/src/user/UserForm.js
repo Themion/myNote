@@ -1,8 +1,7 @@
 import { Input } from './Input'
-
-import { send, Center } from '../utils/utils'
-
+import { send } from '../utils/utils'
 import { Card } from '../utils/Card'
+import { Center } from '../components/Center'
 
 export const UserForm = (props) => {
     const id = props.name.replace(' ', '_')

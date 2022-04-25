@@ -1,6 +1,5 @@
-import { localStorageAuth } from '../utils/utils'
-
 import { UserForm } from './UserForm'
+import { localStorageAuth } from '../utils/utils'
 
 export const Login = () => {
     const callback = (res) => {

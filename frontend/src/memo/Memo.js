@@ -1,5 +1,5 @@
 import { Card } from "../utils/Card"
-import { Center } from "../utils/utils"
+import { Center } from "../components/Center"
 import { MemoModal } from "./MemoModal"
 
 import styles from './Memo.module.css'

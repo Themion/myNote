@@ -1,6 +1,5 @@
 import { validate } from './Input'
 import { UserForm } from './UserForm'
-
 import { localStorageAuth } from '../utils/utils'
 
 const passwordOnChange = (password) => {

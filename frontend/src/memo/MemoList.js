@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react"
 
-import { send, List } from "../utils/utils"
+import { List } from "../components/List"
+import { send, localStorageAuth } from "../utils/utils"
 import { Memo, CreateMemo } from "./Memo"
-
-import { localStorageAuth } from "../utils/utils"
 
 export const MemoList = (props) => {
     const [memoList, setMemoList] = useState("loading...")
