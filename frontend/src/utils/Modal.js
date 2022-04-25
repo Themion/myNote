@@ -11,7 +11,7 @@ const Header = (props) => {
 
 const Body = (props) => {
     return (
-        <div className={`modal-body ${props.style}`}>
+        <div className="modal-body">
             {props.content}
         </div>
     )

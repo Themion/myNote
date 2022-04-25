@@ -10,16 +10,14 @@ const ifCreateOrElse = (id, ifCreate, ifElse) => {
 }
 
 const MemoModalInput = (props) => {
-    const defaultValue = ifCreateOrElse(props.id, "", props.title)
     return (
-        <input className={styles['input']} id={titleId(props.id)} defaultValue={defaultValue}></input>
+        <input className={styles['input']} id={titleId(props.id)} placeholder="title" defaultValue={props.title}></input>
     )
 }
 
 const MemoModalTextArea = (props) => {
-    const defaultValue = ifCreateOrElse(props.id, "", props.memo)
     return (
-        <textarea className={styles['textarea']} id={memoId(props.id)} defaultValue={defaultValue}></textarea>
+        <textarea className={styles['textarea']} id={memoId(props.id)} placeholder="memo" defaultValue={props.memo}></textarea>
     )
 }
 
@@ -57,13 +55,15 @@ export const MemoModal = (props) => {
             send(`/memo/${props.id}`, "DELETE", {}, callback, fallback)
     }
 
-    const btn = [{
+    const deleteBtn = {
         text: "Delete",
         color: "warning",
         onClick: onDeleteClick
-    }, {
-        onClick: onSubmitClick
-    }]
+    }
+    const submitBtn = { onClick: onSubmitClick }
+
+    const btn = ifCreateOrElse(props.id, [submitBtn], [deleteBtn, submitBtn])
+    const memo = ifCreateOrElse(props.id, "", props.memo)
 
     return (
         <Modal
@@ -72,7 +72,7 @@ export const MemoModal = (props) => {
             width="lg"
             style={styles['memo-modal']}
             title={<MemoModalInput id={modalId} title={props.title}/>}
-            content={<MemoModalTextArea id={modalId} memo={props.memo}/>}
+            content={<MemoModalTextArea id={modalId} memo={memo}/>}
             btn={btn} />
     )
 }
