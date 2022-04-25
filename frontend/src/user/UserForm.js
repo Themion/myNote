@@ -1,6 +1,6 @@
 import { Input } from './Input'
 import { send } from '../utils/utils'
-import { Card } from '../utils/Card'
+import { Card } from '../components/Card'
 import { Center } from '../components/Center'
 
 export const UserForm = (props) => {

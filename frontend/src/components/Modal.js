@@ -33,10 +33,8 @@ Button.defaultProps = {
 }
 
 const Footer = (props) => {
-    // const btn = `btn-${props.btn ? props.btn : "primary"}`
-
     const btn = []
-    let key=1
+    let key = 1
     props.btn.forEach(item => {
         btn.push(<Button key={key++} color={item.color} text={item.text} onClick={item.onClick}/>)
     })

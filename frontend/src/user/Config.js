@@ -1,10 +1,9 @@
-import { localStorageAuth, getNickname } from "../utils/utils"
+import { send, localStorageAuth, getNickname } from "../utils/utils"
 
 import { Input, validate } from "./Input"
 import { UserForm } from "./UserForm"
-import { send } from "../utils/utils"
-import { Modal } from "../utils/Modal"
-import { Card } from "../utils/Card"
+import { Modal } from "../components/Modal"
+import { Card } from "../components/Card"
 import { List } from "../components/List"
 import { Center } from "../components/Center"
 
@@ -130,7 +129,10 @@ export const Config = () => {
         <div>
             <h2>{getNickname()}</h2>
             <hr />
-            <Center content={<List contents={[<ChangePassword />, <ChangeNickname />, <DeleteUser />]} />} />
+            <Center content={<List contents={[
+                <ChangePassword key="change-password" />, 
+                <ChangeNickname key="change-nickname" />, 
+                <DeleteUser key="delete-user"/>]} />} />
         </div>
     )
 }

@@ -1,4 +1,5 @@
 import { getNickname } from "../utils/utils"
+import { MemoModal } from "../memo/MemoModal"
 
 const Header = () => {
     return (
@@ -24,10 +25,23 @@ const Header = () => {
                                 Memo
                             </a>
                             <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" href="/memo">Create Memo</a></li>
-                                <li><a className="dropdown-item" href="/memo">Delete Memo</a></li>
+                                <li>
+                                    <a 
+                                        className="dropdown-item" 
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#memo-create" >
+                                        Create Memo
+                                    </a>
+                                    
+                                </li>
+                                <li>
+                                    <a className="dropdown-item" href="/">
+                                        Delete Memo
+                                    </a>
+                                </li>
                             </ul>
                         </li>
+                        <MemoModal />
                     </div>
                 </div>
                 {/* 메뉴 목록 */}

@@ -1,5 +1,5 @@
 import { send } from "../utils/utils"
-import { Modal } from "../utils/Modal"
+import { Modal } from "../components/Modal"
 
 import styles from './MemoModal.module.css'
 
@@ -26,9 +26,9 @@ export const MemoModal = (props) => {
 
     const onSubmitClick = () => {
         const callback = (res) => {
-            window.location.reload()
+            window.location.href = "/"
         }
-        
+
         const fallback = (data) => {
             console.log(data)
         }
@@ -39,6 +39,9 @@ export const MemoModal = (props) => {
         const title = document.getElementById(titleId(modalId)).value
         const memo = document.getElementById(memoId(modalId)).value
 
+        console.log(url)
+        console.log(method)
+
         send(url, method, { title: title, memo: memo }, callback, fallback)
     }
 
@@ -46,12 +49,12 @@ export const MemoModal = (props) => {
         const callback = (res) => {
             window.location.reload()
         }
-        
+
         const fallback = (data) => {
             console.log(data)
         }
 
-        if (window.confirm("정말로 메모를 삭제하시겠습니까?")) 
+        if (window.confirm("정말로 메모를 삭제하시겠습니까?"))
             send(`/memo/${props.id}`, "DELETE", {}, callback, fallback)
     }
 
@@ -71,8 +74,14 @@ export const MemoModal = (props) => {
             key={modalId}
             width="lg"
             style={styles['memo-modal']}
-            title={<MemoModalInput id={modalId} title={props.title}/>}
-            content={<MemoModalTextArea id={modalId} memo={memo}/>}
+            title={<MemoModalInput id={modalId} title={props.title} />}
+            content={<MemoModalTextArea id={modalId} memo={memo} />}
             btn={btn} />
     )
+}
+
+MemoModal.defaultProps = {
+    id: "create",
+    title: "",
+    memo: ""
 }
