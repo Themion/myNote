@@ -12,7 +12,12 @@ const ifCreateOrElse = (id, ifCreate, ifElse) => {
 
 const MemoModalInput = (props) => {
     return (
-        <input className={styles['input']} id={titleId(props.id)} placeholder="title" defaultValue={props.title}></input>
+        <input 
+            className={styles['input']} 
+            id={titleId(props.id)} 
+            maxLength={255}
+            placeholder="title" 
+            defaultValue={props.title}></input>
     )
 }
 
@@ -34,7 +39,7 @@ const MemoModalTextArea = (props) => {
 
 const MemoModalFooter = (props) => {
     return (
-        <div id={footerId(props.id)}>
+        <div id={footerId(props.id)} className="me-auto">
             {props.memo.length}/1000
         </div>
     )
@@ -57,9 +62,6 @@ export const MemoModal = (props) => {
 
         const title = document.getElementById(titleId(modalId)).value
         const memo = document.getElementById(memoId(modalId)).value
-
-        console.log(url)
-        console.log(method)
 
         send(url, method, { title: title, memo: memo }, callback, fallback)
     }
