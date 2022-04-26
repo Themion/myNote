@@ -6,12 +6,15 @@ import {
     Navigate
 } from 'react-router-dom';
 
+import { sessionTimeOut } from './utils/utils';
 import { Login, Logout } from "./user/Login"
 import { SignUp } from './user/SignUp';
 import { Config } from "./user/Config"
 import { MemoList } from './memo/MemoList';
 
 function App() {
+    sessionTimeOut()
+
     return (
         <div className="App container">
             <Router><Routes>

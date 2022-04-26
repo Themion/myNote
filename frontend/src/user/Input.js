@@ -1,6 +1,7 @@
 import styles from './Input.module.css'
 
-import { class_invalid, class_valid } from '../utils/utils'
+const class_valid = "is-valid"
+const class_invalid = "is-invalid"
 
 export const validate = (target, logs) => {
     const feedback = target.parentElement.querySelector('.feedback')

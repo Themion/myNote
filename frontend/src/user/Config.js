@@ -1,4 +1,4 @@
-import { send, localStorageAuth, getNickname } from "../utils/utils"
+import { send, getNickname, getSession } from "../utils/utils"
 
 import { Input, validate } from "./Input"
 import { UserForm } from "./UserForm"
@@ -121,11 +121,9 @@ const DeleteUser = () => {
 }
 
 export const Config = () => {
-    if (window.localStorage.getItem(localStorageAuth) === null) {
-        window.location.href = "/login"
-    }
+    if (getSession() === null) window.location.href = "/login"
 
-    else return (
+    return (
         <div>
             <h2>{getNickname()}</h2>
             <hr />

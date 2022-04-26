@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 
 import { List } from "../components/List"
-import { send, localStorageAuth } from "../utils/utils"
+import { send, getSession } from "../utils/utils"
 import { Memo, CreateMemo } from "./Memo"
 
 export const MemoList = (props) => {
@@ -29,9 +29,7 @@ export const MemoList = (props) => {
 
     useEffect(() => { send('/memo', 'GET', {}, callback, fallback) }, [])
     
-    if (window.localStorage.getItem(localStorageAuth) === null) {
-        window.location.href = "/login"
-    }
+    if (getSession() === null) window.location.href = "/login"
 
     return memoList
 }

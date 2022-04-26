@@ -1,10 +1,7 @@
 import axios from "axios"
 
-export const class_valid = "is-valid"
-export const class_invalid = "is-invalid"
-
-export const baseURL = "https://localhost:8443"
-export const localStorageAuth = "authorization"
+const baseURL = "https://localhost:8443"
+const localStorageAuth = "authorization"
 
 export const send = (url, method, data, callback, fallback) => {
     const headers = {}
@@ -22,6 +19,10 @@ export const send = (url, method, data, callback, fallback) => {
     axios(config).then(res => callback(res)).catch(err => fallback(err.response.data))
 }
 
+export const getSession = () => window.localStorage.getItem(localStorageAuth)
+export const setSession = (session) => window.localStorage.setItem(localStorageAuth, session)
+export const removeSession = () => window.localStorage.removeItem(localStorageAuth)
+
 export const getNickname = () => {
     const JWT = window.localStorage.getItem(localStorageAuth)
     if (JWT === null) return "User"
@@ -29,4 +30,17 @@ export const getNickname = () => {
     const payload = JSON.parse(atob(JWT.split(".")[1]))
     
     return payload.nickname
+}
+
+export const getExpiration = () => {
+    const JWT = window.localStorage.getItem(localStorageAuth)
+    if (JWT === null) return new Date().getTime()
+
+    const payload = JSON.parse(atob(JWT.split(".")[1]))
+
+    return payload.exp * 1000
+}
+
+export const sessionTimeOut = () => {
+    if (getExpiration() <= new Date().getTime()) removeSession()
 }

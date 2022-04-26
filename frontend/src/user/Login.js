@@ -1,11 +1,9 @@
 import { UserForm } from './UserForm'
-import { localStorageAuth } from '../utils/utils'
+import { setSession, getSession, removeSession } from '../utils/utils'
 
 export const Login = () => {
     const callback = (res) => {
-        window.localStorage.setItem(localStorageAuth, res.headers.authorization)
-        window.onclose = Logout
-        
+        setSession(res.headers.authorization)
         window.location.href = '/'
     }
 
@@ -13,9 +11,7 @@ export const Login = () => {
         window.location.href = '/login?error'
     }
     
-    if (window.localStorage.getItem(localStorageAuth) !== null) {
-        window.location.href = "/user"
-    }
+    if (getSession() !== null) window.location.href = "/user"
 
     return <UserForm
         name="Log in"
@@ -33,10 +29,8 @@ export const Login = () => {
 }
 
 export const Logout = () => {
-    if (window.localStorage.getItem(localStorageAuth) === null) {
-        window.location.href = "/login"
-    }
+    if (window.location.href = "/user") window.location.href = "/login"
+    removeSession()
 
-    window.localStorage.removeItem(localStorageAuth)
     window.location.href = '/'
 }
