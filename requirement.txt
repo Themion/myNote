@@ -1,61 +1,12 @@
-frontend
-    회원 CRUD - 로그인 안되면 이 페이지로
-        1. create -> 회원 가입 / 로그인
-            로그인 페이지로 이동 버튼
-            form - ID, 비밀번호
-                password 암호화 불필요 -> 차라리 SSL/https를 사용하는 것이 낫다
-        2. read -> 회원정보 조회
-            노트 조회 페이지에서 접근해야 함
-            회원탈퇴 페이지로 이동 버튼?
-        3. update
-            nickname / password 수정
-        4. delete
-            회원조회 페이지에서 접근해야 함
+1. JWT 토큰 세분화
+    현재는 로그인 시 하루동안 유지되는 토큰을 사용
+    현재 토큰을 authentication token과 refresh 토큰으로 나누어 보안 강화해야 함
 
-    노트 CRUD - 로그인 되면 이 페이지로
-        1. create
-            form - 제목(~50자), 내용(~1000자)
-        2. read -> 노트 목록 / 단일 노트(modal?)
-            기본적으로 조회 페이지
-            회원조회 페이지로 이동 버튼
-            조회 페이지 안에서 버튼 하나로 노트 작성하는 modal 생성
-        3. update -> 노트 수정
-            조회 페이지에서 노트를 눌렀을 때 노트 수정하는 modal 생성
-        4. delete -> 노트 삭제
-            노트 조회 / 수정 페이지에 삭제 버튼 추가
+2. html form validation
+    현재 form validation은 input의 onChange를 통해 valid함을 표시하고 flag를 이용해 onSubmit의 send를 조절
+    html에서 자체적으로 지원하는 form validation을 이용해 이 과정을 단순화시킨다
 
-backend - controller
-    회원 CRUD - service, repository
-        1. create -> 회원 가입 / 로그인
-            password 암호화 필수 -> spring-security
-        2. read -> 회원정보 조회
-            전체 회원을 조회할 일은 없음
-            단일 회원 조회만 구현 -> read(string username)
-        3. update
-            nickname / password 수정
-            email 추가 시 SMTP를 이용한 email 인증?
-        4. delete
-            회원 삭제 시 노트도 삭제해야 함 -> cascade?
-
-    노트 CRUD - service, repository
-        1. create
-        2. read -> 노트 목록 / 단일 노트
-        3. update -> 노트 수정
-        4. delete -> 노트 삭제
-
-DB
-    회원
-        username(varchar [3, 10])
-            PK
-        password(varchar [100?])
-        nickname
-        email
-            당장 구현하지 않고 노트 CRUD까지 구현한 뒤 고려
-
-    노트
-        id(long / bigint)
-            PK
-        username(varchar [3, 10])
-            FK
-        제목(~50자)
-        내용(~1000자)
+3. 메모 String -> markdown / html
+    현재 메모는 db에 1천자 가량의 String을 저장 가능
+    이걸 markdown 혹은 html 형식의 파일로 전환해야 한다
+`

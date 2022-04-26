@@ -25,6 +25,7 @@ export const MemoList = (props) => {
     
     const fallback = (data) => {
         console.log(data)
+        window.location.reload()
     }
 
     useEffect(() => { send('/memo', 'GET', {}, callback, fallback) }, [])
