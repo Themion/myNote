@@ -2,11 +2,11 @@ package themion.my_note.backend.service;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-// import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import themion.my_note.backend.domain.User;
 
-public interface UserService/*  extends UserDetailsService  */{
+public interface UserService extends UserDetailsService {
     // 회원을 DB에 추가
     public void join(User user);
     // DB에서 username을 찾아 User 형태로 반환

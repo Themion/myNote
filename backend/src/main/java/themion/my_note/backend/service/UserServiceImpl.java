@@ -1,10 +1,7 @@
 package themion.my_note.backend.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-// import org.springframework.security.core.userdetails.User;
-// import org.springframework.security.core.userdetails.UserDetails;
-// import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import lombok.AllArgsConstructor;
 import themion.my_note.backend.domain.User;
@@ -43,23 +40,13 @@ public class UserServiceImpl implements UserService {
         repo.deleteByUsername(username);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.get(username);
+    }
+
     public static UsernameNotFoundException noUsername(String username) {
         return new UsernameNotFoundException("존재하지 않는 사용자 이름입니다: " + username);
     }
-
-    /* @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        user user;
-        Optional<user> result = repo.read(username);
-
-        if (result.isEmpty()) throw new UsernameNotFoundException("user Not Found : " + username);
-        user = result.get();
-
-        return User.builder()
-            .username(user.getUsername())
-            .password(user.getPassword())
-            .roles(user.getRole())
-            .build();
-    } */
     
 }

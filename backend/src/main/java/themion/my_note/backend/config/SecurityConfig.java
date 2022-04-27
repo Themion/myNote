@@ -15,7 +15,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import lombok.AllArgsConstructor;
 import themion.my_note.backend.security.PasswordEncoder;
-import themion.my_note.backend.security.UserDetailsService;
 import themion.my_note.backend.security.jwt.JwtAuthenticationFilter;
 import themion.my_note.backend.security.jwt.JwtAuthorizationFilter;
 import themion.my_note.backend.security.jwt.JwtUtils;
@@ -28,7 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
     private final PasswordEncoder encoder;
-    private final UserDetailsService userDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -78,7 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(this.encoder);
-        provider.setUserDetailsService(userDetailsService);
+        provider.setUserDetailsService(userService);
 
         return provider;
     }
@@ -91,7 +89,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        config.addExposedHeader(JwtUtils.HEADER);
+        config.addExposedHeader(JwtUtils.ACCESS_TOKEN_HEADER);
+        config.addExposedHeader(JwtUtils.REFRESH_TOKEN_HEADER);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
