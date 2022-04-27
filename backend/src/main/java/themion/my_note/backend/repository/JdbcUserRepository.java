@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import themion.my_note.backend.domain.User;
@@ -21,10 +22,12 @@ public class JdbcUserRepository implements UserRepository {
 
     // DB 서버와 Spring간의 드라이버 역할
     private final JdbcTemplate template;
+    private final PasswordEncoder encoder;
 
     @Autowired
     public JdbcUserRepository(DataSource dataSource) {
         template = new JdbcTemplate(dataSource);
+        this.encoder = new themion.my_note.backend.security.PasswordEncoder();
     }
 
     // H2 DB의 record를 user 객체로 mapping
@@ -55,7 +58,7 @@ public class JdbcUserRepository implements UserRepository {
 
         Map<String, Object> params = new HashMap<>();
         params.put("username", user.getUsername());
-        params.put("password", user.getPassword());
+        params.put("password", encoder.encode(user.getPassword()));
         params.put("nickname", user.getNickname());
         params.put("is_admin", user.getIsAdmin());
         
@@ -74,7 +77,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public void updatePasswordByUsername(String username, String password) {
         String query = "update user set password = ? where username = ?";
-        template.update(query, password, username);
+        template.update(query, encoder.encode(password), username);
     }
     
     // username을 가진 user의 nickname을 갱신

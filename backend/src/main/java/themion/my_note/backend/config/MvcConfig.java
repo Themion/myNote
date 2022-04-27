@@ -2,10 +2,10 @@ package themion.my_note.backend.config;
 
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import lombok.AllArgsConstructor;
 import themion.my_note.backend.repository.JdbcMemoRepository;
 import themion.my_note.backend.repository.JdbcUserRepository;
 import themion.my_note.backend.repository.MemoRepository;
@@ -17,14 +17,10 @@ import themion.my_note.backend.service.UserServiceImpl;
 
 // MVC 패턴 설정 관리
 @Configuration
+@AllArgsConstructor
 public class MvcConfig {
 
     private final DataSource dataSource;
-
-    @Autowired
-    public MvcConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Bean
     public UserService userService() {

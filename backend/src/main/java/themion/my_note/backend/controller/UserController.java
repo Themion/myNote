@@ -1,7 +1,6 @@
 package themion.my_note.backend.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +21,6 @@ import themion.my_note.backend.service.UserService;
 public class UserController {
 
     private final UserService userService;
-    private final PasswordEncoder encoder;
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public void signUp(@RequestBody @Validated SignUpDTO dto) {
@@ -31,7 +29,7 @@ public class UserController {
         
         userService.join(User.builder()
             .username(dto.getUsername())
-            .password(encoder.encode(dto.getPassword()))
+            .password(dto.getPassword())
             .nickname(dto.getNickname())
             .build()
         );
@@ -42,7 +40,7 @@ public class UserController {
         @RequestBody @Validated PasswordDTO dto,
         @AuthenticationPrincipal String username
     ) {
-        userService.changePassword(username, encoder.encode(dto.getPassword()));
+        userService.changePassword(username, dto.getPassword());
     }
 
     @RequestMapping(value = "nickname", method = RequestMethod.PUT)
