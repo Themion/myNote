@@ -5,14 +5,15 @@ import {
     Navigate
 } from 'react-router-dom';
 
-import { sessionTimeOut } from './utils/utils';
 import { Login, Logout } from "./user/Login"
 import { SignUp } from './user/SignUp';
 import { Config } from "./user/Config"
 import { MemoList } from './memo/MemoList';
 
+import { manageTokens } from './utils/session';
+
 function App() {
-    sessionTimeOut()
+    manageTokens()
 
     return (
         <div className="App container">

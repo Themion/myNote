@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
 
 import { List } from "../components/List"
-import { send, getSession, removeSession } from "../utils/utils"
+import { send } from "../utils/utils"
 import { Memo, CreateMemo } from "./Memo"
+import { getAccessToken, removeAccessToken } from "../utils/session"
 
 export const MemoList = (props) => {
     const [memoList, setMemoList] = useState("loading...")
@@ -26,12 +27,12 @@ export const MemoList = (props) => {
     const fallback = (response) => {
         console.log(response)
         window.localStorage.setItem('error', JSON.stringify(response))
-        removeSession()
+        removeAccessToken()
     }
 
     useEffect(() => { send('/memo', 'GET', {}, callback, fallback) }, [])
     
-    if (getSession() === null) window.location.href = "/login"
+    if (getAccessToken() === null) window.location.href = "/login"
 
     return memoList
 }

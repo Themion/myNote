@@ -1,9 +1,24 @@
 import { UserForm } from './UserForm'
-import { setSession, getSession, removeSession, redirect } from '../utils/utils'
+import { 
+    redirect 
+} from '../utils/utils'
+
+import { 
+    accessTokenStorage, 
+    refreshTokenStorage,
+    setAccessToken,
+    getAccessToken,
+    removeAccessToken,
+    setRefreshToken
+} from '../utils/session'
 
 export const Login = () => {
+    if (getAccessToken() !== null) redirect("/user")
+
     const callback = (res) => {
-        setSession(res.headers.authorization)
+        console.log(res)
+        setAccessToken(res.data[accessTokenStorage])
+        setRefreshToken(res.data[refreshTokenStorage])
         redirect('/')
     }
 
@@ -11,8 +26,6 @@ export const Login = () => {
         redirect('/login?error')
     }
     
-    if (getSession() !== null) redirect("/user")
-
     return <UserForm
         name="Log in"
         inputs={[{
@@ -29,8 +42,8 @@ export const Login = () => {
 }
 
 export const Logout = () => {
-    if (getSession() === null) redirect("/login")
-    removeSession()
+    if (getAccessToken() === null) redirect("/login")
+    removeAccessToken()
 
     redirect('/')
 }

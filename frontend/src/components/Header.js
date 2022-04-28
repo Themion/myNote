@@ -1,4 +1,4 @@
-import { getNickname } from "../utils/utils"
+import { getNickname } from "../utils/session";
 import { MemoModal } from "../memo/MemoModal"
 
 const Header = () => {

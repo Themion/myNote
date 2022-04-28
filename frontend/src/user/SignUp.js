@@ -1,6 +1,7 @@
 import { validate } from './Input'
 import { UserForm } from './UserForm'
-import { getSession, redirect } from '../utils/utils'
+import { redirect } from '../utils/utils'
+import { getAccessToken } from '../utils/session'
 
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 
@@ -28,7 +29,7 @@ export const SignUp = () => {
         inputs.forEach(input => validate(input, logs[input.name])) 
     }
     
-    if (getSession() !== null) redirect("/user")
+    if (getAccessToken() !== null) redirect("/user")
 
     return <UserForm
         name="Sign up"

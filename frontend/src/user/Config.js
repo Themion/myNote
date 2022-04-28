@@ -1,4 +1,5 @@
-import { send, getNickname, getSession, redirect } from "../utils/utils"
+import { send, redirect } from "../utils/utils"
+import { getAccessToken, getNickname, requestAccessToken } from "../utils/session"
 
 import { Input, validate } from "./Input"
 import { UserForm } from "./UserForm"
@@ -47,6 +48,7 @@ const ChangePassword = () => {
 
 const ChangeNickname = () => {
     const callback = (res) => {
+        requestAccessToken()
         redirect('/user?nicknameChange')
     }
 
@@ -122,7 +124,7 @@ const DeleteUser = () => {
 }
 
 export const Config = () => {
-    if (getSession() === null) redirect("/login")
+    if (getAccessToken() === null) redirect("/login")
 
     return (
         <div>
