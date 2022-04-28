@@ -1,6 +1,6 @@
 import { validate } from './Input'
 import { UserForm } from './UserForm'
-import { getSession } from '../utils/utils'
+import { getSession, redirect } from '../utils/utils'
 
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 
@@ -10,10 +10,12 @@ const passwordOnChange = (password) => {
 
 export const SignUp = () => {
     const callback = (res) => {
-        window.location.href = '/login?signup'
+        redirect('/login?signup')
     }
 
-    const fallback = (data) => {
+    const fallback = (response) => {
+        const data = response.data
+
         const inputs = document.querySelectorAll(".card-body .form-control")
         const logs = {}
 
@@ -26,7 +28,7 @@ export const SignUp = () => {
         inputs.forEach(input => validate(input, logs[input.name])) 
     }
     
-    if (getSession() !== null) window.location.href = "/user"
+    if (getSession() !== null) redirect("/user")
 
     return <UserForm
         name="Sign up"

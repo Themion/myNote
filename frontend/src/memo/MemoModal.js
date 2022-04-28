@@ -1,4 +1,4 @@
-import { send } from "../utils/utils"
+import { redirect, send } from "../utils/utils"
 import { Modal } from "../components/Modal"
 
 import styles from './MemoModal.module.css'
@@ -50,11 +50,11 @@ export const MemoModal = (props) => {
 
     const onSubmitClick = () => {
         const callback = (res) => {
-            window.location.href = "/"
+            redirect("/")
         }
 
-        const fallback = (data) => {
-            console.log(data)
+        const fallback = (response) => {
+            console.log(response)
         }
 
         const url = '/memo' + ifCreateOrElse(props.id, '', `/${props.id}`)
@@ -71,8 +71,8 @@ export const MemoModal = (props) => {
             window.location.reload()
         }
 
-        const fallback = (data) => {
-            console.log(data)
+        const fallback = (response) => {
+            console.log(response)
         }
 
         if (window.confirm("정말로 메모를 삭제하시겠습니까?"))

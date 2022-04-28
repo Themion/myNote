@@ -1,17 +1,17 @@
 import { UserForm } from './UserForm'
-import { setSession, getSession, removeSession } from '../utils/utils'
+import { setSession, getSession, removeSession, redirect } from '../utils/utils'
 
 export const Login = () => {
     const callback = (res) => {
         setSession(res.headers.authorization)
-        window.location.href = '/'
+        redirect('/')
     }
 
-    const fallback = (data) => {
-        window.location.href = '/login?error'
+    const fallback = (response) => {
+        redirect('/login?error')
     }
     
-    if (getSession() !== null) window.location.href = "/user"
+    if (getSession() !== null) redirect("/user")
 
     return <UserForm
         name="Log in"
@@ -29,8 +29,8 @@ export const Login = () => {
 }
 
 export const Logout = () => {
-    if (window.location.href = "/user") window.location.href = "/login"
+    if (getSession() === null) redirect("/login")
     removeSession()
 
-    window.location.href = '/'
+    redirect('/')
 }

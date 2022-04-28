@@ -1,4 +1,4 @@
-import { send, getNickname, getSession } from "../utils/utils"
+import { send, getNickname, getSession, redirect } from "../utils/utils"
 
 import { Input, validate } from "./Input"
 import { UserForm } from "./UserForm"
@@ -15,11 +15,11 @@ const passwordOnChange = (password) => {
 
 const ChangePassword = () => {
     const callback = (res) => {
-        window.location.href = '/user?passwordChange'
+        redirect('/user?passwordChange')
     }
 
-    const fallback = (data) => {
-        window.location.href = '/user?passwordChangeError'
+    const fallback = (response) => {
+        redirect('/user?passwordChangeError')
     }
 
     return (
@@ -47,11 +47,11 @@ const ChangePassword = () => {
 
 const ChangeNickname = () => {
     const callback = (res) => {
-        window.location.href = '/user?nicknameChange'
+        redirect('/user?nicknameChange')
     }
 
-    const fallback = (data) => {
-        window.location.href = '/user?nicknameChangeError'
+    const fallback = (response) => {
+        redirect('/user?nicknameChangeError')
     }
 
     return (
@@ -75,13 +75,14 @@ const DeleteUser = () => {
 
     const onClick = () => {
         const callback = (res) => {
-            window.location.href = '/logout'
+            redirect('/logout')
         }
     
-        const fallback = (data) => {
+        const fallback = (response) => {
             const input = document.querySelector(`#${modalId} input`)
             const logs =  []
     
+            const data = response.data
     
             data.errors.forEach(err => {
                 logs.push(err.defaultMessage)
@@ -121,7 +122,7 @@ const DeleteUser = () => {
 }
 
 export const Config = () => {
-    if (getSession() === null) window.location.href = "/login"
+    if (getSession() === null) redirect("/login")
 
     return (
         <div>

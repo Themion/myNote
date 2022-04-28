@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 
 import { List } from "../components/List"
-import { send, getSession } from "../utils/utils"
+import { send, getSession, removeSession } from "../utils/utils"
 import { Memo, CreateMemo } from "./Memo"
 
 export const MemoList = (props) => {
@@ -23,9 +23,10 @@ export const MemoList = (props) => {
         setMemoList(<List alignSelf="stretch" contents={list} />)
     }
     
-    const fallback = (data) => {
-        console.log(data)
-        window.location.reload()
+    const fallback = (response) => {
+        console.log(response)
+        window.localStorage.setItem('error', JSON.stringify(response))
+        removeSession()
     }
 
     useEffect(() => { send('/memo', 'GET', {}, callback, fallback) }, [])

@@ -3,10 +3,15 @@ import axios from "axios"
 const baseURL = "https://localhost:8443"
 const localStorageAuth = "authorization"
 
+export const getSession = () => window.localStorage.getItem(localStorageAuth)
+export const setSession = (session) => window.localStorage.setItem(localStorageAuth, session)
+export const removeSession = () => window.localStorage.removeItem(localStorageAuth)
+export const redirect = (path) => window.location.href = path
+
 export const send = (url, method, data, callback, fallback) => {
     const headers = {}
 
-    headers[localStorageAuth] = window.localStorage.getItem(localStorageAuth)
+    headers[localStorageAuth] = getSession()
 
     const config = {
         url: url,
@@ -16,15 +21,14 @@ export const send = (url, method, data, callback, fallback) => {
         baseURL: baseURL
     }
     
-    axios(config).then(res => callback(res)).catch(err => fallback(err.response.data))
+    axios(config).then(res => callback(res)).catch(err => {
+        console.log(err.response)
+        fallback(err.response)
+    })
 }
 
-export const getSession = () => window.localStorage.getItem(localStorageAuth)
-export const setSession = (session) => window.localStorage.setItem(localStorageAuth, session)
-export const removeSession = () => window.localStorage.removeItem(localStorageAuth)
-
 export const getNickname = () => {
-    const JWT = window.localStorage.getItem(localStorageAuth)
+    const JWT = getSession()
     if (JWT === null) return "User"
     
     const payload = JSON.parse(atob(JWT.split(".")[1]))
@@ -33,8 +37,8 @@ export const getNickname = () => {
 }
 
 export const getExpiration = () => {
-    const JWT = window.localStorage.getItem(localStorageAuth)
-    if (JWT === null) return new Date().getTime()
+    const JWT = getSession()
+    if (JWT === null) return new Date().getTime() + 10
 
     const payload = JSON.parse(atob(JWT.split(".")[1]))
 
@@ -42,5 +46,7 @@ export const getExpiration = () => {
 }
 
 export const sessionTimeOut = () => {
-    if (getExpiration() <= new Date().getTime()) removeSession()
+    if (getExpiration() <= new Date().getTime()) {
+        removeSession()
+    }
 }
