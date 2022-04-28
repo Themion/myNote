@@ -1,12 +1,16 @@
 import axios from "axios"
-import { Auth, getAccessToken } from "./session"
+import { Auth, getAccessToken, getRefreshToken, requestAccessToken } from "./session"
 
 export const baseURL = "https://localhost:8443"
 
 export const redirect = (path) => window.location.href = path
 
-export const send = (url, method, data, callback, fallback) => {
+export const send = async (url, method, data, callback, fallback) => {
     const headers = {}
+
+    if (getRefreshToken()) {
+        await requestAccessToken()
+    }
 
     headers[Auth] = "Bearer " + getAccessToken()
 

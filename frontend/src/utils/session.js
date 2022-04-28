@@ -26,7 +26,7 @@ export const isTokenExpired = (token) => {
     return ( getTokenPayload(token).exp * 1000) <= new Date().getTime()
 }
 
-export const requestAccessToken = () => {
+export const requestAccessToken = async () => {
     const headers = {}
     headers[Auth] = "Bearer " + getRefreshToken()
 
@@ -38,15 +38,17 @@ export const requestAccessToken = () => {
         baseURL: baseURL
     }
 
-    axios(config).then(res => setAccessToken(res.data[accessTokenStorage]))
+    const res = await axios(config)
+    setAccessToken(res.data[accessTokenStorage])
 }
 
-export const manageTokens = () => {
+export const manageTokens = async () => {
     const accessToken = getAccessToken()
     const refreshToken = getRefreshToken()
 
     if (refreshToken && isTokenExpired(refreshToken)) {
         removeRefreshToken()
-        redirect('/login')
-    } else if (accessToken && isTokenExpired(accessToken)) requestAccessToken()
+    } else if (accessToken && isTokenExpired(accessToken)) {
+        await requestAccessToken()
+    }
 }

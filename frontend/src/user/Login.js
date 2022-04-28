@@ -6,9 +6,10 @@ import {
 import { 
     accessTokenStorage, 
     refreshTokenStorage,
-    setAccessToken,
     getAccessToken,
+    setAccessToken,
     removeAccessToken,
+    removeRefreshToken,
     setRefreshToken
 } from '../utils/session'
 
@@ -44,6 +45,7 @@ export const Login = () => {
 export const Logout = () => {
     if (getAccessToken() === null) redirect("/login")
     removeAccessToken()
+    removeRefreshToken()
 
     redirect('/')
 }

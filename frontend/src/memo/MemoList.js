@@ -26,7 +26,6 @@ export const MemoList = (props) => {
     
     const fallback = (response) => {
         console.log(response)
-        window.localStorage.setItem('error', JSON.stringify(response))
         removeAccessToken()
     }
 

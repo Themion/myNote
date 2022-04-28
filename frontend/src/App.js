@@ -12,9 +12,9 @@ import { MemoList } from './memo/MemoList';
 
 import { manageTokens } from './utils/session';
 
-function App() {
+function App () {
     manageTokens()
-
+    
     return (
         <div className="App container">
             <Router><Routes>
