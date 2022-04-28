@@ -2,6 +2,8 @@ package themion.my_note.backend.security.jwt;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,24 +31,26 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        // Get LoginDTO from request using ObjectMapper
-        LoginDTO loginDTO = null;
+        Authentication auth = null;
 
         try {
-            loginDTO = new ObjectMapper().readValue(request.getInputStream(), LoginDTO.class);
+            // Get LoginDTO from request using ObjectMapper
+            LoginDTO loginDTO = new ObjectMapper().readValue(request.getInputStream(), LoginDTO.class);
+
+            // Create login token using LoginDTO
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                loginDTO.getUsername(),
+                loginDTO.getPassword(),
+                new ArrayList<>()
+            );
+
+            // Return authenticated user by authenticating login token
+            auth = authenticationManager.authenticate(token);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Create login token using LoginDTO
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-            loginDTO.getUsername(),
-            loginDTO.getPassword(),
-            new ArrayList<>()
-        );
-
-        // Return authenticated user by authenticating login token
-        return authenticationManager.authenticate(token);
+        return auth;
     }
 
     @Override
@@ -55,12 +60,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         User user = (User) authResult.getPrincipal();
 
         // Create JWT Tokens
-        String accessToken = JwtUtils.getAccessToken(request, user);
-        String refreshToken = JwtUtils.getRefreshToken(request, user);
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put(JwtUtils.ACCESS_TOKEN_HEADER, JwtUtils.getAccessToken(request, user));
+        tokens.put(JwtUtils.REFRESH_TOKEN_HEADER, JwtUtils.getRefreshToken(request, user));
 
         // Add tokens in response
-        response.addHeader(JwtUtils.ACCESS_TOKEN_HEADER, accessToken);
-        response.addHeader(JwtUtils.REFRESH_TOKEN_HEADER, refreshToken);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
     }
 
 }

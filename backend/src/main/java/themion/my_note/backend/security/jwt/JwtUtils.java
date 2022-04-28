@@ -42,6 +42,13 @@ public class JwtUtils {
         JwtUtils.SECRET = secret;
     }
 
+    public static String getUsernameFromHeader(String header) {
+        return JWT.require(JwtUtils.HMAC512())
+            .build()
+            .verify(header.replace(JwtUtils.PREFIX, ""))
+            .getSubject();
+    }
+
     private static Builder getJwtBuilder(HttpServletRequest request, User user) {
         return JWT.create()
             .withSubject(user.getUsername())

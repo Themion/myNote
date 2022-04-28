@@ -3,6 +3,7 @@ package themion.my_note.backend.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +18,6 @@ import lombok.AllArgsConstructor;
 import themion.my_note.backend.security.PasswordEncoder;
 import themion.my_note.backend.security.jwt.JwtAuthenticationFilter;
 import themion.my_note.backend.security.jwt.JwtAuthorizationFilter;
-import themion.my_note.backend.security.jwt.JwtUtils;
 import themion.my_note.backend.service.UserService;
 
 @Configuration
@@ -30,6 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        AuthenticationManager authenticationManager = authenticationManager();
+
         http
             .csrf()
                 .disable()
@@ -44,14 +46,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-            .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-            .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService))
+            .addFilter(new JwtAuthenticationFilter(authenticationManager))
+            .addFilter(new JwtAuthorizationFilter(authenticationManager, userService))
             .authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
 
                 .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers(HttpMethod.PUT, "/user/**").hasRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/user").hasRole("USER")
+
+                .antMatchers(HttpMethod.GET, "/session").permitAll()
 
                 .antMatchers(HttpMethod.POST, "/memo").hasRole("USER")
                 .antMatchers(HttpMethod.GET, "/memo").hasRole("USER")
@@ -89,8 +93,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        config.addExposedHeader(JwtUtils.ACCESS_TOKEN_HEADER);
-        config.addExposedHeader(JwtUtils.REFRESH_TOKEN_HEADER);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
