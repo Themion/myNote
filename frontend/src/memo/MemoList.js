@@ -26,7 +26,6 @@ export const MemoList = (props) => {
     
     const fallback = (response) => {
         console.log(response)
-        removeAccessToken()
     }
 
     useEffect(() => { send('/memo', 'GET', {}, callback, fallback) }, [])

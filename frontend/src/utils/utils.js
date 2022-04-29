@@ -6,13 +6,11 @@ export const baseURL = "https://localhost:8443"
 export const redirect = (path) => window.location.href = path
 
 export const send = async (url, method, data, callback, fallback) => {
+    if (getRefreshToken()) await requestAccessToken()
+    
     const headers = {}
-
-    if (getRefreshToken()) {
-        await requestAccessToken()
-    }
-
-    headers[Auth] = "Bearer " + getAccessToken()
+    const accessToken = getAccessToken()
+    if (accessToken) headers[Auth] = "Bearer " + accessToken
 
     const config = {
         url: url,
