@@ -41,12 +41,12 @@ const Header = () => {
                                 </li>
                             </ul>
                         </li>
-                        <MemoModal />
                     </div>
                 </div>
                 {/* 메뉴 목록 */}
 
             </div>
+            <MemoModal />
         </nav>
     )
 }
