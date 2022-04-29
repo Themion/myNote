@@ -33,7 +33,7 @@ public class MemoServiceImpl implements MemoService {
 
     @Override
     public boolean isBelongTo(Long id, Long userId) {
-        return repo.findByIdAndUserId(id, userId).isEmpty();
+        return repo.findByIdAndUserId(id, userId).isPresent();
     }
 
     @Override

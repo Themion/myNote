@@ -22,8 +22,8 @@ import themion.my_note.backend.service.UserService;
 @AllArgsConstructor
 public class SecurityUtils {
     
-    private static UserService userService;
-    private static MemoService memoService;
+    private UserService userService;
+    private MemoService memoService;
 
     public boolean ifUserHasMemo(Authentication auth, Long id) {
         String username = auth.getName();
