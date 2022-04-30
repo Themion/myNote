@@ -17,7 +17,7 @@ export const MemoList = (props) => {
                     key={item.id} 
                     memoId={item.id} 
                     title={item.title} 
-                    memo={<p className="mb-0 text-truncate">{item.memo}</p>}/>
+                    memo={item.memo}/>
             )
         })
         

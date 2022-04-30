@@ -18,7 +18,7 @@ const CardBody = (props) => {
             data-bs-target={dataBsTarget}>
             {link}
             {title}
-            {props.body}
+            {typeof(props.body) === 'object' ? props.body : <p className="mb-0 text-truncate">{props.body}</p>}
         </div>
     )
 }
