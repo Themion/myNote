@@ -1,7 +1,5 @@
 import { UserForm } from './UserForm'
-import { 
-    redirect 
-} from '../utils/utils'
+import { redirect, getParams } from '../utils/utils'
 
 import { 
     accessTokenStorage, 
@@ -26,6 +24,9 @@ export const Login = () => {
     const fallback = (response) => {
         redirect('/login?error')
     }
+
+    const param = getParams().has("error")
+    const alert = param ? "아이디 혹은 비밀번호가 잘못되었습니다." : null
     
     return <UserForm
         name="Log in"
@@ -39,7 +40,8 @@ export const Login = () => {
         url="/login"
         method="POST"
         callback={callback}
-        fallback={fallback} />
+        fallback={fallback}
+        alert={alert} />
 }
 
 export const Logout = () => {

@@ -2,9 +2,11 @@ import { Input } from './Input'
 import { send } from '../utils/utils'
 import { Card } from '../components/Card'
 import { Center } from '../components/Center'
+import { Alert } from '../components/Alert'
 
 export const UserForm = (props) => {
     const id = props.name.replace(' ', '_')
+    const alert = props.alert ? <Alert alert={props.alert} /> : null
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -44,16 +46,17 @@ export const UserForm = (props) => {
     return (
         <Center content={
             <Card
-            title={props.name}
-            link={props.link}
-            body={
-                <form id={id} onSubmit={onSubmit} className="needs-validation" noValidate>
-                    {input_list}
-                    <div className="form-floating mb-3">
-                        <button className="btn btn-primary btn-block float-end" type="submit">Submit</button>
-                    </div>
-                </form>
-            } />
+                title={props.name}
+                link={props.link}
+                body={
+                    <form id={id} onSubmit={onSubmit} className="needs-validation" noValidate>
+                        {alert}
+                        {input_list}
+                        <div className="form-floating mb-3">
+                            <button className="btn btn-primary btn-block float-end" type="submit">Submit</button>
+                        </div>
+                    </form>
+                } />
         } />
     )
 }

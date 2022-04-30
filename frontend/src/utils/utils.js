@@ -4,6 +4,7 @@ import { Auth, getAccessToken, getRefreshToken, requestAccessToken } from "./ses
 export const baseURL = "https://localhost:8443"
 
 export const redirect = (path) => window.location.href = path
+export const getParams = () => new URLSearchParams(window.location.search)
 
 export const send = async (url, method, data, callback, fallback) => {
     if (getRefreshToken()) await requestAccessToken()

@@ -1,12 +1,13 @@
-import { send, redirect } from "../utils/utils"
+import { send, redirect, getParams } from "../utils/utils"
 import { getAccessToken, getNickname, requestAccessToken } from "../utils/session"
 
-import { Input, validate } from "./Input"
+import { Input } from "./Input"
 import { UserForm } from "./UserForm"
-import { Modal } from "../components/Modal"
+import { Alert } from "../components/Alert"
 import { Card } from "../components/Card"
-import { List } from "../components/List"
 import { Center } from "../components/Center"
+import { List } from "../components/List"
+import { Modal } from "../components/Modal"
 
 const passwordOnChange = (password) => {
     if (password !== document.querySelector('input[name=password]').value) 
@@ -20,7 +21,7 @@ const ChangePassword = () => {
     }
 
     const fallback = (response) => {
-        redirect('/user?passwordChangeError')
+        redirect('/user?error')
     }
 
     return (
@@ -54,7 +55,7 @@ const ChangeNickname = () => {
     }
 
     const fallback = (response) => {
-        redirect('/user?nicknameChangeError')
+        redirect('/user?error')
     }
 
     return (
@@ -83,16 +84,7 @@ const DeleteUser = () => {
         }
     
         const fallback = (response) => {
-            const input = document.querySelector(`#${modalId} input`)
-            const logs =  []
-    
-            const data = response.data
-    
-            data.errors.forEach(err => {
-                logs.push(err.defaultMessage)
-            })
-    
-            validate(input, logs)
+            redirect('/user?error')
         }
 
         if (window.confirm("정말로 탈퇴하시겠습니까?")) {
@@ -128,8 +120,12 @@ const DeleteUser = () => {
 export const Config = () => {
     if (getAccessToken() === null) redirect("/login")
 
+    const param = getParams().has("error")
+    const alert = param ? <Alert alert="잘못된 비밀번호입니다." /> : null
+
     return (
         <div>
+            {alert}
             <h2>{getNickname()}</h2>
             <hr />
             <Center content={<List contents={[
