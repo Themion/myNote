@@ -28,7 +28,7 @@ public class SecurityUtils {
     public boolean ifUserHasMemo(Authentication auth, Long id) {
         String username = auth.getName();
         User user = userService.get(username);
-        return memoService.isBelongTo(user.getId(), id);
+        return memoService.isBelongTo(id, user.getId());
     }
 
     public static void setError(HttpServletResponse response, Exception e) {
