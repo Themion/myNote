@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { List } from "../components/List"
 import { send } from "../utils/utils"
 import { Memo, CreateMemo } from "./Memo"
-import { getAccessToken, removeAccessToken } from "../utils/session"
+import { getAccessToken } from "../utils/session"
 
 export const MemoList = (props) => {
     const [memoList, setMemoList] = useState("loading...")
@@ -17,7 +17,7 @@ export const MemoList = (props) => {
                     key={item.id} 
                     memoId={item.id} 
                     title={item.title} 
-                    memo={item.memo}/>
+                    memo={<p className="mb-0 text-truncate">{item.memo}</p>}/>
             )
         })
         
