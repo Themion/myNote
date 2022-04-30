@@ -50,6 +50,7 @@ export const SignUp = () => {
         }]}
         link={{ to: "/login", text: "Log in" }}
         url="/user"
+        validate
         callback={callback}
         fallback={fallback} />
 }

@@ -9,4 +9,3 @@
 3. 메모 String -> markdown / html
     현재 메모는 db에 1천자 가량의 String을 저장 가능
     이걸 markdown 혹은 html 형식의 파일로 전환해야 한다
-`

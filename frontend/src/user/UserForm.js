@@ -8,21 +8,19 @@ export const UserForm = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
+
         const inputs = document.querySelectorAll(`form#${id} input.form-control`)
         const data = {};
-
-        let is_valid = true
-
-        // document.querySelector("form.needs-validation").classList.add("was-validated")
+        const form = document.querySelector(`form#${id}`)
 
         inputs.forEach(input => {
             data[input.name] = (input.required && (input.value !== "")) ? input.value : null
-
-            is_valid = is_valid && !input.classList.contains("is-invalid")
+            console.log(input.onchange)
         })
 
-        if (is_valid)
+        if (!props.validate || form.checkValidity())
             send(props.url, props.method, data, props.callback, props.fallback)
+        else form.classList.add("was-validated")
     }
 
     const input_list = []
@@ -38,7 +36,8 @@ export const UserForm = (props) => {
             maxLength={input.maxLength}
             onChange={input.onChange}
             classList={input.classList}
-            value={input.value} />
+            value={input.value}
+            validate={props.validate} />
     ))
 
     // UserForm을 Return
@@ -60,5 +59,5 @@ export const UserForm = (props) => {
 }
 
 UserForm.defaultProps = {
-    method: 'POST'
+    validate: false
 }

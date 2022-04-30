@@ -42,7 +42,8 @@ const ChangePassword = () => {
             url="/user/password" 
             method="PUT"
             callback={callback}
-            fallback={fallback} />
+            fallback={fallback}
+            validate />
     )
 }
 
@@ -68,7 +69,8 @@ const ChangeNickname = () => {
             url="/user/nickname" 
             method="PUT"
             callback={callback}
-            fallback={fallback} />
+            fallback={fallback}
+            validate />
     )
 }
 
