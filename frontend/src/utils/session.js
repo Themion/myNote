@@ -27,8 +27,16 @@ export const isTokenExpired = (token) => {
 }
 
 export const requestAccessToken = async () => {
+    removeAccessToken()
+
+    const refreshToken = getRefreshToken()
+    if (!refreshToken || isTokenExpired(refreshToken)) {
+        redirect('/login')
+        return
+    }
+
     const headers = {}
-    headers[Auth] = "Bearer " + getRefreshToken()
+    headers[Auth] = "Bearer " + refreshToken
 
     const config = {
         url: '/session',
