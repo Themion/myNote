@@ -1,6 +1,7 @@
-import { axios, baseURL, redirect } from "./utils"
+import axios from "axios"
+import { baseURL, redirect } from "./utils"
 
-export type header = { authorization: string | null }
+export type header = { authorization: string }
 export const accessTokenStorage: string = "access-token"
 export const refreshTokenStorage: string = "refresh-token"
 

@@ -17,7 +17,6 @@ export const UserForm = (props) => {
 
         inputs.forEach(input => {
             data[input.name] = (input.required && (input.value !== "")) ? input.value : null
-            console.log(input.onchange)
         })
 
         if (!props.validate || form.checkValidity())
