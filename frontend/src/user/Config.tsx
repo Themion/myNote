@@ -9,18 +9,19 @@ import { Center } from "../components/Center"
 import { List } from "../components/List"
 import { Modal } from "../components/Modal"
 
-const passwordOnChange = (password) => {
-    if (password !== document.querySelector('input[name=password]').value) 
+// 비밀번호와 비밀번호 확인의 값을 서로 비교
+const passwordCheck = (password: string) => {
+    const input_password = document.querySelector('input[name=password]') as HTMLInputElement
+    if (password !== input_password.value) 
         return "비밀번호와 비밀번호 확인이 같지 않습니다."
-    return ""
 }
 
 const ChangePassword = () => {
-    const callback = (res) => {
+    const callback = (res: any) => {
         redirect('/user?passwordChange')
     }
 
-    const fallback = (response) => {
+    const fallback = (response: any) => {
         redirect('/user?error')
     }
 
@@ -28,20 +29,19 @@ const ChangePassword = () => {
         <UserForm 
             name="Change Password" 
             inputs={[{
-                for: "current_password",
+                name: "current_password",
                 type: "password"
             }, {
-                for: "password",
+                name: "password",
                 type: "password",
                 minLength: 6,
                 maxLength: 30
             }, {
-                for: "password_check",
+                name: "password_check",
                 type: "password",
-                onChange: passwordOnChange
+                check: passwordCheck
             }]} 
-            url="/user/password" 
-            method="PUT"
+            to={{ url: "/user/password", method: "PUT" }}
             callback={callback}
             fallback={fallback}
             validate />
@@ -49,26 +49,28 @@ const ChangePassword = () => {
 }
 
 const ChangeNickname = () => {
-    const callback = (res) => {
+    const callback = (res: any) => {
         requestAccessToken()
         redirect('/user?nicknameChange')
     }
 
-    const fallback = (response) => {
+    const fallback = (response: any) => {
+        console.log(response)
         redirect('/user?error')
     }
+
+    const inputs = [{
+        name: "password",
+        type: "password"
+    }, {
+        name: "nickname"
+    }]
 
     return (
         <UserForm 
             name="Change Nickname" 
-            inputs={[{
-                for: "password",
-                type: "password"
-            }, {
-                for: "nickname"
-            }]} 
-            url="/user/nickname" 
-            method="PUT"
+            inputs={inputs} 
+            to={{ url: "/user/nickname", method: "PUT" }}
             callback={callback}
             fallback={fallback}
             validate />
@@ -79,17 +81,17 @@ const DeleteUser = () => {
     const modalId = "deleteUser"
 
     const onClick = () => {
-        const callback = (res) => {
+        const callback = (res: any) => {
             redirect('/logout')
         }
     
-        const fallback = (response) => {
+        const fallback = (response: any) => {
             redirect('/user?error')
         }
 
         if (window.confirm("정말로 탈퇴하시겠습니까?")) {
-            const input = document.querySelector(`#${modalId} input`)
-            send('/user', 'DELETE', {password: input.value}, callback, fallback)
+            const input = document.querySelector(`#${modalId} input`) as HTMLInputElement
+            send({url: '/user', method: 'DELETE'}, {password: input.value}, callback, fallback)
         }
     }
 
@@ -108,7 +110,7 @@ const DeleteUser = () => {
                 content={
                     <div>
                         <p>회원 탈퇴를 위해선 비밀번호를 입력해주세요.</p>
-                        <Input for="password" type="password" />
+                        <Input name="password" type="password" />
                     </div>
                 }
                 btn={[{color: "danger", onClick: onClick}]} />

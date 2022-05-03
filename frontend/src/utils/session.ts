@@ -6,12 +6,12 @@ export const accessTokenStorage: string = "access-token"
 export const refreshTokenStorage: string = "refresh-token"
 
 // accessToken getter / setter
-export const getAccessToken = () => window.localStorage.getItem(accessTokenStorage)
+export const getAccessToken = () => { return window.localStorage.getItem(accessTokenStorage) }
 export const setAccessToken = (accessToken: string) => window.localStorage.setItem(accessTokenStorage, accessToken)
 export const removeAccessToken = () => window.localStorage.removeItem(accessTokenStorage)
 
 // refreshToken getter / setter
-export const getRefreshToken = () => window.localStorage.getItem(refreshTokenStorage)
+export const getRefreshToken = () => { return window.localStorage.getItem(refreshTokenStorage) }
 export const setRefreshToken = (refreshToken: string) => window.localStorage.setItem(refreshTokenStorage, refreshToken)
 export const removeRefreshToken = () => window.localStorage.removeItem(refreshTokenStorage)
 
@@ -33,7 +33,7 @@ export const isTokenExpired = (token: string): boolean => {
 }
 
 // 가지고 있는 refreshToken을 이용해 accessToken을 재발급
-export const requestAccessToken = () => {
+export const requestAccessToken = async () => {
     // 기존에 존재하던 accessToken을 제거
     removeAccessToken()
 
@@ -56,17 +56,20 @@ export const requestAccessToken = () => {
         baseURL: baseURL
     }
     // 백엔드에 요청을 보낸 뒤 accessToken을 받아와 저장
-    axios(config).then((res: any) => setAccessToken(res.data[accessTokenStorage]))
+    const res: any = await axios(config)
+    setAccessToken(res.data[accessTokenStorage])
+    return res.data[accessTokenStorage]
 }
 
 // refreshToken과 accessToken이 만료되었는지 확인
-export const manageTokens = () => {
+export const manageTokens = async () => {
     const accessToken = getAccessToken()
     const refreshToken = getRefreshToken()
 
     if (refreshToken && isTokenExpired(refreshToken)) {
         removeRefreshToken()
     } else if (accessToken && isTokenExpired(accessToken)) {
-        requestAccessToken()
+        await requestAccessToken()
+        window.location.reload()
     }
 }

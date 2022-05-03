@@ -1,11 +1,11 @@
 import React from "react"
 
-type props = {
+interface Props {
     alignSelf: string
     contents: React.ReactElement[]
 }
 
-export const List = (props: props) => {
+export const List = (props: Props) => {
     // List의 각 요소의 align-self 요소
     const alignSelf = "align-self-" + props.alignSelf
     

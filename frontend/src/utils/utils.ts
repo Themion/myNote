@@ -21,7 +21,7 @@ export const send = async (
     fallback: Function
 ) => {
     // 요청을 보내기 전 미리 accessToken을 갱신
-    if (getRefreshToken()) await requestAccessToken()
+    if (!getRefreshToken()) await requestAccessToken()
 
     // 갱신된 accessToken을 헤더에 담은 뒤
     const accessToken = getAccessToken()

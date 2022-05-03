@@ -12,33 +12,33 @@ import {
 } from '../utils/session'
 
 export const Login = () => {
-    if (getAccessToken() !== null) redirect("/user")
+    if (getAccessToken() !== null) redirect("/")
 
-    const callback = (res) => {
-        console.log(res)
+    const callback = (res: any) => {
         setAccessToken(res.data[accessTokenStorage])
         setRefreshToken(res.data[refreshTokenStorage])
         redirect('/')
     }
 
-    const fallback = (response) => {
+    const fallback = (response: any) => {
         redirect('/login?error')
     }
 
     const param = getParams().has("error")
-    const alert = param ? "아이디 혹은 비밀번호가 잘못되었습니다." : null
+    const alert = param ? "아이디 혹은 비밀번호가 잘못되었습니다." : undefined
+
+    const inputs=[{
+        name: "username"
+    }, {
+        name: "password",
+        type: "password"
+    }]
     
     return <UserForm
         name="Log in"
-        inputs={[{
-            for: "username"
-        }, {
-            for: "password",
-            type: "password"
-        }]}
+        to={{url:"/login", method:"POST"}}
         link={{ to: "/signup", text: "Sign up" }}
-        url="/login"
-        method="POST"
+        inputs={inputs}
         callback={callback}
         fallback={fallback}
         alert={alert} />
@@ -50,4 +50,6 @@ export const Logout = () => {
     removeRefreshToken()
 
     redirect('/')
+
+    return (<div></div>)
 }

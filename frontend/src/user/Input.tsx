@@ -54,8 +54,8 @@ export const validate = (target: HTMLElement, logs: string[]) => {
     }
 }
 
-export const Input = (props: Props) => {
-    props = { ...defaultProps, ...props }
+export const Input = (props_: Partial<Props>) => {
+    const props = { ...defaultProps as Props, ...props_ as Props }
 
     // 추후 html의 validation으로 구조 바꿀 것
     const onChange: ChangeEventHandler = (e: React.ChangeEvent<HTMLInputElement>) => {        

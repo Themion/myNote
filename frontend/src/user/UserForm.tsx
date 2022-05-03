@@ -1,27 +1,28 @@
 import { Input, Props as inputProps } from './Input'
 import { send, sendTo } from '../utils/utils'
-import { Card, linkType } from '../components/Card'
+import { Card, Link } from '../components/Card'
 import { Center } from '../components/Center'
 import { Alert } from '../components/Alert'
 import { FormEventHandler } from 'react'
 
 export interface Props {
     name: string,
-    inputs: Partial<inputProps>[],
     to: sendTo
+    link: Link,
+    inputs: Partial<inputProps>[],
     callback: Function,
     fallback: Function,
     alert?: string,
     validate: boolean,
-    link: linkType,
 }
 
 const defaultProps: Partial<Props> = {
     validate: false
 }
 
-export const UserForm = (props: Props) => {
-    props = { ...defaultProps as Props, ...props }
+export const UserForm = (props_: Partial<Props>) => {
+    // props에 defaultProps 적용
+    const props = { ...defaultProps as Props, ...props_ } as Props
 
     // form의 이름을 id로 변환
     const id = props.name.replace(' ', '_')

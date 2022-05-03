@@ -1,8 +1,8 @@
-export type props = {
+interface Props {
     alert: string
 }
 
-export const Alert = (props: props) => {
+export const Alert = (props: Props) => {
     return (
         <div className="alert alert-warning alert-dismissible fade show" role="alert">
             {props.alert}

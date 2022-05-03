@@ -26,18 +26,18 @@ const Header = () => {
                             </a>
                             <ul className="dropdown-menu">
                                 <li>
-                                    <a 
+                                    <div 
                                         className="dropdown-item" 
                                         data-bs-toggle="modal"
                                         data-bs-target="#memo-create" >
                                         Create Memo
-                                    </a>
+                                    </div>
                                     
                                 </li>
                                 <li>
-                                    <a className="dropdown-item" href="/">
+                                    <div className="dropdown-item">
                                         Delete Memo
-                                    </a>
+                                    </div>
                                 </li>
                             </ul>
                         </li>

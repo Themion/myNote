@@ -1,36 +1,46 @@
 import { MouseEventHandler } from 'react'
 import styles from './Modal.module.css'
 
-type headerProps = {
-    title?: string
+interface HeaderProps {
+    title?: React.ReactNode
 }
 
-type bodyProps = {
+interface BodyProps {
     content: React.ReactNode
 }
 
-type clickable = {
+interface clickable {
     onClick: MouseEventHandler
 }
 
-interface buttonProps extends clickable {
+interface ButtonProps extends clickable {
     color: string,
     text: string,
 }
 
-interface footerProps extends clickable {
+interface FooterProps extends clickable {
     footer: React.ReactNode,
-    btn: buttonProps[],
+    btn: Partial<ButtonProps>[],
 }
 
-export interface modalProps extends headerProps, bodyProps, buttonProps, footerProps {
+export interface ModalProps extends HeaderProps, BodyProps, ButtonProps, FooterProps {
     width: string,
     style: string,
     id: string
 }
 
+const buttonProps: Partial<ButtonProps> = {
+    color: "primary",
+    text: "Submit"
+}
+
+const modalProps: Partial<ModalProps> = {
+    width: "md",
+    style: ""
+}
+
 // modal의 header에 title과 닫기 버튼을 차례로 render
-const Header = (props: headerProps) => {
+const Header = (props: HeaderProps) => {
     return (
         <div className="modal-header">
             <h5 className={`modal-title ${styles['modal-title']}`}>{props.title}</h5>
@@ -40,7 +50,7 @@ const Header = (props: headerProps) => {
 }
 
 // modal의 body를 render
-const Body = (props: bodyProps) => {
+const Body = (props: BodyProps) => {
     return (
         <div className="modal-body">
             {props.content}
@@ -49,30 +59,32 @@ const Body = (props: bodyProps) => {
 }
 
 // modal에 사용될 각 버튼
-const Button = (props: buttonProps) => {
-    const color = `btn-${props.color}`
+const Button = (props: ButtonProps) => {
+    props = { ...buttonProps as ButtonProps, ...props }
+    
     return (
         <button
             type="button"
-            className={`btn ${color}`}
+            className={`btn btn-${props.color}`}
             onClick={props.onClick}>{props.text}</button>
     )
 }
 
-Button.defaultProps = {
-    color: "primary",
-    text: "Submit"
-}
-
 // modal의 footer
-const Footer = (props: footerProps) => {
+const Footer = (props_: Partial<FooterProps>) => {
+    const props = props_ as FooterProps
     // 각 버튼의 key
     let key = 1
 
     // modal의 각 버튼을 list에 담아 render
     const btn: React.ReactElement[] = []
-    props.btn.forEach((item: buttonProps) => {
-        btn.push(<Button key={key++} color={item.color} text={item.text} onClick={item.onClick}/>)
+    props.btn.forEach((item: Partial<ButtonProps>) => {
+        const btn_item = { ...buttonProps as ButtonProps, ...item as ButtonProps}
+        btn.push(
+            <Button 
+                key={key++} 
+                {...btn_item} />
+        )
     })
 
     return (
@@ -83,23 +95,20 @@ const Footer = (props: footerProps) => {
     )
 }
 
-export const Modal = (props: modalProps) => {
+export const Modal = (props_: Partial<ModalProps>) => {
+    const props = { ...modalProps, ...props_ } as ModalProps
+
     const width = `modal-${props.width}`
 
     return (
         <div className={`modal fade ${props.style}`} id={props.id} tabIndex={-1} aria-hidden="true">
             <div className={`modal-dialog ${width} ${props.style}`}>
                 <div className={`modal-content ${props.style}`}>
-                    <Header title={props.title} />
-                    <Body content={props.content}/>
-                    <Footer btn={props.btn} onClick={props.onClick} footer={props.footer} />
+                    <Header {...props} />
+                    <Body {...props} />
+                    <Footer {...props} />
                 </div>
             </div>
         </div>
     )
-}
-
-Modal.defaultProps = {
-    width: "md",
-    style: ""
 }
