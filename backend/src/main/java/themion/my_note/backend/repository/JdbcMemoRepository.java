@@ -66,7 +66,7 @@ public class JdbcMemoRepository implements MemoRepository {
 
     @Override
     public List<Memo> findByUserId(Long userId) {
-        String query = "select * from memo where user_id = ? order by user_id desc";
+        String query = "select * from memo where user_id = ? order by id desc";
         return template.query(query, mapper(), userId);
     }
     @Override

@@ -1,5 +1,7 @@
 import React from "react"
 
+import { Center } from './Center'
+
 interface Props {
     alignSelf: string
     contents: React.ReactElement[]
@@ -17,7 +19,7 @@ export const List = (props: Props) => {
         )
     });
     
-    return <div className="d-flex flex-wrap">{list}</div>
+    return <Center content={<div className="d-flex flex-wrap">{list}</div>} />
 }
 
 List.defaultProps = {

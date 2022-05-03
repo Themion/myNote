@@ -1,9 +1,26 @@
-import { getNickname } from "../utils/session";
+import { getAccessToken, getNickname } from "../utils/session";
+import { redirect } from "../utils/utils";
 import { MemoModal } from "../memo/MemoModal"
+
+const Button = () => {
+    const token = getAccessToken()
+    const text = `Log ${token ? 'out' : 'in'}`
+    const url = token ? '/logout' : '/login'
+    const className = `btn-outline-${token ? 'danger' : 'primary'}`
+
+    return (
+        <button 
+            type="button" 
+            className={`btn btn-sm ms-auto ${className}`}
+            onClick={() => redirect(url)} >
+            {text}
+        </button>
+    )
+}
 
 const Header = () => {
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <nav className="navbar navbar-expand-sm navbar-light bg-light mb-4">
             <div className="container-fluid">
 
                 {/* 홈 버튼 */}
@@ -26,6 +43,11 @@ const Header = () => {
                             </a>
                             <ul className="dropdown-menu">
                                 <li>
+                                    <a className="dropdown-item" href="/">
+                                        Memo List
+                                    </a>
+                                </li>
+                                <li>
                                     <div 
                                         className="dropdown-item" 
                                         data-bs-toggle="modal"
@@ -34,14 +56,11 @@ const Header = () => {
                                     </div>
                                     
                                 </li>
-                                <li>
-                                    <div className="dropdown-item">
-                                        Delete Memo
-                                    </div>
-                                </li>
                             </ul>
                         </li>
                     </div>
+
+                    <Button />
                 </div>
                 {/* 메뉴 목록 */}
 
