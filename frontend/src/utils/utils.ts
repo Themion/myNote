@@ -1,11 +1,18 @@
-import axios from "axios"
-import { header, getAccessToken, getRefreshToken, requestAccessToken } from "./session"
+import axios, { AxiosError, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from "axios"
+import { getAccessToken, getRefreshToken, isTokenExpired, requestAccessToken } from "./session"
 
 export const baseURL = "https://localhost:8443"
 
 export interface sendTo {
     url: string,
     method: string
+}
+
+export interface Callback {
+    (res: AxiosResponse): any
+}
+export interface Fallback {
+    (response: AxiosResponse): any
 }
 
 // 지정된 경로로 redirect
@@ -15,26 +22,28 @@ export const redirect = (path: string) => { window.location.href = path }
 export const send = async (
     to: sendTo, 
     data: object, 
-    callback: Function, 
-    fallback: Function
+    callback: Callback, 
+    fallback: Fallback
 ) => {
     // 요청을 보내기 전 미리 accessToken을 갱신
-    if (!getRefreshToken()) await requestAccessToken()
+    if (!isTokenExpired(getRefreshToken())) await requestAccessToken()
 
     // 갱신된 accessToken을 헤더에 담은 뒤
     const accessToken = getAccessToken()
-    const headers: header = { authorization: accessToken ? "Bearer " + accessToken : "" }
+    const headers: AxiosRequestHeaders = { authorization: accessToken ? "Bearer " + accessToken : "" }
 
     // 백엔드에 요청을 보낸 뒤 callback 혹은 fallback 실행
-    const config = {
+    const config: AxiosRequestConfig = {
         url: to.url,
         method: to.method,
         headers: headers,
         data: data,
         baseURL: baseURL
     }
-    axios(config).then((res: any) => callback(res)).catch((err: any) => {
-        console.log(err.response)
-        fallback(err.response)
+    axios(config).then((res: AxiosResponse) => callback(res)).catch((err: Error | AxiosError) => {
+        if (axios.isAxiosError(err)) {
+            console.log(err.response)
+            if (err.response) fallback(err.response)
+        } else console.log(err)
     })
 }

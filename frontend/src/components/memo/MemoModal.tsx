@@ -1,8 +1,7 @@
 import React, { ChangeEventHandler } from "react"
-import { useNavigate } from "react-router-dom"
 
-import { send } from "../utils/utils"
-import { Modal } from "../components/Modal"
+import { Callback, Fallback, redirect, send } from "../../utils/utils"
+import { Modal } from "../Modal"
 
 import styles from './MemoModal.module.css'
 
@@ -73,14 +72,12 @@ const MemoModalFooter = (props: MemoModalTextareaProps) => {
 export const MemoModal = (props: MemoModalProps) => {
     const modalId = "memo-" + props.id
 
-    const navigate = useNavigate()
-
     const onSubmitClick = () => {
-        const callback = (res: any) => {
-            navigate("/")
+        const callback: Callback = (res: any) => {
+            redirect('/')
         }
 
-        const fallback = (response: any) => {
+        const fallback: Fallback = (response: any) => {
             console.log(response)
         }
 

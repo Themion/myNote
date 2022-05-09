@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 
-import { validate } from './Input'
-import { UserForm } from './UserForm'
-import { getAccessToken } from '../utils/session'
+import { validate } from '../components/user/Input'
+import { UserForm } from '../components/user/Form'
 
 // 비밀번호와 비밀번호 확인의 값을 서로 비교
 const passwordCheck = (password: string) => {
@@ -13,8 +12,6 @@ const passwordCheck = (password: string) => {
 
 export const SignUp = () => {
     const navigate = useNavigate()
-
-    if (getAccessToken() !== null) navigate("/user")
 
     const callback = (res: any) => {
         navigate('/login?signup')

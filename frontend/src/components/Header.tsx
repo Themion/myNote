@@ -1,5 +1,5 @@
 import { getAccessToken, getNickname } from "../utils/session";
-import { MemoModal } from "../memo/MemoModal"
+import { MemoModal } from "./memo/MemoModal"
 import { Link } from "react-router-dom";
 
 const Button = () => {

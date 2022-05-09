@@ -1,30 +1,28 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { UserForm } from './UserForm'
+import { UserForm } from '../components/user/Form'
 
 import { 
     accessTokenStorage, 
     refreshTokenStorage,
-    getAccessToken,
     setAccessToken,
+    setRefreshToken,
     removeAccessToken,
-    removeRefreshToken,
-    setRefreshToken
+    removeRefreshToken
 } from '../utils/session'
+import { Callback, Fallback } from '../utils/utils'
 
 export const Login = () => {
     const navigate = useNavigate()
     const [search] = useSearchParams()
 
-    if (getAccessToken() !== null) navigate("/")
-
-    const callback = (res: any) => {
+    const callback: Callback = (res) => {
         setAccessToken(res.data[accessTokenStorage])
         setRefreshToken(res.data[refreshTokenStorage])
         navigate('/')
     }
 
-    const fallback = (response: any) => {
+    const fallback: Fallback = (response) => {
         navigate('/login?error')
     }
 
@@ -50,7 +48,6 @@ export const Login = () => {
 export const Logout = () => {
     const navigate = useNavigate()
 
-    if (getAccessToken() === null) navigate("/login")
     removeAccessToken()
     removeRefreshToken()
 

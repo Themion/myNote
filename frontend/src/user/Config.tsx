@@ -1,10 +1,10 @@
 import { useNavigate, useSearchParams } from "react-router-dom"
 
-import { send } from "../utils/utils"
-import { getAccessToken, getNickname, requestAccessToken } from "../utils/session"
+import { Callback, Fallback, send } from "../utils/utils"
+import { getNickname, requestAccessToken } from "../utils/session"
 
-import { Input } from "./Input"
-import { UserForm } from "./UserForm"
+import { Input } from "../components/user/Input"
+import { UserForm } from "../components/user/Form"
 import { Alert } from "../components/Alert"
 import { Card } from "../components/Card"
 import { Center } from "../components/Center"
@@ -21,11 +21,11 @@ const passwordCheck = (password: string) => {
 const ChangePassword = () => {
     const navigate = useNavigate()
 
-    const callback = (res: any) => {
-        navigate('/user?passwordChange')
+    const callback: Callback = (res) => {
+        navigate('/user?passwordChange', {replace: true})
     }
 
-    const fallback = (response: any) => {
+    const fallback: Fallback = (response) => {
         navigate('/user?error')
     }
 
@@ -55,12 +55,12 @@ const ChangePassword = () => {
 const ChangeNickname = () => {
     const navigate = useNavigate()
 
-    const callback = (res: any) => {
-        requestAccessToken()
-        navigate('/user?nicknameChange')
+    const callback: Callback = async (res) => {
+        await requestAccessToken()
+        navigate('/user?nicknameChange', {replace: true})
     }
 
-    const fallback = (response: any) => {
+    const fallback: Fallback = (response) => {
         console.log(response)
         navigate('/user?error')
     }
@@ -89,11 +89,11 @@ const DeleteUser = () => {
     const modalId = "deleteUser"
 
     const onClick = () => {
-        const callback = (res: any) => {
+        const callback: Callback = (res) => {
             navigate('/logout')
         }
     
-        const fallback = (response: any) => {
+        const fallback: Fallback = (response) => {
             navigate('/user?error')
         }
 
@@ -128,10 +128,7 @@ const DeleteUser = () => {
 }
 
 export const Config = () => {
-    const navigate = useNavigate()
     const [search] = useSearchParams()
-
-    if (getAccessToken() === null) navigate("/login")
 
     const alert = search.has('error') ? <Alert alert="잘못된 비밀번호입니다." /> : null
 

@@ -1,16 +1,14 @@
+import { AxiosResponse } from "axios"
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
 
 import { List } from "../components/List"
 import { send, sendTo } from "../utils/utils"
-import { Memo, CreateMemo, Props as MemoProps } from "./Memo"
-import { getAccessToken } from "../utils/session"
+import { Memo, CreateMemo, Props as MemoProps } from "../components/memo/Memo"
 
 export const MemoList = () => {
     const [memoList, setMemoList] = useState(<p>loading...</p>)
-    const navigate = useNavigate()
 
-    const callback = (res: any) => {
+    const callback = (res: AxiosResponse) => {
         const list = [<CreateMemo />]
     
         res.data.forEach((item: Partial<MemoProps>) => {
@@ -32,8 +30,6 @@ export const MemoList = () => {
 
         send(to, {}, callback, fallback)
     }, [])
-
-    if (getAccessToken() === null) navigate("/login")
 
     return memoList!
 }

@@ -1,5 +1,5 @@
-import { Card, CardProps } from "../components/Card"
-import { Center } from "../components/Center"
+import { Card, CardProps } from "../Card"
+import { Center } from "../Center"
 import { MemoModal, Id } from "./MemoModal"
 
 export interface Props extends CardProps {

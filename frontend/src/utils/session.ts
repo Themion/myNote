@@ -1,7 +1,6 @@
-import axios from "axios"
-import { baseURL, redirect } from "./utils"
+import axios, { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from "axios"
+import { baseURL } from "./utils"
 
-export type header = { authorization: string }
 export const accessTokenStorage: string = "access-token"
 export const refreshTokenStorage: string = "refresh-token"
 
@@ -28,7 +27,8 @@ export const getNickname = (): string => {
 }
 
 // 인자로 주어진 token이 만료되었는지 여부를 반환
-export const isTokenExpired = (token: string): boolean => {
+export const isTokenExpired = (token: string | null): boolean => {
+    if (!token) return true
     return ( getTokenPayload(token).exp * 1000) <= new Date().getTime()
 }
 
@@ -37,18 +37,11 @@ export const requestAccessToken = async () => {
     // 기존에 존재하던 accessToken을 제거
     removeAccessToken()
 
-    // refreshToken이 없거나 만료되었다면 로그인 페이지로 이동
-    const refreshToken = getRefreshToken()
-    if (!refreshToken || isTokenExpired(refreshToken)) {
-        redirect('/login')
-        return
-    }
-
     // 헤더에 refreshToken을 저장한 뒤
-    const headers: header = { authorization: "Bearer " + refreshToken }
+    const headers: AxiosRequestHeaders = { authorization: "Bearer " + getRefreshToken() }
 
     // 백엔드에 보낼 요청
-    const config = {
+    const config: AxiosRequestConfig = {
         url: '/session',
         method: 'GET',
         headers: headers,
@@ -56,19 +49,16 @@ export const requestAccessToken = async () => {
         baseURL: baseURL
     }
     // 백엔드에 요청을 보낸 뒤 accessToken을 받아와 저장
-    const res: any = await axios(config)
+    const res: AxiosResponse = await axios(config)
     setAccessToken(res.data[accessTokenStorage])
     return res.data[accessTokenStorage]
 }
 
 // refreshToken과 accessToken이 만료되었는지 확인
 export const manageTokens = async () => {
-    const accessToken = getAccessToken()
-    const refreshToken = getRefreshToken()
-
-    if (refreshToken && isTokenExpired(refreshToken)) {
+    if (isTokenExpired(getRefreshToken())) {
         removeRefreshToken()
-    } else if (accessToken && isTokenExpired(accessToken)) {
+    } else if (isTokenExpired(getAccessToken())) {
         await requestAccessToken()
         window.location.reload()
     }
