@@ -1,15 +1,15 @@
 import {
     BrowserRouter as Router,
     Routes,
-    Route,
-    Navigate
+    Route
 } from 'react-router-dom';
 
 import { Login, Logout } from "./user/Login"
 import { SignUp } from './user/SignUp';
 import { Config } from "./user/Config"
-import { MemoList } from './memo/MemoList';
+import { MemoList } from './routes/Home';
 import Header from './components/Header';
+import { AuthWrapper, NoAuthWrapper } from './components/AuthWrapper';
 
 import { manageTokens } from './utils/session';
 
@@ -21,12 +21,31 @@ function App () {
             <Header />
             <div className="App container">
                 <Routes>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/logout" element={<Logout />} />
-                    <Route path="/signup" element={<SignUp />} />
-                    <Route path="/user" element={<Config />} />
-                    <Route path="/" element={<MemoList />} />
-                    <Route path="*" element={<Navigate to="/login" />} />
+                    <Route path="/login" element={
+                        <NoAuthWrapper>
+                            <Login />
+                        </NoAuthWrapper>
+                    } />
+                    <Route path="/logout" element={
+                        <AuthWrapper>
+                            <Logout />
+                        </AuthWrapper>
+                    } />
+                    <Route path="/signup" element={
+                        <NoAuthWrapper>
+                            <SignUp />
+                        </NoAuthWrapper>
+                    } />
+                    <Route path="/user" element={
+                        <AuthWrapper>
+                            <Config />
+                        </AuthWrapper>
+                    } />
+                    <Route path="/" element={
+                        <AuthWrapper>
+                            <MemoList />
+                        </AuthWrapper>
+                    } />
                 </Routes>
             </div>
         </Router>
