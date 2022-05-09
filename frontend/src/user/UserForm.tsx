@@ -1,6 +1,6 @@
 import { Input, Props as inputProps } from './Input'
 import { send, sendTo } from '../utils/utils'
-import { Card, Link } from '../components/Card'
+import { Card, LinkButton } from '../components/Card'
 import { Center } from '../components/Center'
 import { Alert } from '../components/Alert'
 import { FormEventHandler } from 'react'
@@ -8,7 +8,7 @@ import { FormEventHandler } from 'react'
 export interface Props {
     name: string,
     to: sendTo
-    link: Link,
+    link: LinkButton,
     inputs: Partial<inputProps>[],
     callback: Function,
     fallback: Function,

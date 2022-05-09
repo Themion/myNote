@@ -1,8 +1,10 @@
-import { redirect, send } from "../utils/utils"
+import React, { ChangeEventHandler } from "react"
+import { useNavigate } from "react-router-dom"
+
+import { send } from "../utils/utils"
 import { Modal } from "../components/Modal"
 
 import styles from './MemoModal.module.css'
-import React, { ChangeEventHandler } from "react"
 
 export type Id = string | number
 
@@ -71,9 +73,11 @@ const MemoModalFooter = (props: MemoModalTextareaProps) => {
 export const MemoModal = (props: MemoModalProps) => {
     const modalId = "memo-" + props.id
 
+    const navigate = useNavigate()
+
     const onSubmitClick = () => {
         const callback = (res: any) => {
-            redirect("/")
+            navigate("/")
         }
 
         const fallback = (response: any) => {

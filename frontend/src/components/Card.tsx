@@ -1,13 +1,14 @@
+import { Link } from 'react-router-dom'
 import styles from './Card.module.css'
 
 // 링크 버튼을 만들기 위한 object
-export interface Link {
+export interface LinkButton {
     to: string,
     text: string
 }
 
 interface BodyProps {
-    link?: Link,
+    link?: LinkButton,
     title: string,
     body: React.ReactNode,
     style?: string
@@ -27,7 +28,8 @@ const CardHeader = (props) => {
 // Card 컴포넌트의 body
 const CardBody = (props: BodyProps) => {
     // 다른 페이지로의 링크 버튼
-    const link = props.link ? <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a> : null
+    const link = props.link ? <Link to={props.link.to}><button className="float-end btn btn-outline-primary">{props.link.text}</button></Link> : null
+    // const link = props.link ? <a className="float-end btn btn-outline-primary" href={props.link.to}>{props.link.text}</a> : null
     // Card의 타이틀
     const title = props.title ? <h5 className='card-title mb-4 mt-1'>{props.title}</h5> : null
     // body에 표시할 내용이 object라면 그대로 출력하고 아니라면 text-truncate 적용

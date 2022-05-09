@@ -1,6 +1,6 @@
 import { getAccessToken, getNickname } from "../utils/session";
-import { redirect } from "../utils/utils";
 import { MemoModal } from "../memo/MemoModal"
+import { Link } from "react-router-dom";
 
 const Button = () => {
     const token = getAccessToken()
@@ -9,12 +9,13 @@ const Button = () => {
     const className = `btn-outline-${token ? 'danger' : 'primary'}`
 
     return (
-        <button 
-            type="button" 
-            className={`btn btn-sm ms-auto ${className}`}
-            onClick={() => redirect(url)} >
-            {text}
-        </button>
+        <Link to={url} className="ms-auto">
+            <button 
+                type="button" 
+                className={`btn btn-sm ${className}`} >
+                {text}
+            </button>
+        </Link>
     )
 }
 
