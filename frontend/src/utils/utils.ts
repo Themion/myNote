@@ -10,8 +10,6 @@ export interface sendTo {
 
 // 지정된 경로로 redirect
 export const redirect = (path: string) => { window.location.href = path }
-// 현재 경로의 params를 객체 형태로 반환
-export const getParams = () => new URLSearchParams(window.location.search)
 
 // axios 실행
 export const send = async (

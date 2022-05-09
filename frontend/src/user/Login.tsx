@@ -1,5 +1,6 @@
+import { useNavigate, useSearchParams } from 'react-router-dom'
+
 import { UserForm } from './UserForm'
-import { redirect, getParams } from '../utils/utils'
 
 import { 
     accessTokenStorage, 
@@ -12,20 +13,22 @@ import {
 } from '../utils/session'
 
 export const Login = () => {
-    if (getAccessToken() !== null) redirect("/")
+    const navigate = useNavigate()
+    const [search] = useSearchParams()
+
+    if (getAccessToken() !== null) navigate("/")
 
     const callback = (res: any) => {
         setAccessToken(res.data[accessTokenStorage])
         setRefreshToken(res.data[refreshTokenStorage])
-        redirect('/')
+        navigate('/')
     }
 
     const fallback = (response: any) => {
-        redirect('/login?error')
+        navigate('/login?error')
     }
 
-    const param = getParams().has("error")
-    const alert = param ? "아이디 혹은 비밀번호가 잘못되었습니다." : undefined
+    const alert = search.has("error") ? "아이디 혹은 비밀번호가 잘못되었습니다." : undefined
 
     const inputs=[{
         name: "username"
@@ -45,11 +48,13 @@ export const Login = () => {
 }
 
 export const Logout = () => {
-    if (getAccessToken() === null) redirect("/login")
+    const navigate = useNavigate()
+
+    if (getAccessToken() === null) navigate("/login")
     removeAccessToken()
     removeRefreshToken()
 
-    redirect('/')
+    navigate('/')
 
     return (<div></div>)
 }

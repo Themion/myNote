@@ -1,4 +1,6 @@
-import { send, redirect, getParams } from "../utils/utils"
+import { useNavigate, useSearchParams } from "react-router-dom"
+
+import { send } from "../utils/utils"
 import { getAccessToken, getNickname, requestAccessToken } from "../utils/session"
 
 import { Input } from "./Input"
@@ -17,12 +19,14 @@ const passwordCheck = (password: string) => {
 }
 
 const ChangePassword = () => {
+    const navigate = useNavigate()
+
     const callback = (res: any) => {
-        redirect('/user?passwordChange')
+        navigate('/user?passwordChange')
     }
 
     const fallback = (response: any) => {
-        redirect('/user?error')
+        navigate('/user?error')
     }
 
     return (
@@ -49,14 +53,16 @@ const ChangePassword = () => {
 }
 
 const ChangeNickname = () => {
+    const navigate = useNavigate()
+
     const callback = (res: any) => {
         requestAccessToken()
-        redirect('/user?nicknameChange')
+        navigate('/user?nicknameChange')
     }
 
     const fallback = (response: any) => {
         console.log(response)
-        redirect('/user?error')
+        navigate('/user?error')
     }
 
     const inputs = [{
@@ -78,15 +84,17 @@ const ChangeNickname = () => {
 }
 
 const DeleteUser = () => {
+    const navigate = useNavigate()
+
     const modalId = "deleteUser"
 
     const onClick = () => {
         const callback = (res: any) => {
-            redirect('/logout')
+            navigate('/logout')
         }
     
         const fallback = (response: any) => {
-            redirect('/user?error')
+            navigate('/user?error')
         }
 
         if (window.confirm("정말로 탈퇴하시겠습니까?")) {
@@ -120,10 +128,12 @@ const DeleteUser = () => {
 }
 
 export const Config = () => {
-    if (getAccessToken() === null) redirect("/login")
+    const navigate = useNavigate()
+    const [search] = useSearchParams()
 
-    const param = getParams().has("error")
-    const alert = param ? <Alert alert="잘못된 비밀번호입니다." /> : null
+    if (getAccessToken() === null) navigate("/login")
+
+    const alert = search.has('error') ? <Alert alert="잘못된 비밀번호입니다." /> : null
 
     return (
         <div>
