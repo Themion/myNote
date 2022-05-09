@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
-import { UserForm } from '../components/user/Form'
+import { Form } from '../components/user/Form'
 
 import { 
     accessTokenStorage, 
@@ -35,7 +35,7 @@ export const Login = () => {
         type: "password"
     }]
     
-    return <UserForm
+    return <Form
         name="Log in"
         to={{url:"/login", method:"POST"}}
         link={{ to: "/signup", text: "Sign up" }}
@@ -53,5 +53,5 @@ export const Logout = () => {
 
     navigate('/')
 
-    return (<div></div>)
+    return <div></div>
 }

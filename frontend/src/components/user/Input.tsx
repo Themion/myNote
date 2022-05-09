@@ -6,6 +6,13 @@ const is_invalid = "is-invalid"
 const valid_feedback = "valid-feedback"
 const invalid_feedback = "invalid-feedback"
 
+// 비밀번호와 비밀번호 확인의 값을 서로 비교
+export const passwordCheck = (password: string) => {
+    const input_password = document.querySelector('input[name=password]') as HTMLInputElement
+    if (password !== input_password.value) 
+        return "비밀번호와 비밀번호 확인이 같지 않습니다."
+}
+
 export interface Props {
     name: string
     type: string

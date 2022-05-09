@@ -4,14 +4,14 @@ import {
     Route
 } from 'react-router-dom';
 
-import { Login, Logout } from "./user/Login"
-import { SignUp } from './user/SignUp';
-import { Config } from "./user/Config"
-import { MemoList } from './routes/Home';
+import { Login, Logout } from "./routes/Login"
+import { Home } from './routes/Home';
 import Header from './components/Header';
 import { AuthWrapper, NoAuthWrapper } from './components/AuthWrapper';
 
 import { manageTokens } from './utils/session';
+import { SignUp } from './routes/SignUp';
+import { Config } from './routes/Config';
 
 function App () {
     manageTokens()
@@ -43,7 +43,7 @@ function App () {
                     } />
                     <Route path="/" element={
                         <AuthWrapper>
-                            <MemoList />
+                            <Home />
                         </AuthWrapper>
                     } />
                 </Routes>

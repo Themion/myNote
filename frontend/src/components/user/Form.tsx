@@ -21,7 +21,7 @@ const defaultProps: Partial<Props> = {
     validate: false
 }
 
-export const UserForm = (props_: Partial<Props>) => {
+export const Form = (props_: Partial<Props>) => {
     // props에 defaultProps 적용
     const props = { ...defaultProps as Props, ...props_ } as Props
 
