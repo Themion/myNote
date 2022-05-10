@@ -30,11 +30,11 @@ public class MemoController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public void write(
+    public Memo write(
         @RequestBody WriteDTO writeDTO,
         @AuthenticationPrincipal String username
     ) {
-        memoService.write(
+        return memoService.write(
             Memo.builder()
                 .userid(getUserId(username))
                 .title(writeDTO.getTitle())
@@ -66,12 +66,12 @@ public class MemoController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public void edit(
+    public Memo edit(
         @PathVariable Long id,
         @RequestBody WriteDTO writeDTO,
         @AuthenticationPrincipal String username
     ) {
-        memoService.write(
+        return memoService.write(
             Memo.builder()
             .id(id)
             .userid(getUserId(username))

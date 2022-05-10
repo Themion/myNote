@@ -13,12 +13,16 @@ public class MemoServiceImpl implements MemoService {
     private final MemoRepository repo;
 
     @Override
-    public void write(Memo memo) {
-        if (memo.getId() == null) repo.save(memo);
-        else repo.findById(memo.getId()).ifPresentOrElse(
-            m -> { repo.update(m.getId(), memo); },
+    public Memo write(Memo memo) {
+        Long id = memo.getId();
+        if (id == null) return repo.save(memo);
+        // id값이 있다면 update, 없다면 create하므로
+        // findById(id)는 반드시 isPresent한 값
+        repo.findById(id).ifPresentOrElse(
+            m -> {repo.update(m.getId(), memo); },
             () -> { repo.save(memo); }
         );
+        return repo.findById(id).get();
     }
 
     @Override

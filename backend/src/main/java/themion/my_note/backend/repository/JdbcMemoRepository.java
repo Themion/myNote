@@ -76,9 +76,12 @@ public class JdbcMemoRepository implements MemoRepository {
     }
 
     @Override
-    public void update(Long id, Memo memo) {
+    public Memo update(Long id, Memo memo) {
         String query = "update memo set title = ?, memo = ? where id = ?";
-        template.update(query, memo.getTitle(), memo.getMemo(), id);
+        int result = template.update(query, memo.getTitle(), memo.getMemo(), id);
+        System.out.println(result);
+        // update 실패 시 Exception이 발생할 것이므로 id는 존재하는 메모의 id이다
+        return this.findById(id).get();
     }
 
     @Override

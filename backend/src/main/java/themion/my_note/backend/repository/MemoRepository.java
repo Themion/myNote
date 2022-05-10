@@ -10,6 +10,6 @@ public interface MemoRepository {
     public Optional<Memo> findById(Long id);
     public List<Memo> findByUserId(Long userId);
     public Optional<Memo> findByIdAndUserId(Long id, Long userId);
-    public void update(Long id, Memo memo);
+    public Memo update(Long id, Memo memo);
     public void deleteById(Long id);
 }
