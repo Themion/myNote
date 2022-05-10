@@ -28,7 +28,8 @@ export const getNickname = (): string => {
 
 // 인자로 주어진 token이 만료되었는지 여부를 반환
 export const isTokenExpired = (token: string | null): boolean => {
-    return !!token && (getTokenPayload(token).exp * 1000) <= new Date().getTime()
+    if (!token) return true
+    return (getTokenPayload(token).exp * 1000) <= new Date().getTime()
 }
 
 // 가지고 있는 refreshToken을 이용해 accessToken을 재발급
