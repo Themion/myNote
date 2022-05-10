@@ -89,13 +89,15 @@ export const Input = (props_: Partial<Props>) => {
         validate(e.target, logs)
     }
 
+    const inputProps = { ...props, validate: undefined, check: undefined }
+
     return (
         <div className="form-floating mb-3">
             <input
                 className="form-control"
                 placeholder=' '
                 onChange={onChange}
-                {...props} />
+                { ...inputProps } />
             <label htmlFor={props.name} className="form-label">
                 {props.name.replace('_', ' ') + (props.required ? "" : " (Optional)")}
             </label>
