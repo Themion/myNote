@@ -10,7 +10,7 @@ export type Id = string | number
 const titleId = (id: Id) => id + '-title'
 const memoId = (id: Id) => id + '-memo'
 const footerId = (id: Id) => id + '-footer'
-const ifCreateOrElse = (id: Id, ifCreate: any, ifElse: any) => {
+export const ifCreateOrElse = (id: Id, ifCreate: any, ifElse: any) => {
     return (id === "create") ? ifCreate : ifElse
 }
 const memoToString = (memo: React.ReactNode) => typeof(memo) === "string" ? memo : ""

@@ -20,6 +20,10 @@ export interface CardProps extends BodyProps {
     bg: string
 }
 
+const defaultProps: Partial<CardProps> = {
+    bg: 'light'
+}
+
 /* // Card 컴포넌트의 header
 const CardHeader = (props) => {
     return (props.header ? <div className='card-header'>{props.header}</div> : null)
@@ -44,7 +48,10 @@ const CardBody = (props: BodyProps) => {
     )
 }
 
-export const Card = (props: CardProps) => {
+export const Card = (props_: Partial<CardProps>) => {
+    const props = { ...defaultProps, ...props_ } as CardProps
+
+    
     // card에 지정할 클래스의 배열
     const classList = ["bg-" + props.bg, styles.card]
     // card에 실제로 들어갈 클래스
@@ -64,8 +71,4 @@ export const Card = (props: CardProps) => {
             <CardBody {...props} />
         </div>
     )
-}
-
-Card.defaultProps = {
-    bg: 'light',
 }

@@ -1,11 +1,13 @@
 import { Card, CardProps } from "../Card"
 import { Center } from "../Center"
-import { MemoModal, Id } from "./MemoModal"
+import { MemoModal, Id, ifCreateOrElse } from "./MemoModal"
 
 export interface Props extends CardProps {
     id: Id
     memo: React.ReactNode
 }
+
+const modalId = (id: Id) => 'memo-' + id
 
 const defaultProps: Partial<Props> = {
     id: "create",
@@ -21,9 +23,13 @@ const defaultProps: Partial<Props> = {
 
 export const Memo = (props_: Partial<Props>) => {
     const props = { ...defaultProps, ...props_ } as Props
-    const modal = <MemoModal id={props.id} key={"memo-" + props.id} title={props.title} memo={props.memo} />
+    // const modal = props.id !== 'create' ? <MemoModal id={props.id} key={"memo-" + props.id} title={props.title} memo={props.memo} /> : <span key={ props.id }></span>
+    const modal = ifCreateOrElse(
+        props.id, null,
+        <MemoModal id={props.id} key={modalId(props.id)} title={props.title} memo={props.memo} />
+    )
 
-    props.modalId = modal.key as string
+    props.modalId = modalId(props.id)
     props.body = props.memo
 
     return (
