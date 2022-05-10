@@ -9,13 +9,10 @@ import { Home } from './routes/Home';
 import Header from './components/Header';
 import { AuthWrapper, NoAuthWrapper } from './components/AuthWrapper';
 
-import { manageTokens } from './utils/session';
 import { SignUp } from './routes/SignUp';
 import { Config } from './routes/Config';
 
 function App () {
-    manageTokens()
-    
     return (
         <Router>
             <Header />

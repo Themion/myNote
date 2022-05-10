@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { getAccessToken, isTokenExpired } from "../utils/session";
+import { getAccessToken, getRefreshToken, isTokenExpired, refreshAccessToken } from "../utils/session";
 
 interface Props {
     children: React.ReactElement
@@ -7,7 +7,8 @@ interface Props {
 
 export const AuthWrapper = (props: Props) => {
     const navigate = useNavigate()
-    if (isTokenExpired(getAccessToken())) navigate('/login')
+    if (isTokenExpired(getRefreshToken())) navigate('/login')
+    else if (isTokenExpired(getAccessToken())) refreshAccessToken();
 
     return props.children
 }

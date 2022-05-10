@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom"
-import { requestAccessToken } from "../../utils/session"
-import { Callback, Fallback } from "../../utils/utils"
+import { refreshAccessToken } from "../../utils/session"
+import { Callback, Fallback, reload } from "../../utils/utils"
 import { Form } from "./Form"
 
 export const ChangeNickname = () => {
     const navigate = useNavigate()
 
-    const callback: Callback = async (res) => {
-        await requestAccessToken()
-        navigate('/user?nicknameChange', {replace: true})
+    const callback: Callback = (res) => {
+        refreshAccessToken()
+        reload()
     }
 
     const fallback: Fallback = (response) => {

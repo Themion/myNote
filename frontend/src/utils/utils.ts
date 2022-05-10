@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from "axios"
-import { getAccessToken, getRefreshToken, isTokenExpired, requestAccessToken } from "./session"
+import { getAccessToken, isTokenExpired, refreshAccessToken } from "./session"
 
 export const baseURL = "https://localhost:8443"
 
@@ -17,6 +17,7 @@ export interface Fallback {
 
 // 지정된 경로로 redirect
 export const redirect = (path: string) => { window.location.href = path }
+export const reload = () => window.location.reload()
 
 // axios 실행
 export const send = async (
@@ -26,7 +27,7 @@ export const send = async (
     fallback: Fallback
 ) => {
     // 요청을 보내기 전 미리 accessToken을 갱신
-    if (!isTokenExpired(getRefreshToken())) await requestAccessToken()
+    if (isTokenExpired(getAccessToken())) await refreshAccessToken()
 
     // 갱신된 accessToken을 헤더에 담은 뒤
     const accessToken = getAccessToken()

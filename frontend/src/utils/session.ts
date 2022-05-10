@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from "axios"
-import { baseURL } from "./utils"
+import { baseURL, redirect } from "./utils"
 
 export const accessTokenStorage: string = "access-token"
 export const refreshTokenStorage: string = "refresh-token"
@@ -28,17 +28,20 @@ export const getNickname = (): string => {
 
 // 인자로 주어진 token이 만료되었는지 여부를 반환
 export const isTokenExpired = (token: string | null): boolean => {
-    if (!token) return true
-    return ( getTokenPayload(token).exp * 1000) <= new Date().getTime()
+    return !!token && (getTokenPayload(token).exp * 1000) <= new Date().getTime()
 }
 
 // 가지고 있는 refreshToken을 이용해 accessToken을 재발급
-export const requestAccessToken = async () => {
+export const refreshAccessToken = async () => {
     // 기존에 존재하던 accessToken을 제거
     removeAccessToken()
 
+    // refreshToken이 만료되었다면 로그인 페이지로 redirect
+    const refreshToken = getRefreshToken()
+    if (isTokenExpired(refreshToken)) redirect('/login')
+
     // 헤더에 refreshToken을 저장한 뒤
-    const headers: AxiosRequestHeaders = { authorization: "Bearer " + getRefreshToken() }
+    const headers: AxiosRequestHeaders = { authorization: "Bearer " + refreshToken }
 
     // 백엔드에 보낼 요청
     const config: AxiosRequestConfig = {
@@ -52,14 +55,4 @@ export const requestAccessToken = async () => {
     const res: AxiosResponse = await axios(config)
     setAccessToken(res.data[accessTokenStorage])
     return res.data[accessTokenStorage]
-}
-
-// refreshToken과 accessToken이 만료되었는지 확인
-export const manageTokens = async () => {
-    if (isTokenExpired(getRefreshToken())) {
-        removeRefreshToken()
-    } else if (isTokenExpired(getAccessToken())) {
-        await requestAccessToken()
-        window.location.reload()
-    }
 }
