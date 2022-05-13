@@ -3,12 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import { passwordCheck, validate } from '../components/user/Input'
 import { Form } from '../components/user/Form'
 import { Callback, Fallback } from '../utils/utils'
+import { Dispatch } from '@reduxjs/toolkit'
+import { alertObj, alertSlice, AlertType, DispatcherProps } from '../store/alertStore'
+import { connect } from 'react-redux'
 
-export const SignUp = () => {
+const SignUp = (props: DispatcherProps) => {
     const navigate = useNavigate()
 
     const callback: Callback = (res) => {
-        navigate('/login?signup')
+        props.setAlert(alertObj("회원가입에 성공하였습니다.", "success"))
+        navigate('/login')
     }
 
     const fallback: Fallback = (response) => {
@@ -22,6 +26,9 @@ export const SignUp = () => {
         data.errors.forEach((err: any) => { logs[err.field].push(err.defaultMessage) })
 
         inputs.forEach(input => validate(input, logs[input.name])) 
+
+        console.log(data)
+        setTimeout(() => {}, 10000)
     }
     
     const inputs = [{
@@ -49,3 +56,13 @@ export const SignUp = () => {
         callback={callback}
         fallback={fallback} />
 }
+
+const mapDispatchToProps = (dispatch: Dispatch, props: any) => {
+    return {
+        setAlert: (alert: AlertType) => 
+            dispatch(alertSlice.actions.setAlert(alert))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(SignUp)
+

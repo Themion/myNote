@@ -4,19 +4,22 @@ import {
     Route
 } from 'react-router-dom';
 
-import { Login, Logout } from "./routes/Login"
+import Login from "./routes/Login"
 import { Home } from './routes/Home';
 import Header from './components/Header';
 import { AuthWrapper, NoAuthWrapper } from './components/AuthWrapper';
 
-import { SignUp } from './routes/SignUp';
+import SignUp from './routes/SignUp';
 import { Config } from './routes/Config';
+import Alert from './components/Alert';
+import Logout from './routes/Logout';
 
 function App () {
     return (
         <Router>
             <Header />
             <div className="App container">
+                <Alert />
                 <Routes>
                     <Route path="/login" element={
                         <NoAuthWrapper>

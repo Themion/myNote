@@ -1,6 +1,5 @@
 import { getAccessToken, getNickname } from "../utils/session";
 import { MemoModal } from "./memo/MemoModal"
-import { Link } from "react-router-dom";
 
 const Button = () => {
     const token = getAccessToken()
@@ -9,13 +8,11 @@ const Button = () => {
     const className = `btn-outline-${token ? 'danger' : 'primary'}`
 
     return (
-        <Link to={url} className="ms-auto">
-            <button 
-                type="button" 
-                className={`btn btn-sm ${className}`} >
-                {text}
-            </button>
-        </Link>
+        <button 
+            type="button" 
+            className={`btn btn-sm ${className} ms-auto`} >
+            <a href={url}>{text}</a>
+        </button>
     )
 }
 
@@ -25,7 +22,7 @@ const Header = () => {
             <div className="container-fluid">
 
                 {/* 홈 버튼 */}
-                <Link className="navbar-brand" to='/'>myNote</Link>
+                <a className="navbar-brand" href="/">myNote</a>
                 {/* 홈 버튼 */}
 
                 {/* 메뉴 접는 버튼 */}
@@ -37,14 +34,16 @@ const Header = () => {
                 {/* 메뉴 목록 */}
                 <div className="collapse navbar-collapse" id="menu">
                     <div className="navbar-nav">
-                        <Link className="nav-link" to='/user'>{getNickname()}</Link>
+                        <a className="nav-link" href="/user">{getNickname()}</a>
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="/memo" id="menu-memo" role="button" data-bs-toggle="dropdown">
                                 Memo
                             </a>
                             <ul className="dropdown-menu">
                                 <li>
-                                    <Link className="dropdown-item" to='/'>Memo List</Link>
+                                    <a className="dropdown-item" href="/">
+                                        Memo List
+                                    </a>
                                 </li>
                                 <li>
                                     <div 

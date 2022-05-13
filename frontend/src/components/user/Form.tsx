@@ -4,7 +4,6 @@ import { Input, Props as inputProps } from './Input'
 import { Callback, Fallback, send, sendTo } from '../../utils/utils'
 import { Card, LinkButton } from '../Card'
 import { Center } from '../Center'
-import { Alert } from '../Alert'
 
 export interface Props {
     name: string,
@@ -28,7 +27,6 @@ export const Form = (props_: Partial<Props>) => {
     // form의 이름을 id로 변환
     const id = props.name.replace(' ', '_')
     // 표시할 메세지가 있다면 Alert 컴포넌트를 render해 표시
-    const alert = props.alert ? <Alert alert={props.alert} /> : null
 
     const onSubmit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -67,7 +65,6 @@ export const Form = (props_: Partial<Props>) => {
                 link={props.link}
                 body={
                     <form id={id} onSubmit={onSubmit} className="needs-validation" noValidate>
-                        {alert}
                         {inputs}
                         <div className="form-floating mb-3">
                             <button className="btn btn-primary btn-block float-end" type="submit">Submit</button>

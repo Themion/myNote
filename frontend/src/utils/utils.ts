@@ -17,7 +17,7 @@ export interface Fallback {
 
 // 지정된 경로로 redirect
 export const redirect = (path: string) => { window.location.href = path }
-export const reload = () => window.location.reload()
+export const reload = () => redirect(window.location.pathname)
 
 // axios 실행
 export const send = async (

@@ -1,18 +1,22 @@
+import { Dispatch } from "@reduxjs/toolkit"
+import { connect } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { alertObj, alertSlice, AlertType, DispatcherProps } from "../../store/alertStore"
 import { Callback, Fallback } from "../../utils/utils"
 import { Form } from "./Form"
 import { passwordCheck } from "./Input"
 
-
-export const ChangePassword = () => {
+const ChangePassword = (props: DispatcherProps) => {
     const navigate = useNavigate()
 
     const callback: Callback = (res) => {
-        navigate('/user?passwordChange', {replace: true})
+        props.setAlert(alertObj())
+        navigate('/user', {replace: true})
     }
 
     const fallback: Fallback = (response) => {
-        navigate('/user?error')
+        props.setAlert(alertObj("비밀번호가 잘못되었습니다.", "warning"))
+        navigate('/user')
     }
 
     const inputs = [{
@@ -37,3 +41,12 @@ export const ChangePassword = () => {
         fallback={fallback}
         validate />
 }
+
+const mapDispatchToProps = (dispatch: Dispatch, props: any) => {
+    return {
+        setAlert: (alert: AlertType) => 
+            dispatch(alertSlice.actions.setAlert(alert))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(ChangePassword)
