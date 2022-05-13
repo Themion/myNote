@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosRequestHeaders, AxiosResponse } from "axios"
-import { getAccessToken, isTokenExpired, refreshAccessToken } from "./session"
+import { getAccessToken, getRefreshToken, isTokenExpired, refreshAccessToken } from "./session"
 
 export const baseURL = "https://localhost:8443"
 
@@ -27,7 +27,7 @@ export const send = async (
     fallback: Fallback
 ) => {
     // 요청을 보내기 전 미리 accessToken을 갱신
-    if (isTokenExpired(getAccessToken())) await refreshAccessToken()
+    if (!isTokenExpired(getRefreshToken()) && isTokenExpired(getAccessToken())) await refreshAccessToken()
 
     // 갱신된 accessToken을 헤더에 담은 뒤
     const accessToken = getAccessToken()
