@@ -51,7 +51,6 @@ const CardBody = (props: BodyProps) => {
 export const Card = (props_: Partial<CardProps>) => {
     const props = { ...defaultProps, ...props_ } as CardProps
 
-    
     // card에 지정할 클래스의 배열
     const classList = ["bg-" + props.bg, styles.card]
     // card에 실제로 들어갈 클래스

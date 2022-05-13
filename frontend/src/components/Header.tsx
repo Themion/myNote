@@ -25,7 +25,7 @@ const Header = () => {
             <div className="container-fluid">
 
                 {/* 홈 버튼 */}
-                <a className="navbar-brand" href="/">myNote</a>
+                <Link className="navbar-brand" to='/'>myNote</Link>
                 {/* 홈 버튼 */}
 
                 {/* 메뉴 접는 버튼 */}
@@ -37,16 +37,14 @@ const Header = () => {
                 {/* 메뉴 목록 */}
                 <div className="collapse navbar-collapse" id="menu">
                     <div className="navbar-nav">
-                        <a className="nav-link" href="/user">{getNickname()}</a>
+                        <Link className="nav-link" to='/user'>{getNickname()}</Link>
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle" href="/memo" id="menu-memo" role="button" data-bs-toggle="dropdown">
                                 Memo
                             </a>
                             <ul className="dropdown-menu">
                                 <li>
-                                    <a className="dropdown-item" href="/">
-                                        Memo List
-                                    </a>
+                                    <Link className="dropdown-item" to='/'>Memo List</Link>
                                 </li>
                                 <li>
                                     <div 
