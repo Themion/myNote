@@ -1,4 +1,5 @@
 import { getAccessToken, getNickname } from "../utils/session";
+import { redirect } from "../utils/utils";
 import { MemoModal } from "./memo/MemoModal"
 
 const Button = () => {
@@ -10,8 +11,9 @@ const Button = () => {
     return (
         <button 
             type="button" 
-            className={`btn btn-sm ${className} ms-auto`} >
-            <a href={url}>{text}</a>
+            className={`btn btn-sm ${className} ms-auto`}
+            onClick={() => redirect(url)} >
+            {text}
         </button>
     )
 }

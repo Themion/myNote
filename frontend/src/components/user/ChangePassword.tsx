@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom"
 import { alertObj, alertSlice, AlertType, DispatcherProps } from "../../store/alertStore"
 import { Callback, Fallback } from "../../utils/utils"
 import { Form } from "./Form"
-import { passwordCheck } from "./Input"
+import { passwordCheck, validate } from "./Input"
 
 const ChangePassword = (props: DispatcherProps) => {
     const navigate = useNavigate()
+
+    const name = "Change Password"
+    const wrong_pw = "비밀번호가 잘못되었습니다."
 
     const callback: Callback = (res) => {
         props.setAlert(alertObj())
@@ -16,6 +19,7 @@ const ChangePassword = (props: DispatcherProps) => {
 
     const fallback: Fallback = (response) => {
         props.setAlert(alertObj("비밀번호가 잘못되었습니다.", "warning"))
+        validate(document.querySelector(`#${name.replace(' ', '_')} input[name=current_password]`)!, [wrong_pw])
         navigate('/user')
     }
 
@@ -34,7 +38,7 @@ const ChangePassword = (props: DispatcherProps) => {
     }]
 
     return <Form
-        name="Change Password" 
+        name={name}
         inputs={inputs} 
         to={{ url: "/user/password", method: "PUT" }}
         callback={callback}

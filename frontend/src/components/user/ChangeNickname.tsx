@@ -5,14 +5,24 @@ import { alertObj, alertSlice, AlertType, DispatcherProps } from "../../store/al
 import { refreshAccessToken } from "../../utils/session"
 import { Callback, Fallback, reload } from "../../utils/utils"
 import { Form } from "./Form"
+import { validate } from "./Input"
 
 const ChangeNickname = (props: DispatcherProps) => {
     const navigate = useNavigate()
+
+    const name = "Change Nickname"
+    const wrong_pw = "비밀번호가 잘못되었습니다."
 
     const callback: Callback = (res) => {
         props.setAlert(alertObj())
         refreshAccessToken()
         reload()
+    }
+
+    const fallback: Fallback = (response) => {
+        props.setAlert(alertObj(wrong_pw, "warning"))
+        validate(document.querySelector(`#${name.replace(' ', '_')} input[name=password]`)!, [wrong_pw])
+        navigate('/user')
     }
 
     const inputs = [{
@@ -22,13 +32,8 @@ const ChangeNickname = (props: DispatcherProps) => {
         name: "nickname"
     }]
 
-    const fallback: Fallback = (response) => {
-        props.setAlert(alertObj("비밀번호가 잘못되었습니다.", "warning"))
-        navigate('/user')
-    }
-
     return <Form
-        name="Change Nickname" 
+        name={name}
         inputs={inputs} 
         to={{ url: "/user/nickname", method: "PUT" }}
         callback={callback}
